@@ -1,4 +1,4 @@
-#!/usr/bin/env bash!
+#!/bin/bash
 
 # install sublime
 wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
@@ -13,3 +13,4 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 sudo apt update
 sudo apt upgrade -y
 sudo apt-get install sublime-text -y
+sudo apt autoremove
