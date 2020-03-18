@@ -1,11 +1,13 @@
 import React from 'react';
-import Navi from './Navi';
+
+import Construction from './Construction'
 
 function Home() {
 	return (
 		<div>
-			<Navi />
+			<Construction />
 		</div>
+		
 	);
 }
 
