@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 class Challenge0 extends Component {
 	constructor() {
 		super();
-		this.inject = "auth = (e) => {\n\te.preventDefault();\n\tif(e.target[0].value === 'L33tHax') {\n\t\twindow.location = '/Victory0';\n} else {\n\t\tconst ft = document.querySelector('[class=form-text]');\n\t\tconst pass = document.getElementById('password');\n\t\tft.innerHTML=`<div class='text-danger'>Invalid Password</div>`;\n\t\tpass.value = '';\n\t}\n}";
+		this.inject = "auth = (e) => {\n\te.preventDefault();\n\tif(e.target[0].value === 'L33tHax') {\n\t\twindow.location = '/Victory0';\n\t} else {\n\t\tconst ft = document.querySelector('[class=text-danger]');\n\t\tconst pass = document.getElementById('password');\n\t\tft.innerText=`Invalid Password`;\n\t\tpass.value = '';\n\t}\n}";
 	}
 
 	// authentication script
