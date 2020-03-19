@@ -6,10 +6,10 @@ class Challenge0 extends Component {
 		super();
 		this.inject = 	"function authenticate() {\n" +
 						"	const pass = document.getElementById('password');\n" +
-						"	const ft=document.querySelector('#invalid');" +
+						"	const ft=document.querySelector('#invalid');\n" +
 						"	if(pass.value === 'L33tHax') {\n" +
-						"		ft.class = 'form-text text-success';" +
-						"		ft.innerText = 'Correct!';" +
+						"		ft.class = 'form-text text-success';\n" +
+						"		ft.innerText = 'Correct!';\n" +
 						"		window.location = '/Victory0';\n" +
 						"	} else {\n" +
 						"		ft.innerText='Incorrect Password';\n" +
