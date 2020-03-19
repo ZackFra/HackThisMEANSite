@@ -12,6 +12,9 @@ class Challenge0 extends Component {
 		axios.post('/Challenge1/login', request)
 			.then( res => {
 				if(res.data.length > 0) {
+					const ft = document.querySelector('#invalid')
+					ft.className = 'form-text text-success';
+					ft.innerText="Correct!";
 					window.location = '/Victory1';
 				} else {
 					res.config.url = "localhost:5000" + res.config.url;
@@ -39,7 +42,7 @@ class Challenge0 extends Component {
 							</div>
 							<hr color="lightgray"/>
 							<div className="card-text">
-								It looks like someone goofed and left a console.log somewhere while developing this site. Also, did you know you that MongoDB can be injected just like a SQL databases?
+								It looks like someone goofed and left a console.log somewhere while developing this site. Also, did you know you that MongoDB can be injected just like a SQL database?
 							</div>
 							<br />
 							<form className="form-group" onSubmit={this.authenticate}>
