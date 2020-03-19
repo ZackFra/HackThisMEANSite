@@ -20,11 +20,11 @@ function App() {
   		<Router>
   			<div>
   				<Switch>
-  					<Route path='/Construction' component={Construction}/>
-  					<Route path='/Challenge0' component={Challenge0} />
-  					<Route path='/Victory0' component={Victory0} />
-            <Route path='/Challenge1' component={Challenge1} />
-            <Route path='/Victory1' component={Victory1} />
+  					<Route exact path='/Construction' component={Construction}/>
+  					<Route exact path='/Challenge0' component={Challenge0} />
+  					<Route exact path='/Victory0' component={Victory0} />
+            <Route exact path='/Challenge1' component={Challenge1} />
+            <Route exact path='/Victory1' component={Victory1} />
   					<Redirect to='/Construction'/>
   				</Switch>
   			</div>

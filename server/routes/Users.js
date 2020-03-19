@@ -8,6 +8,7 @@ const router = Router();
 // @desc    Authenticate user + pass
 // @access  public
 router.post('/login', (req, res) => {
+	const {user, pass} = req.body;
 	User.find({user, pass}, (err, data) => {
 		if(err) res.status(500).json(err);
 		else res.status(200).json(data);
@@ -17,19 +18,16 @@ router.post('/login', (req, res) => {
 // @route   POST user
 // @desc    add new user to db
 // @access  public
-router.post('/register', async (req, res) => {
+router.post('/register', (req, res) => {
 	const {user, pass} = req.body;
 	if(!user || !pass) {
 		res.status(500).json('Invalid parameters: Must have both user and pass');
 	}
 
-	const newUser = new User({user, pass});
-	const savedUser = await newUser.save();
-	if(!savedUser) {
-		throw Error('Something went wrong while saving user');
-	}
-
-	res.status(200).json('Created User :)');
+	User.create({user, pass}, (err, data) => {
+		if(err) res.status(500).json(err);
+		res.status(200).json(data);
+	});
 });
 
 module.exports = router;

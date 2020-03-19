@@ -1,22 +1,28 @@
 import React, { Component } from 'react';
 import {Container} from 'reactstrap';
+import axios from 'axios';
 
 class Challenge0 extends Component {
 
 	// authentication script
 	authenticate = (e) => {
 		e.preventDefault();
-		if(e.target[0].value === '{$exists: true}') {
-			const ft = document.querySelector('#invalid')
-			ft.className = 'form-text text-success';
-			ft.innerText="Correct!";
-			window.location = '/Victory1';
-		} else {
-			const ft = document.querySelector('#invalid');
-			const pass = document.getElementById('password');
-			ft.innerText="Incorrect Password";
-			pass.value = '';
-		}
+		const request = {user: 'admin', pass: e.target[0].value};
+
+		axios.post('/Challenge1/login', request)
+			.then( res => {
+				if(res.data.length > 0) {
+					window.location = '/Victory1';
+				} else {
+					res.config.url = "localhost:5000" + res.config.url;
+					const ft = document.querySelector('#invalid');
+					const pass = document.getElementById('password');
+					ft.innerText="Incorrect Password";
+					pass.value = '';
+				}
+				console.log(res.config);
+			})
+			.catch( err => console.log(err));
 	}
 
 	render() {
@@ -33,13 +39,13 @@ class Challenge0 extends Component {
 							</div>
 							<hr color="lightgray"/>
 							<div className="card-text">
-								Did you know that Mongo databases can be injected just like SQL databases?
+								It looks like someone goofed and left a console.log somewhere while developing this site. Also, did you know you that MongoDB can be injected just like a SQL databases?
 							</div>
 							<br />
 							<form className="form-group" onSubmit={this.authenticate}>
 								<label className="form-text text-warning" id="invalid"></label>
 								<label className="form-control" htmlFor="password">
-									Password:
+									User: admin
 								</label>
 								<input className="form-control" type="password" id="password"/>
 								<button 
