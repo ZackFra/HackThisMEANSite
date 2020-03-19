@@ -36,34 +36,34 @@ const Navi = (props) => {
                   <DropdownItem href='/Challenge0'>
                     Challenge 0
                   </DropdownItem>
-                  <DropdownItem>
+                  <DropdownItem href='/Construction'>
                     Challenge 1
                   </DropdownItem>
-                  <DropdownItem>
+                  <DropdownItem href='/Construction'>
                     Challenge 2
                   </DropdownItem>
-                  <DropdownItem>
+                  <DropdownItem href='/Construction'>
                     Challenge 3
                   </DropdownItem>
-                  <DropdownItem>
+                  <DropdownItem href='/Construction'>
                     Challenge 4
                   </DropdownItem>
-                  <DropdownItem>
+                  <DropdownItem href='/Construction'>
                     Challenge 5
                   </DropdownItem>
-                  <DropdownItem>
+                  <DropdownItem href='/Construction'>
                     Challenge 6
                   </DropdownItem>
-                  <DropdownItem>
+                  <DropdownItem href='/Construction'>
                     Challenge 7
                   </DropdownItem>
-                  <DropdownItem>
+                  <DropdownItem href='/Construction'>
                     Challenge 8
                   </DropdownItem>
-                  <DropdownItem>
+                  <DropdownItem href='/Construction'>
                     Challenge 9
                   </DropdownItem>
-                  <DropdownItem>
+                  <DropdownItem href='/Construction'>
                     Challenge 10
                   </DropdownItem>
                 </DropdownMenu>
