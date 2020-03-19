@@ -2,11 +2,15 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
+const Users = require('./routes/Users');
+
 require('dotenv').config();
 
 const app = express();
 
 app.use(bodyParser.json());
+
+app.use('/user', Users);
 
 const URI = process.env.ATLAS_URI;
 

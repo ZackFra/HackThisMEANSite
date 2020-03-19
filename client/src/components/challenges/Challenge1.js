@@ -2,37 +2,15 @@ import React, { Component } from 'react';
 import {Container} from 'reactstrap';
 
 class Challenge0 extends Component {
-	constructor() {
-		super();
-		this.inject = 	"function authenticate() {\n" +
-						"	const pass = document.getElementById('password');\n" +
-						"	const ft=document.querySelector('#invalid');" +
-						"	if(pass.value === 'L33tHax') {\n" +
-						"		ft.class = 'form-text text-success';" +
-						"		ft.innerText = 'Correct!';" +
-						"		window.location = '/Victory0';\n" +
-						"	} else {\n" +
-						"		ft.innerText='Incorrect Password';\n" +
-						"		pass.value = '';\n" +
-						"	}\n" +
-						"}\n";
-		this.state = {
-			pass: ''
-		};
-	}
-
-	componentDidMount() {
-		document.querySelector('form').setAttribute('onsubmit', 'authenticate()');
-	}
 
 	// authentication script
 	authenticate = (e) => {
 		e.preventDefault();
-		if(e.target[0].value === 'L33tHax') {
+		if(e.target[0].value === '{$exists: true}') {
 			const ft = document.querySelector('#invalid')
 			ft.className = 'form-text text-success';
 			ft.innerText="Correct!";
-			window.location = '/Victory0';
+			window.location = '/Victory1';
 		} else {
 			const ft = document.querySelector('#invalid');
 			const pass = document.getElementById('password');
@@ -51,11 +29,11 @@ class Challenge0 extends Component {
 					<div className="card" style={{width: '18rem', margin: 'auto'}}>
 						<div className="card-body bg-dark text-light">
 							<div className="card-title">
-								Sanity Test
+								Gotta Love the Classics
 							</div>
 							<hr color="lightgray"/>
 							<div className="card-text">
-								Whoever made this test knows nothing about security. This is as basic as it gets.
+								Did you know that Mongo databases can be injected just like SQL databases?
 							</div>
 							<br />
 							<form className="form-group" onSubmit={this.authenticate}>

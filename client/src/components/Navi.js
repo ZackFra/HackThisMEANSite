@@ -36,7 +36,7 @@ const Navi = (props) => {
                   <DropdownItem href='/Challenge0'>
                     Challenge 0
                   </DropdownItem>
-                  <DropdownItem href='/Construction'>
+                  <DropdownItem href='/Challenge1'>
                     Challenge 1
                   </DropdownItem>
                   <DropdownItem href='/Construction'>
