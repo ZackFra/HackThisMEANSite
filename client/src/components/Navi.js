@@ -22,7 +22,7 @@ const Navi = (props) => {
 
   return (
     <div>
-      <Navbar color="light" light expand="md">
+      <Navbar color="dark" dark expand="md">
         <NavbarBrand href="/">Hack This MEAN Site</NavbarBrand>
         <NavbarToggler onClick={toggle} />
           <Nav className="mr-auto" navbar>
