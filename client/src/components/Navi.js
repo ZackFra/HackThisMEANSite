@@ -28,46 +28,44 @@ const Navi = (props) => {
           <Nav className="mr-auto" navbar>
         {/* Challenges menu */}
             <UncontrolledDropdown nav inNavbar>
-              <NavItem>
-                <DropdownToggle nav caret>
-                  Challenges
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem href='/Challenge0'>
-                    Challenge 0
-                  </DropdownItem>
-                  <DropdownItem href='/Challenge1'>
-                    Challenge 1
-                  </DropdownItem>
-                  <DropdownItem href='/Construction'>
-                    Challenge 2
-                  </DropdownItem>
-                  <DropdownItem href='/Construction'>
+              <DropdownToggle nav caret>
+                Challenges
+              </DropdownToggle>
+              <DropdownMenu right>
+                <DropdownItem href='/Challenge0'>
+                  Challenge 0
+                </DropdownItem>
+                <DropdownItem href='/Challenge1'>
+                  Challenge 1
+                </DropdownItem>
+                <DropdownItem href='/Construction'>
+                  Challenge 2
+                </DropdownItem>
+                <DropdownItem href='/Construction'>
                     Challenge 3
-                  </DropdownItem>
-                  <DropdownItem href='/Construction'>
-                    Challenge 4
-                  </DropdownItem>
-                  <DropdownItem href='/Construction'>
-                    Challenge 5
-                  </DropdownItem>
-                  <DropdownItem href='/Construction'>
-                    Challenge 6
-                  </DropdownItem>
-                  <DropdownItem href='/Construction'>
-                    Challenge 7
-                  </DropdownItem>
-                  <DropdownItem href='/Construction'>
-                    Challenge 8
-                  </DropdownItem>
-                  <DropdownItem href='/Construction'>
-                    Challenge 9
-                  </DropdownItem>
-                  <DropdownItem href='/Construction'>
-                    Challenge 10
-                  </DropdownItem>
-                </DropdownMenu>
-              </NavItem>
+                </DropdownItem>
+                <DropdownItem href='/Construction'>
+                  Challenge 4
+                </DropdownItem>
+                <DropdownItem href='/Construction'>
+                  Challenge 5
+                </DropdownItem>
+                <DropdownItem href='/Construction'>
+                  Challenge 6
+                </DropdownItem>
+                <DropdownItem href='/Construction'>
+                  Challenge 7
+                </DropdownItem>
+                <DropdownItem href='/Construction'>
+                  Challenge 8
+                </DropdownItem>
+                <DropdownItem href='/Construction'>
+                  Challenge 9
+                </DropdownItem>
+                <DropdownItem href='/Construction'>
+                  Challenge 10
+                </DropdownItem>
+              </DropdownMenu>
             </UncontrolledDropdown>
 
             <NavItem>

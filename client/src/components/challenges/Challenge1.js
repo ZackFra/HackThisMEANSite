@@ -23,7 +23,7 @@ class Challenge0 extends Component {
 		return (
 			<Container>
 				<script>{this.inject}</script>
-				<h1 className="pb-2 mt-4 border-bottom" style={{padding: '1rem 0'}}>Welcome to Challenge 0</h1>
+				<h1 className="pb-2 mt-4 border-bottom" style={{padding: '1rem 0'}}>Welcome to Challenge 1</h1>
 				<br />
 				<Container>
 					<div className="card" style={{width: '18rem', margin: 'auto'}}>
