@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Container} from 'reactstrap';
 import axios from 'axios';
 
-class Challenge0 extends Component {
+class Challenge1 extends Component {
 
 	// authentication script
 	authenticate = (e) => {
@@ -66,4 +66,4 @@ class Challenge0 extends Component {
 	}
 }
 
-export default Challenge0;
+export default Challenge1;
