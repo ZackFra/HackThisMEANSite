@@ -17,13 +17,12 @@ class Challenge1 extends Component {
 					ft.innerText="Correct!";
 					window.location = '/Victory1';
 				} else {
-					res.config.url = "localhost:5000" + res.config.url;
 					const ft = document.querySelector('#invalid');
 					const pass = document.getElementById('password');
 					ft.innerText="Incorrect Password";
 					pass.value = '';
 				}
-				console.log(res.config);
+				console.log({"url": res.config.url, "method": res.config.method, "data": res.config.data});
 			})
 			.catch( err => console.log(err));
 	}
