@@ -61,7 +61,7 @@ class Challenge0 extends Component {
 							<form className="form-group" onSubmit={this.authenticate}>
 								<label className="form-text text-warning" id="invalid"></label>
 								<label className="form-control" htmlFor="password">
-									Password:
+									User: admin
 								</label>
 								<input className="form-control" type="password" id="password"/>
 								<button 
