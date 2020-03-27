@@ -34,7 +34,7 @@ router.post('/Register', (req, res) => {
 	if(!user || !pass) {
 		res.status(500).json('Invalid parameters: Must have both user and pass');
 	} else if(typeof(user) !== 'string' || typeof(pass) !== 'string') {
-		res.stuatus(500).json('Invalid parameters: Only accepts strings');
+		res.status(500).json('Invalid parameters: Only accepts strings');
 	}
 	
 	let hash = crypto
