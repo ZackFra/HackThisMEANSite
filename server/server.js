@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
+const Users = require('./routes/Users');
 const Users1 = require('./routes/challenge1_routes');
 
 require('dotenv').config();
@@ -9,6 +10,8 @@ require('dotenv').config();
 const app = express();
 
 app.use(bodyParser.json());
+
+app.use('/', Users);
 
 app.use('/Challenge1', Users1);
 

@@ -28,7 +28,7 @@ function App() {
             <Route exact path='/Challenge1' component={Challenge1} />
             <Route exact path='/Victory1' component={Victory1} />
             <Route exact path='/Forums' component={Directory} />
-            <Route exat path='/Login' component={Login} />
+            <Route exact path='/Login' component={Login} />
   					<Redirect to='/Construction'/>
   				</Switch>
   			</div>

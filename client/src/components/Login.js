@@ -3,6 +3,10 @@ import {Container} from 'reactstrap';
 
 class Login extends Component {
 
+	authenticate = (e) => {
+		console.log('implement me')
+	}
+
 	render() {
 		return (
 			<Container>
