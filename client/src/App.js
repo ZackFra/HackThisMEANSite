@@ -11,7 +11,8 @@ import Victory0 from './components/challenges/Victory0';
 import Challenge1 from './components/challenges/Challenge1';
 import Victory1 from './components/challenges/Victory1';
 import Navi from './components/Navi';
-import Forum from './components/Forum';
+import Directory from './components/Directory';
+import Login from './components/Login'
 
 
 function App() {
@@ -26,7 +27,8 @@ function App() {
   					<Route exact path='/Victory0' component={Victory0} />
             <Route exact path='/Challenge1' component={Challenge1} />
             <Route exact path='/Victory1' component={Victory1} />
-            <Route exact path='/Forum' component={Forum} />
+            <Route exact path='/Forums' component={Directory} />
+            <Route exat path='/Login' component={Login} />
   					<Redirect to='/Construction'/>
   				</Switch>
   			</div>

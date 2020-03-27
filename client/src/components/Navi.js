@@ -69,13 +69,16 @@ const Navi = (props) => {
             </UncontrolledDropdown>
 
             <NavItem>
-              <NavLink href='/Forum'>Forum</NavLink>
+              <NavLink href='/Forums'>Forum</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="https://github.com/ZackFra/test_forum">GitHub</NavLink>
+              <NavLink href="https://github.com/ZackFra/HackThisMEANSite">GitHub</NavLink>
             </NavItem>
+
           </Nav>
-          <NavbarText>Yeet!</NavbarText>
+          <NavbarText>
+            <NavLink href='/Login'>Login</NavLink>
+          </NavbarText>
       </Navbar>
     </div>
   );

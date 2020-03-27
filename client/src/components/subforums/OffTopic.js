@@ -1,29 +1,20 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import {Container, Badge, Nav} from 'reactstrap';
-import SUBCODES from './subforums/subcodes';
 
-function Forum() {
-	const [title, setTitle] = useState('Forum: Directory', );
-
-	function listSubforums() {
+function OffTopic() {
+	function listPosts() {
 		let subs = [];
 		let styles = {'padding': '1rem', 'margin': '0.1rem', 'width': '95%', 'textAlign': 'left', 'backgroundColor': 'white', 'border': '2px solid black'};
 		subs.push(
-			<Badge href='#OffTopic' className='text-dark' style={styles} onClick = { () => {
-				setTitle('Forum: Off Topic');
-				ReactDOM.render(SUBCODES['OT'], document.getElementById('content'));
-			}}>
+			<Badge href='#OffTopic' className='text-dark' style={styles}>
 				Off Topic
 			</Badge>
 		);
 
 		for(let i = 0; i <= 10; i++) {
 			subs.push(
-				<Badge href={'#Challenge' + i} className = 'text-dark' style={styles} onClick = { () => {
-					setTitle('Forum: Challenge ' + i );
-					ReactDOM.render(SUBCODES['C' + i], document.getElementById('content'));
-				}}>
+				<Badge href={'#Challenge' + i} className = 'text-dark' style={styles}>
 					Challenge {i}
 				</Badge>
 			);
@@ -37,9 +28,9 @@ function Forum() {
 			<Nav>
 				<div className="card" style={{width: '100%', margin: 'auto'}}>
 					<div className="card-body bg-light text-dark">
-						<h1 className="card-title pb-2 mt-4 border-bottom"> {title} </h1>
+						<h1 className="card-title pb-2 mt-4 border-bottom">Directory</h1>
 						<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
-							{listSubforums()}
+							{listPosts()}
 						</div>
 					</div>
 				</div>
@@ -48,4 +39,4 @@ function Forum() {
 	);
 }
 
-export default Forum;
+export default OffTopic;
