@@ -17,7 +17,7 @@ router.post('/Authenticate', (req, res) => {
 	let hash = crypto
 		.createHmac('sha256', 'pass')
 		.update(pass)
-		.digest('hex')
+		.digest('hex');
 	
 	User.find({user, "pass": hash}, (err, data) => {
 		if(err) res.status(500).json(err);

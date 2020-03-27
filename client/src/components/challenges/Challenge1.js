@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import {Container} from 'reactstrap';
 import axios from 'axios';
+import crypto from 'crypto';
 
 class Challenge1 extends Component {
 
 	// authentication script
 	authenticate = (e) => {
 		e.preventDefault();
-		const request = {user: 'admin', pass: e.target[0].value};
+		let hash = crypto
+			.createHash('sha256')
+			.update(e.target[0].value)
+			.digest('hex');
+		const request = {user: 'admin', pass: hash};
 
 		axios.post('/Challenge1/login', request)
 			.then( res => {
