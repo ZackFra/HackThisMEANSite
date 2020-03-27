@@ -1,6 +1,6 @@
 const Router = require('express').Router;
 const User = require('./modals/User.Modal');
-
+const crypto = require('crypto');
 const router = Router();
 
 
@@ -13,9 +13,16 @@ router.post('/Authenticate', (req, res) => {
 	if(typeof(user) !== 'string' || typeof(pass) !== 'string') {
 		res.status(500).json('Invalid parameters: Only accepts strings');
 	} 
-	User.find({user, pass}, (err, data) => {
+
+	let hash = crypto
+		.createHmac('sha256', 'pass')
+		.update(pass)
+		.digest('hex')
+	
+	User.find({user, "pass": hash}, (err, data) => {
 		if(err) res.status(500).json(err);
-		else res.status(200).json(true);
+		else if (data.length > 0) res.status(200).json(data);
+		else res.status(500).json('User Not Found');
 	});
 });
 
@@ -29,8 +36,13 @@ router.post('/Register', (req, res) => {
 	} else if(typeof(user) !== 'string' || typeof(pass) !== 'string') {
 		res.stuatus(500).json('Invalid parameters: Only accepts strings');
 	}
+	
+	let hash = crypto
+		.createHmac('sha256', 'pass')
+		.update(pass)
+		.digest('hex')
 
-	User.create({user, pass}, (err, data) => {
+	User.create({user, "pass": hash}, (err, data) => {
 		if(err) res.status(500).json(err);
 		res.status(200).json(data);
 	});
