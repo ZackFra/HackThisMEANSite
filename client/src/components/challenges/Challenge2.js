@@ -93,6 +93,34 @@ class Challenge2 extends Component {
 	      attributeOldValue: false,
 	      characterDataOldValue: false
 	    });
+
+
+	    // every two minutes antagonize the user
+	    setTimeout(() => {
+			let output = [
+			<div key = {"post" + this.state.postNum} style={{'color': 'black', "borderRadius": "25px"}}>
+				<div className="card" style={{"marginBottom": "0.7rem", 'backgroundColor': 'lightblue'}}>
+	      			<div className="card-body" id={"post" + this.state.postNum}>
+	      			</div>
+	      		</div>
+	      	</div>
+      	    ];
+            
+			const posts = document.getElementById('posts');
+    	    const post = posts.appendChild(document.createElement("li"));
+    	    post.style = 'margin-right: 2rem';
+    	    ReactDOM.render(output, post);
+
+			const newPost = document.getElementById('post' + this.state.postNum);
+			newPost.innerHTML = "u rite now <img src='https://image.shutterstock.com/image-photo/clown-looking-copy-space-area-260nw-93846745.jpg' />";
+
+			this.setState (
+      	   		{
+      				nodeList: this.state.nodeList,
+      				postNum: this.state.postNum + 1
+      			}   
+      		);   
+    	}, 30000);
 	}
 
 	render() {
@@ -130,7 +158,7 @@ class Challenge2 extends Component {
 							<hr color="lightgray"/>
 							<ul id="posts" style={{'listStyleType': 'none', 'paddingLeft': '0'}}>
 								<li key ="intro Post" className="bg-light" style={{'color': 'black', "borderRadius": "25px", 'marginRight': '2rem'}}>
-									<div className="card bg-light" style={{"marginBottom": "0.7rem"}}>
+									<div className="card" style={{"marginBottom": "0.7rem", 'backgroundColor': 'lightblue'}}>
       									<div className="card-body">
       										Click post to send a new message! 
       									</div>
