@@ -108,7 +108,7 @@ class Challenge2 extends Component {
 							</div>
 							<hr color="lightgray"/>
 							<div className="card-text">
-								Someone built a LiveChat app that allows for HTML styling. Though they were smart enough to disallow certain tags, they weren't that smart. See if you can inject a nefarious link into a post.
+								Someone built a LiveChat app that allows for HTML styling. Though they were smart enough to disallow most tags, they weren't that smart. See if you can inject a nefarious link into a post.
 							</div>
 							<div className='text-success' id="success"></div>
 							<br />
