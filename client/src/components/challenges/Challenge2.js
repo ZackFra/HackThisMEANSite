@@ -119,7 +119,7 @@ class Challenge2 extends Component {
 							</div>
 							<form className="form-group" onSubmit={this.post}>
 								<label className="form-text text-warning" id="invalid"></label>
-								<textarea placeholder="message" style={{'width': '100%'}}/>
+								<textarea placeholder="message" style={{'width': '100%', 'resize': 'none'}}/>
 								<button 
 									className="btn btn-primary"
 									type="submit" 
