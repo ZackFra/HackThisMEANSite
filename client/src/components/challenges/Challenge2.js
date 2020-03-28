@@ -51,6 +51,7 @@ class Challenge2 extends Component {
 
     	const posts = document.getElementById('posts');
     	const post = posts.appendChild(document.createElement("li"));
+    	post.style = 'margin-left: 2rem';
     	ReactDOM.render(output, post);
 
     	const newPost = document.getElementById('post' + this.state.postNum);
@@ -126,8 +127,8 @@ class Challenge2 extends Component {
 									Post</button>
 							</form>
 							<hr color="lightgray"/>
-							<ul id="posts" style={{'listStyleType': 'none'}}>
-								<li key ="intro Post" className="bg-light" style={{'color': 'black', "borderRadius": "25px"}}>
+							<ul id="posts" style={{'listStyleType': 'none', 'paddingLeft': '0'}}>
+								<li key ="intro Post" className="bg-light" style={{'color': 'black', "borderRadius": "25px", 'marginRight': '2rem'}}>
 									<div className="card bg-light" style={{"marginBottom": "0.7rem"}}>
       									<div className="card-body">
       										Click post to create a new message! 
