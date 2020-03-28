@@ -6,7 +6,11 @@ import sanitizeHTML from 'sanitize-html';
 class Challenge2 extends Component {
 	state = {
 		nodeList: [],
-		postNum: 0
+		postNum: 0,
+		insult: {},
+		insults: [],
+		insultIndex: 0,
+		interval: undefined
 	}
 
 	constructor() {
@@ -53,12 +57,7 @@ class Challenge2 extends Component {
     	const newPost = document.getElementById('post' + this.state.postNum);
     	newPost.innerHTML = sanitizeHTML(e.target[0].value);
 
-    	this.setState(
-      		{
-      			nodeList: this.state.nodeList,
-      			postNum: this.state.postNum + 1
-      		}
-      	);
+    	this.setState({postNum: this.state.postNum + 1});
       	e.target[0].value = '';
     }
 
@@ -76,6 +75,7 @@ class Challenge2 extends Component {
 	          if(node.href !== undefined) {
 	            node.href='/Victory2';
 	            document.getElementById('success').innerText="Click the link";
+	            clearInterval(this.state.interval);
 	          }
 
 	          if(node.nodeName === 'IMG') {
@@ -94,33 +94,48 @@ class Challenge2 extends Component {
 	      characterDataOldValue: false
 	    });
 
+	    this.setState({insult: {
+	    			run: (text) => {
+	    				let output = [
+							<div key = {"post" + this.state.postNum} style={{'color': 'black', 'borderRadius': '25px'}}>
+								<div className="card" style={{"marginBottom": "0.7rem"}}>
+	      							<div className="card-body" id={"post" + this.state.postNum} style={{'backgroundColor': 'lightblue'}}>
+	      							</div>
+	      						</div>
+	      					</div>
 
-	    // every two minutes antagonize the user
-	    setTimeout(() => {
-			let output = [
-			<div key = {"post" + this.state.postNum} style={{'color': 'black', "borderRadius": "25px"}}>
-				<div className="card" style={{"marginBottom": "0.7rem", 'backgroundColor': 'lightblue'}}>
-	      			<div className="card-body" id={"post" + this.state.postNum}>
-	      			</div>
-	      		</div>
-	      	</div>
-      	    ];
-            
-			const posts = document.getElementById('posts');
-    	    const post = posts.appendChild(document.createElement("li"));
-    	    post.style = 'margin-right: 2rem';
-    	    ReactDOM.render(output, post);
+      					];
 
-			const newPost = document.getElementById('post' + this.state.postNum);
-			newPost.innerHTML = "u rite now <img src='https://image.shutterstock.com/image-photo/clown-looking-copy-space-area-260nw-93846745.jpg' />";
+				    	const posts = document.getElementById('posts');
+				    	const post = posts.appendChild(document.createElement("li"));
+				    	post.style = 'margin-right: 2rem';
+				    	ReactDOM.render(output, post);
 
-			this.setState (
-      	   		{
-      				nodeList: this.state.nodeList,
-      				postNum: this.state.postNum + 1
-      			}   
-      		);   
-    	}, 30000);
+				    	const newPost = document.getElementById('post' + this.state.postNum);
+				    	newPost.innerHTML = sanitizeHTML(text);
+
+				    	this.setState({postNum: this.state.postNum + 1});
+	    			}
+	    		},
+	    		insults: [
+	    			"u rite now <img src='https://image.shutterstock.com/image-photo/clown-looking-copy-space-area-260nw-93846745.jpg' />",
+	    			"Haha! you <i>still</i> haven't got it yet?",
+	    			"I hope you're not in college because you're dumb as a sack of bricks!",
+	    			"Jeeesus you still don't have it?",
+	    			"c'mon this took me like 5 minutes to do. <b>Google's your friend, bruh.</b>",
+	    			"Maybe you need to get yourself some programming socks?",
+	    			"I heard this rumor that if you google 'how to hack', you'll still fail. You suck."
+	    		]
+	    	}
+	    );
+
+	    // every twenty seconds antagonize the user
+	    this.setState({interval:
+		    setInterval(() => {
+		    	this.state.insult.run(this.state.insults[this.state.insultIndex]);
+		    	this.setState({insultIndex: ((this.state.insultIndex + 1) % this.state.insults.length)});  
+	    	}, 20000)
+		});
 	}
 
 	render() {
@@ -147,7 +162,7 @@ class Challenge2 extends Component {
 							</div>
 							<form className="form-group" onSubmit={this.post}>
 								<label className="form-text text-warning" id="invalid"></label>
-								<textarea placeholder="message" style={{'width': '100%', 'resize': 'none'}}/>
+								<textarea placeholder="message" style={{'width': '100%', 'resize': 'none', 'padding': '0.75rem'}}/>
 								<button 
 									className="btn btn-primary"
 									type="submit" 
@@ -159,11 +174,11 @@ class Challenge2 extends Component {
 							<ul id="posts" style={{'listStyleType': 'none', 'paddingLeft': '0'}}>
 								<li key ="intro Post" className="bg-light" style={{'color': 'black', "borderRadius": "25px", 'marginRight': '2rem'}}>
 									<div className="card" style={{"marginBottom": "0.7rem", 'backgroundColor': 'lightblue'}}>
-      									<div className="card-body">
-      										Click post to send a new message! 
-      									</div>
-      								</div>
-      							</li>
+	      								<div className="card-body">
+	      									Click post to send a new message! 
+	      								</div>
+	      							</div>
+	      						</li>
 							</ul>
 						</div>
 					</div>
