@@ -80,6 +80,10 @@ class Challenge2 extends Component {
 	            node.href='/Victory2';
 	            document.getElementById('success').innerText="Click the link";
 	          }
+
+	          if(node.nodeName === 'IMG' || node.nodeName === 'VIDEO') {
+	          	node.style = 'max-height: 100%; max-width: 100%';
+	          }
 	        })
 	      })
 	    });
