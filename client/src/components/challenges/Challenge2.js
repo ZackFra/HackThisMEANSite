@@ -24,14 +24,12 @@ class Challenge2 extends Component {
       		'del',
       		'font',
       		'u',
-      		'video',
       		'strong'
       	];
     	sanitizeHTML.defaults.allowedAttributes = 
     	{
      		img: ['src', 'alt', 'onerror'],
      		font: ['size', 'color'],
-      		video: ['src', 'onerror']
     	};
   	}
 
@@ -46,8 +44,6 @@ class Challenge2 extends Component {
 	      		</div>
 	      	</div>
       	];
-
-      	console.log(e.target[0].value);
 
     	const posts = document.getElementById('posts');
     	const post = posts.appendChild(document.createElement("li"));
@@ -82,7 +78,7 @@ class Challenge2 extends Component {
 	            document.getElementById('success').innerText="Click the link";
 	          }
 
-	          if(node.nodeName === 'IMG' || node.nodeName === 'VIDEO') {
+	          if(node.nodeName === 'IMG') {
 	          	node.style = 'max-height: 100%; max-width: 100%';
 	          }
 	        })
