@@ -63,6 +63,7 @@ class Challenge2 extends Component {
       			postNum: this.state.postNum + 1
       		}
       	);
+      	e.target[0].value = '';
     }
 
 	componentDidMount() {
@@ -122,7 +123,7 @@ class Challenge2 extends Component {
 							</div>
 							<form className="form-group" onSubmit={this.post}>
 								<label className="form-text text-warning" id="invalid"></label>
-								<textarea placeholder="message" />
+								<textarea placeholder="message" style={{'width': '100%'}}/>
 								<button 
 									className="btn btn-primary"
 									type="submit" 
