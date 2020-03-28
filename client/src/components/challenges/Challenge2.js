@@ -118,7 +118,7 @@ class Challenge2 extends Component {
 	    			}
 	    		},
 	    		insults: [
-	    			"u rite now <img src='https://image.shutterstock.com/image-photo/clown-looking-copy-space-area-260nw-93846745.jpg' />",
+	    			"u rite now <img src='https://images.freeimages.com/images/large-previews/0e8/clown-trinket-1522905.jpg'>",
 	    			"Haha! you <i>still</i> haven't got it yet?",
 	    			"I hope you're not in college because you're dumb as a sack of bricks!",
 	    			"Jeeesus you still don't have it?",
