@@ -131,7 +131,7 @@ class Challenge2 extends Component {
 								<li key ="intro Post" className="bg-light" style={{'color': 'black', "borderRadius": "25px", 'marginRight': '2rem'}}>
 									<div className="card bg-light" style={{"marginBottom": "0.7rem"}}>
       									<div className="card-body">
-      										Click post to create a new message! 
+      										Click post to send a new message! 
       									</div>
       								</div>
       							</li>
