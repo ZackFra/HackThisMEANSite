@@ -23,6 +23,10 @@ class Challenge0 extends Component {
 
 	componentDidMount() {
 		document.querySelector('form').setAttribute('onsubmit', 'authenticate()');
+
+		// is actually overwritten by authenticate serverside
+		// but gets rid of a warning clientside
+		window.eval(this.inject);
 	}
 
 	// authentication script
