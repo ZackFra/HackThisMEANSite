@@ -13,11 +13,21 @@ import {
   NavbarText
 } from 'reactstrap';
 
-const Navi = (props) => {
+function Navi(props) {
   
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
+  // @todo fix this so it actually checks something
+  const setLog = () => {
+    if(document.cookie === 'user=' || document.cookie === '') {
+      return <NavLink href='/Login'>Login</NavLink> 
+    }
+
+    return <NavLink onClick = { () => {
+      document.cookie = 'user=;expires Thu, 01 Jan 1970 00:00:00 UTC; path=/;'}
+    } href={window.location}>Log out</NavLink>
+  }
   
 
   return (
@@ -77,7 +87,7 @@ const Navi = (props) => {
 
           </Nav>
           <NavbarText>
-            <NavLink href='/Login'>Login</NavLink>
+            {setLog()}
           </NavbarText>
       </Navbar>
     </div>

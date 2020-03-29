@@ -1,10 +1,25 @@
 import React, { Component } from 'react';
 import {Container} from 'reactstrap';
+import axios from 'axios';
 
 class Login extends Component {
 
 	authenticate = (e) => {
-		console.log('implement me')
+		e.preventDefault();
+		const [user, pass] = e.target;
+		axios.post('/Login/Authenticate', 
+			{ 
+				user: user.value,
+				pass: pass.value
+			})
+			.then( (res) => {
+				document.cookie = 'user=' + user.value + ';path=/;';
+				console.log(res);
+				window.location = '/home';
+			})
+			.catch( (err) => {
+				console.log(err);
+			});
 	}
 
 	render() {

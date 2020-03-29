@@ -11,6 +11,11 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  email: {
+  	type: String,
+  	required: false,
+  	unique: true
+  }
 });
 
 const User = model('user', UserSchema);
