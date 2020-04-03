@@ -2,24 +2,25 @@ import React, { Component } from 'react';
 import {Container} from 'reactstrap';
 import axios from 'axios';
 
+// redux stuff
+import {login} from '../actions';
+import { useSelector, connect } from 'react-redux';
+
 class Login extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			user: '', 
+			pass: ''
+		};
+	}
+
+	onChange = e => this.setState({[e.target.name]: e.target.value});
 
 	authenticate = (e) => {
 		e.preventDefault();
-		const [user, pass] = e.target;
-		axios.post('/Login/Authenticate', 
-			{ 
-				user: user.value,
-				pass: pass.value
-			})
-			.then( (res) => {
-				document.cookie = 'user=' + user.value + ';path=/;';
-				console.log(res);
-				window.location = '/home';
-			})
-			.catch( (err) => {
-				console.log(err);
-			});
+		const {user, pass} = this.state;
+		this.props.login({user, pass});
 	}
 
 	render() {
@@ -40,8 +41,23 @@ class Login extends Component {
 							<br />
 							<form className="form-group" onSubmit={this.authenticate}>
 								<label className="form-text text-warning" id="invalid"></label>
-								<input className="form-control" type="text" placeholder="username" style = {{'marginBottom': '0.7rem'}}/> 
-								<input className="form-control" type="password" placeholder="password" />
+								<input 
+									className="form-control" 
+									name='user'
+									value = {this.state.user}
+									onChange = {this.onChange}
+									type="text" 
+									placeholder="username" 
+									style = {{'marginBottom': '0.7rem'}}
+								/> 
+								<input 
+									className="form-control"
+									name='pass'
+									value = {this.state.pass} 
+									onChange = {this.onChange}
+									type="password" 
+									placeholder="password" 
+								/>
 								<button 
 									className="btn btn-primary"
 									type="submit" 
@@ -57,4 +73,5 @@ class Login extends Component {
 	}
 }
 
-export default Login;
+
+export default connect(null, { login })(Login);

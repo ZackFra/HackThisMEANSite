@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
+// components
 import Construction from './components/Construction';
 import Home from './components/Home';
 import Challenge0 from './components/challenges/Challenge0';
@@ -16,8 +17,13 @@ import Navi from './components/Navi';
 import Directory from './components/Directory';
 import Login from './components/Login'
 
+// redux stuff
+import * as actions from './actions';
+import { useSelector, useDispatch } from 'react-redux';
+
 
 function App() {
+  const dispatch = useDispatch();
   return (
   	<div className="App">
 		<Navi />
