@@ -1,5 +1,6 @@
 import React from 'react';
 import {Container, Badge, Nav} from 'reactstrap';
+import { connect } from 'react-redux';
 
 function Directory() {
 	function listSubforums() {
@@ -38,4 +39,4 @@ function Directory() {
 	);
 }
 
-export default Directory;
+export default connect()(Directory);

@@ -12,21 +12,31 @@ import {
   DropdownItem,
   NavbarText
 } from 'reactstrap';
+import { connect } from 'react-redux';
+import { logout } from '../actions/';
 
 function Navi(props) {
   
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
-  // @todo fix this so it actually checks something
+
+
+  const logout = async () => {
+    await props.logout();
+    localStorage.removeItem('state');
+  }
+
   const setLog = () => {
-    if(document.cookie === 'user=' || document.cookie === '') {
+    if(!props.user || props.user === '') {
       return <NavLink href='/Login'>Login</NavLink> 
     }
 
-    return <NavLink onClick = { () => {
-      document.cookie = 'user=;expires Thu, 01 Jan 1970 00:00:00 UTC; path=/;'}
-    } href={window.location}>Log out</NavLink>
+    return (
+      <NavLink onClick={logout} href={window.location}>
+        Log out
+      </NavLink>
+    );
   }
   
 
@@ -94,4 +104,6 @@ function Navi(props) {
   );
 }
 
-export default Navi;
+const mapStateToProps = state => ({ user: state.user });
+
+export default connect(mapStateToProps, { logout })(Navi);

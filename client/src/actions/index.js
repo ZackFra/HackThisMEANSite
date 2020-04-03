@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-export const login = data => async dispatch => {
+export const login = data => dispatch => {
 	const {user, pass} = data;
-	await axios.post('/Login/Authenticate', { user, pass })
+	axios.post('/Login/Authenticate', { user, pass })
 	.then( (res) => {
 		console.log(res);
 		dispatch({
@@ -11,5 +11,8 @@ export const login = data => async dispatch => {
 		});
 	})
 	.catch( err => console.log(err));
-	window.location = '/';
+}
+
+export const logout = () => dispatch => {
+	dispatch({type: 'LOGOUT'});
 }
