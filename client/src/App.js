@@ -17,13 +17,8 @@ import Navi from './components/Navi';
 import Directory from './components/Directory';
 import Login from './components/Login'
 
-// redux stuff
-import * as actions from './actions';
-import { useSelector, useDispatch } from 'react-redux';
-
 
 function App() {
-  const dispatch = useDispatch();
   return (
   	<div className="App">
 		<Navi />

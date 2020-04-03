@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
 import {Container, Badge, Nav} from 'reactstrap';
 
 function Directory() {

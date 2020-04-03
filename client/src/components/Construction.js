@@ -1,5 +1,6 @@
 import React from 'react';
 import {Container} from 'reactstrap';
+import {connect} from 'react-redux';
 
 function Construction() {
 	return (
@@ -8,5 +9,4 @@ function Construction() {
 		</Container>
 	);
 }
-
-export default Construction;
+export default connect(null)(Construction);

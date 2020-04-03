@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import {Container} from 'reactstrap';
-import axios from 'axios';
 
 // redux stuff
-import {login} from '../actions';
-import { useSelector, connect } from 'react-redux';
+import { login } from '../actions/';
+import { connect } from 'react-redux';
 
 class Login extends Component {
 	constructor(props) {
@@ -17,10 +16,9 @@ class Login extends Component {
 
 	onChange = e => this.setState({[e.target.name]: e.target.value});
 
-	authenticate = (e) => {
+	authenticate = async (e) => {
 		e.preventDefault();
-		const {user, pass} = this.state;
-		this.props.login({user, pass});
+		await this.props.login(this.state);
 	}
 
 	render() {
