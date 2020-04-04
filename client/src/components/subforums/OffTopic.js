@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import {Container, Badge, Nav} from 'reactstrap';
+import { connect } from 'react-redux';
 
 function OffTopic() {
 	function listPosts() {
@@ -39,4 +40,4 @@ function OffTopic() {
 	);
 }
 
-export default OffTopic;
+export default connect()(OffTopic);

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Container} from 'reactstrap';
+import { connect } from 'react-redux';
 import sanitizeHTML from 'sanitize-html';
 
 class Challenge2 extends Component {
@@ -192,4 +193,4 @@ class Challenge2 extends Component {
 	}
 }
 
-export default Challenge2;
+export default connect()(Challenge2);

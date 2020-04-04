@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { connect } from 'react-redux';
 import Construction from './Construction'
 
 function Home() {
@@ -11,4 +11,4 @@ function Home() {
 	);
 }
 
-export default Home;
+export default connect()(Home);

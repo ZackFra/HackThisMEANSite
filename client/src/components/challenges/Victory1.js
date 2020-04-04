@@ -1,5 +1,6 @@
 import React from 'react';
 import {Container} from 'reactstrap';
+import { connect } from 'react-redux';
 
 function Victory1() {
 	return (
@@ -10,4 +11,4 @@ function Victory1() {
 	);
 }
 
-export default Victory1;
+export default connect()(Victory1);

@@ -9,4 +9,4 @@ function Construction() {
 		</Container>
 	);
 }
-export default connect(null)(Construction);
+export default connect()(Construction);

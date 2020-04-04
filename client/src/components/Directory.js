@@ -7,14 +7,14 @@ function Directory() {
 		let subs = [];
 		let styles = {'padding': '1rem', 'margin': '0.1rem', 'width': '95%', 'textAlign': 'left', 'backgroundColor': 'white', 'border': '2px solid black'};
 		subs.push(
-			<Badge href='/OffTopic' className='text-dark' style={styles}>
+			<Badge key='offtopic' href='/OffTopic' className='text-dark' style={styles}>
 				Off Topic
 			</Badge>
 		);
 
 		for(let i = 0; i <= 10; i++) {
 			subs.push(
-				<Badge href={'/Challenge' + i} className = 'text-dark' style={styles}>
+				<Badge key={'challenge' + i} href={'/Challenge' + i} className = 'text-dark' style={styles}>
 					Challenge {i}
 				</Badge>
 			);

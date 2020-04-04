@@ -28,7 +28,7 @@ function App(props) {
     if(props.user === '')
       return <Route exact path='/Login' component={Login} />
     else
-      return <Redirect from='/Login' to='/home' />
+      return <Redirect from='/Login' to='/Home' />
   }
 
   return (
@@ -37,6 +37,8 @@ function App(props) {
   		<Router>
   			<div>
   				<Switch>
+            <Route exact path='/Home' component={Home} />
+            <Redirect from='/' to='/Home' />
   					<Route exact path='/Construction' component={Construction}/>
   					<Route exact path='/Challenge0' component={Challenge0} />
   					<Route exact path='/Victory0' component={Victory0} />

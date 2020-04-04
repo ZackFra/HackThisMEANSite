@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Container} from 'reactstrap';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import crypto from 'crypto';
 
@@ -70,4 +71,4 @@ class Challenge1 extends Component {
 	}
 }
 
-export default Challenge1;
+export default connect()(Challenge1);

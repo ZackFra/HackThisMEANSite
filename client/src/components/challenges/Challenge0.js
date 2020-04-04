@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Container} from 'reactstrap';
+import { connect } from 'react-redux';
 
 class Challenge0 extends Component {
 	constructor() {
@@ -83,4 +84,4 @@ class Challenge0 extends Component {
 	}
 }
 
-export default Challenge0;
+export default connect()(Challenge0);
