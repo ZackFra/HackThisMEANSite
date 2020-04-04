@@ -22,8 +22,7 @@ import { connect } from 'react-redux';
 
 
 function App(props) {
-  console.log(props);
-
+  
   function setLogin() {
     if(props.user === '')
       return <Route exact path='/Login' component={Login} />
@@ -38,7 +37,6 @@ function App(props) {
   			<div>
   				<Switch>
             <Route exact path='/Home' component={Home} />
-            <Redirect from='/' to='/Home' />
   					<Route exact path='/Construction' component={Construction}/>
   					<Route exact path='/Challenge0' component={Challenge0} />
   					<Route exact path='/Victory0' component={Victory0} />

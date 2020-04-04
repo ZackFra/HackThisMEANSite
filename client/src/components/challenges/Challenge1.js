@@ -1,37 +1,15 @@
 import React, { Component } from 'react';
-import {Container} from 'reactstrap';
+import { Container } from 'reactstrap';
 import { connect } from 'react-redux';
-import axios from 'axios';
-import crypto from 'crypto';
+import { login_challenge1, updatePass } from '../../actions';
 
 class Challenge1 extends Component {
 
 	// authentication script
-	authenticate = (e) => {
+	authenticate = e => {
 		e.preventDefault();
-		let hash = crypto
-			.createHash('sha256')
-			.update(e.target[0].value)
-			.digest('hex');
-		const request = {user: 'admin', pass: hash};
-
-		axios.post('/Challenge1/login', request)
-			.then( res => {
-				if(res.data.length > 0) {
-					const ft = document.querySelector('#invalid')
-					ft.className = 'form-text text-success';
-					ft.innerText="Correct!";
-					window.location = '/Victory1';
-				} else {
-					const ft = document.querySelector('#invalid');
-					const pass = document.getElementById('password');
-					ft.innerText="Incorrect Password";
-					pass.value = '';
-				}
-				console.log({"url": res.config.url, "method": res.config.method, "data": res.config.data});
-			})
-			.catch( err => console.log(err));
-	}
+		this.props.login_challenge1({pass: this.props.pass});
+	};
 
 	render() {
 		return (
@@ -55,7 +33,7 @@ class Challenge1 extends Component {
 								<label className="form-control" htmlFor="password">
 									User: admin
 								</label>
-								<input className="form-control" type="password" id="password"/>
+								<input className="form-control" name='pass' type="password" id="password" onChange={this.props.updatePass}/>
 								<button 
 									className="btn btn-primary"
 									type="submit" 
@@ -71,4 +49,5 @@ class Challenge1 extends Component {
 	}
 }
 
-export default connect()(Challenge1);
+const mapStatesToProps = state => ({pass: state.pass});
+export default connect(mapStatesToProps, {login_challenge1, updatePass})(Challenge1);

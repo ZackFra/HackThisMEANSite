@@ -30,7 +30,6 @@ function Navi(props) {
   // generates either login or logout button
   const setLog = () => {
     if(!props.user || props.user === '') {
-      console.log(props);
       return <NavLink href='/Login'>Login</NavLink> 
     }
 

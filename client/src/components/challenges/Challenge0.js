@@ -1,11 +1,25 @@
 import React, { Component } from 'react';
 import {Container} from 'reactstrap';
 import { connect } from 'react-redux';
+import { updatePass, login_challenge0 } from '../../actions';
 
 class Challenge0 extends Component {
-	constructor() {
-		super();
-		this.inject = 	"function authenticate() {\n" +
+
+	componentDidMount() {
+		// is actually overwritten, but this gets rid
+		// of a warning in the console
+		window.eval('function authenticate(){return 1}');
+		document.querySelector('form').setAttribute('onsubmit', 'authenticate()');
+	}
+
+	// authentication script
+	authenticate = e => {
+		e.preventDefault();
+		this.props.login_challenge0({pass: this.props.pass});
+	}
+
+	render() {
+		const inject =  "function authenticate() {\n" +
 						"	const pass = document.getElementById('password');\n" +
 						"	const ft=document.querySelector('#invalid');\n" +
 						"	if(pass.value === 'L33tHax') {\n" +
@@ -17,39 +31,9 @@ class Challenge0 extends Component {
 						"		pass.value = '';\n" +
 						"	}\n" +
 						"}\n";
-		this.state = {
-			pass: ''
-		};
-	}
-
-	componentDidMount() {
-		document.querySelector('form').setAttribute('onsubmit', 'authenticate()');
-
-		// is actually overwritten by authenticate serverside
-		// but gets rid of a warning clientside
-		window.eval(this.inject);
-	}
-
-	// authentication script
-	authenticate = (e) => {
-		e.preventDefault();
-		if(e.target[0].value === 'L33tHax') {
-			const ft = document.querySelector('#invalid')
-			ft.className = 'form-text text-success';
-			ft.innerText="Correct!";
-			window.location = '/Victory0';
-		} else {
-			const ft = document.querySelector('#invalid');
-			const pass = document.getElementById('password');
-			ft.innerText="Incorrect Password";
-			pass.value = '';
-		}
-	}
-
-	render() {
 		return (
 			<Container>
-				<script>{this.inject}</script>
+				<script>{inject}</script>
 				<h1 className="pb-2 mt-4 border-bottom" style={{padding: '1rem 0'}}>Welcome to Challenge 0</h1>
 				<br />
 				<Container>
@@ -68,7 +52,7 @@ class Challenge0 extends Component {
 								<label className="form-control" htmlFor="password">
 									User: admin
 								</label>
-								<input className="form-control" type="password" id="password"/>
+								<input className="form-control" type="password" id="password" onChange={this.props.updatePass}/>
 								<button 
 									className="btn btn-primary"
 									type="submit" 
@@ -84,4 +68,6 @@ class Challenge0 extends Component {
 	}
 }
 
-export default connect()(Challenge0);
+
+const mapStatesToProps = state => ({pass: state.pass});
+export default connect(mapStatesToProps, {updatePass, login_challenge0})(Challenge0);
