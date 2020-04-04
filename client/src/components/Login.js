@@ -21,7 +21,6 @@ class Login extends Component {
 	authenticate = async e => {
 		e.preventDefault();
 		await this.props.login(this.state);
-		window.location = window.location;
 	}
 
 	render() {

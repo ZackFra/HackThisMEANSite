@@ -28,7 +28,7 @@ function App(props) {
     if(props.user === '')
       return <Route exact path='/Login' component={Login} />
     else
-      return <Route exact path='/Login' component={Home} />
+      return <Redirect from='/Login' to='/home' />
   }
 
   return (
