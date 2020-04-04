@@ -6,7 +6,7 @@ const PostSchema = new Schema({
     type: String,
     required: true
   },
-  body: {
+  content: {
     type: String,
     required: true
   },
@@ -15,11 +15,15 @@ const PostSchema = new Schema({
   	required: true
   },
   date: {
-  	type: Date,
+  	type: String,
+  	required: true
+  },
+  forum: {
+  	type: String,
   	required: true
   }
 });
 
-const Post = model('post', User1Schema);
+const Post = model('post', PostSchema);
 
 module.exports = Post;

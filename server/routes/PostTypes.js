@@ -1,0 +1,16 @@
+const forumTypes = [
+	'OFFTOPIC',
+	'CHALLENGE0',
+	'CHALLENGE1',
+	'CHALLENGE2',
+	'CHALLENGE3',
+	'CHALLENGE4',
+	'CHALLENGE5',
+	'CHALLENGE6',
+	'CHALLENGE7',
+	'CHALLENGE8',
+	'CHALLENGE9',
+	'CHALLENGE10',
+];
+
+module.exports = forumTypes;

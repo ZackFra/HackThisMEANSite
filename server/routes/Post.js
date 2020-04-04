@@ -1,29 +1,38 @@
-const Post = require('./modals/Post.Modal');
+const Post = require('./modals/Posts.Modal');
 const router = require('express').Router();
+const forumTypes = require('./PostTypes');
 
 // @route   POST forum post
 // @desc    create new post
 // @access  protected
-router.post('/Post', (req, res) => {
-	const {title, body, author, date, forum} = req;
-	Post.create({title, body, author, date, forum})
-	.then( (err, data) => {
-		if(data) {
+router.post('/CreatePost', (req, res) => {
+	const {title, content, author, date, forum} = req.body;
+	if(!forumTypes.includes(forum)) {
+		res.status(500).json('bad request');
+	}
+
+	Post.create({title, content, author, date, forum}, (err, data) => {
+		if(err) {
+			res.status(500).json(err);
+		} else {
 			res.status(200).json({posted: true});
 		}
-		else {
-			res.status(500).json({err: err});
-		}
-	})
+	});
 })
 
-// @route   POST forum post
+// @route   POST get forum posts
 // @desc    get posts from a forum
 // @access  private
-router.get('/Post', (req, res) => {
-	Post.find({forum: {"$eq": req.forum}}).sort({forum: -1})
-	.then((err, data) => {
+router.post('/GetPosts', (req, res) => {
+	const {forum} = req.body;
+	if(!forumTypes.includes(forum)) {
+		res.status(500).json('bad request');
+	}
+	Post.find({forum: {"$eq": forum}}).sort({forum: -1})
+	.then( (data, err) => {
 		if(err) res.status(500).json(err);
 		else res.status(200).json(data);
-	})
-})
+	});
+});
+
+module.exports = router;
