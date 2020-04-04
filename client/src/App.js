@@ -17,8 +17,20 @@ import Navi from './components/Navi';
 import Directory from './components/Directory';
 import Login from './components/Login'
 
+// redux
+import { connect } from 'react-redux';
 
-function App() {
+
+function App(props) {
+  console.log(props);
+
+  function setLogin() {
+    if(props.user === '')
+      return <Route exact path='/Login' component={Login} />
+    else
+      return <Route exact path='/Login' component={Home} />
+  }
+
   return (
   	<div className="App">
 		<Navi />
@@ -33,7 +45,7 @@ function App() {
             <Route exact path='/Challenge2' component={Challenge2} />
             <Route exact path='/Victory2' component={Victory2} />
             <Route exact path='/Forums' component={Directory} />
-            <Route exact path='/Login' component={Login} />
+            {setLogin()}
   					<Redirect to='/Construction'/>
   				</Switch>
   			</div>
@@ -42,4 +54,5 @@ function App() {
   );
 }
 
-export default App;
+const mapStatesToProps = state => ({user: state.account.user});
+export default connect(mapStatesToProps)(App);

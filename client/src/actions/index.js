@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-export const login = data => dispatch => {
+export const login = data => async dispatch => {
 	const {user, pass} = data;
-	axios.post('/Login/Authenticate', { user, pass })
+	await axios.post('/Login/Authenticate', { user, pass })
 	.then( (res) => {
 		console.log(res);
 		dispatch({
@@ -14,5 +14,6 @@ export const login = data => dispatch => {
 }
 
 export const logout = () => dispatch => {
+	sessionStorage.removeItem('state');
 	dispatch({type: 'LOGOUT'});
 }
