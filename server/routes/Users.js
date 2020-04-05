@@ -1,14 +1,14 @@
 const User = require('./modals/User.Modal');
 const crypto = require('crypto');
 const router = require('express').Router();
-
+const jwt = require('jsonwebtoken');
 
 // @route   POST user
 // @desc    Authenticate user + pass
-// @access  private
+// @access  public
 router.post('/Authenticate', (req, res) => {
 	const {user, pass} = req.body;
-	const {hash, useed, pseed} = process.env;
+	const {hash, useed, pseed, jwtseed} = process.env;
 
 	if(typeof(user) !== 'string' || typeof(pass) !== 'string') {
 		return res.status(500).json('Invalid parameters: Only accepts strings');
@@ -26,16 +26,23 @@ router.post('/Authenticate', (req, res) => {
 	
 	User.findOne({'user': userHash, "pass": passHash}, (err, data) => {
 		if(data) {
-			res.status(200).json(true);
+			jwt.sign({user}, jwtseed, (err, token) => {
+				if(err) {
+					res.status(500).json(err);
+				} else {
+					console.log(token);
+					res.status(200).json(token);
+				}
+			})
 		} else {
-			res.status(404).json(err);
+			res.status(500).json(err);
 		}
 	});
 });
 
 // @route   POST user
 // @desc    add new user to db
-// @access  private
+// @access  public
 router.post('/Register', (req, res) => {
 	const {user, pass, email} = req.body;
 	const {hash, useed, pseed, eseed} = process.env;

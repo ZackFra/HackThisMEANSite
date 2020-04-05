@@ -11,7 +11,8 @@ export const login = data => async dispatch => {
 	const {user, pass} = data;
 	await axios.post('/Login/Authenticate', { user, pass })
 	.then( (res) => {
-		console.log(res);
+		console.log(res.token);
+		localStorage.setItem('bearer', res.token);
 		dispatch({
 			type: 'LOGIN',
 			payload: {user}
