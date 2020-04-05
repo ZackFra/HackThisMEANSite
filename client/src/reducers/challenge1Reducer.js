@@ -1,4 +1,4 @@
-const challenge1LoginReducer = (state = {}, action) => {
+const challenge1Reducer = (state = {}, action) => {
 	switch(action.type) {
 		case 'LOGIN_SUCCESS':
 			return {success: true};
@@ -9,4 +9,4 @@ const challenge1LoginReducer = (state = {}, action) => {
 	}
 }
 
-export default challenge1LoginReducer;
+export default challenge1Reducer;

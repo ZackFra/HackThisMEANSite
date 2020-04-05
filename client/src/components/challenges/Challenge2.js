@@ -3,31 +3,17 @@ import ReactDOM from 'react-dom';
 import {Container} from 'reactstrap';
 import { connect } from 'react-redux';
 import sanitizeHTML from 'sanitize-html';
+import { post, setAntagonize, watchPosts } from '../../actions';
+
+sanitizeHTML.defaults.allowedTags = [ 'img', 'i', 'b', 'blockquote', 'em',
+	'br', 'cite', 'code', 'kbd', 'del', 'font', 'u', 'strong']; 
+    sanitizeHTML.defaults.allowedAttributes = 
+{ img: ['src', 'alt', 'onerror'], font: ['size', 'color'] };
 
 class Challenge2 extends Component {
 
 	constructor() {
     	super();
-    	sanitizeHTML.defaults.allowedTags = [
-    		'img', 
-      		'i', 
-      		'b',
-      		'blockquote',
-      		'em',
-      		'br',
-      		'cite',
-      		'code',
-      		'kbd',
-      		'del',
-      		'font',
-      		'u',
-      		'strong'
-      	];
-    	sanitizeHTML.defaults.allowedAttributes = 
-    	{
-     		img: ['src', 'alt', 'onerror'],
-     		font: ['size', 'color'],
-    	};
 
     	this.state = {
 			nodeList: [],
@@ -39,108 +25,50 @@ class Challenge2 extends Component {
 		}
   	}
 
-	post = (e) => {
+	post = e => {
     	e.preventDefault();
-
-    	let output = [
-			<div key = {"post" + this.state.postNum} className="bg-light" style={{'color': 'black', "borderRadius": "25px"}}>
-				<div className="card bg-light" style={{"marginBottom": "0.7rem"}}>
-	      			<div className="card-body" id={"post" + this.state.postNum}>
-	      			</div>
-	      		</div>
-	      	</div>
-      	];
-
-    	const posts = document.getElementById('posts');
-    	const post = posts.appendChild(document.createElement("li"));
-    	post.style = 'margin-left: 2rem';
-    	ReactDOM.render(output, post);
-
-    	const newPost = document.getElementById('post' + this.state.postNum);
-    	newPost.innerHTML = sanitizeHTML(e.target[0].value);
-
-    	this.setState({postNum: this.state.postNum + 1});
+    	this.props.post(e.target[0].value);
       	e.target[0].value = '';
     }
 
 	componentDidMount() {
+
+		this.props.watchPosts();
+
 	    // create a mutation observer to watch for changes
 	    // if a link is created in the chat, change it's 
 	    // address to the victory page
-	    const nodeList = document.querySelector('[id=posts]');
-	    this.setState({nodeList});
+	    // const nodeList = document.querySelector('[id=posts]');
+	    // this.setState({nodeList});
 
-	    const mutationObserver = new MutationObserver(mutations => {
-	      mutations.forEach(mutation => {
-	        const newNodes = mutation.addedNodes;
-	        newNodes.forEach(node => {
-	          if(node.href !== undefined) {
-	            node.href='/Victory2';
-	            document.getElementById('success').innerText="Click the link";
-	            clearInterval(this.state.interval);
-	          }
+	    // const mutationObserver = new MutationObserver(mutations => {
+	    //   mutations.forEach(mutation => {
+	    //     const newNodes = mutation.addedNodes;
+	    //     newNodes.forEach(node => {
+	    //       if(node.href !== undefined) {
+	    //         node.href='/Victory2';
+	    //         document.getElementById('success').innerText="Click the link";
+	    //         clearInterval(this.state.interval);
+	    //       }
 
-	          if(node.nodeName === 'IMG') {
-	          	node.style = 'max-height: 100%; max-width: 100%';
-	          }
-	        })
-	      })
-	    });
+	    //       if(node.nodeName === 'IMG') {
+	    //       	node.style = 'max-height: 100%; max-width: 100%';
+	    //       }
+	    //     })
+	    //   })
+	    // });
 
-	    mutationObserver.observe(document.body, {
-	      attributes: true,
-	      characterData: false,
-	      childList: true,
-	      subtree: true,
-	      attributeOldValue: false,
-	      characterDataOldValue: false
-	    });
-
-	    // create the state.post method here because
-	    // it requires methods that wouldn't exist
-	    // yet if we created it in the constructor
-	    this.setState(
-	    	{
-	    		post: (text) => {
-	    			let output = [
-							<div key = {"post" + this.state.postNum} style={{'color': 'black', 'borderRadius': '25px'}}>
-								<div className="card" style={{"marginBottom": "0.7rem"}}>
-	      							<div className="card-body" id={"post" + this.state.postNum} style={{'backgroundColor': 'lightblue'}}>
-	      							</div>
-	      						</div>
-	      					</div>
-
-      					];
-
-				    	const posts = document.getElementById('posts');
-				    	const post = posts.appendChild(document.createElement("li"));
-				    	post.style = 'margin-right: 2rem';
-				    	ReactDOM.render(output, post);
-
-				    	const newPost = document.getElementById('post' + this.state.postNum);
-				    	newPost.innerHTML = sanitizeHTML(text);
-
-				    	this.setState({postNum: this.state.postNum + 1});
-	    			},
-	    		insults: [
-	    			"u rite now <img src='https://images.freeimages.com/images/large-previews/0e8/clown-trinket-1522905.jpg'>",
-	    			"Haha! you <i>still</i> haven't got it yet?",
-	    			"I hope you're not in college because you're dumb as a sack of bricks!",
-	    			"<i>Jeeesus</i> you still don't have it?",
-	    			"c'mon this took me like 5 minutes to do. <b>Google's your friend, bruh.</b>",
-	    			"Maybe you need to get yourself some programming socks?",
-	    			"I heard this rumor that if you google 'how to hack', you'll still fail. You suck."
-	    		]
-	    	}
-	    );
+	    // mutationObserver.observe(document.body, {
+	    //   attributes: true,
+	    //   characterData: false,
+	    //   childList: true,
+	    //   subtree: true,
+	    //   attributeOldValue: false,
+	    //   characterDataOldValue: false
+	    // });
 
 	    // every twenty seconds antagonize the user
-	    this.setState({interval:
-		    setInterval(() => {
-		    	this.state.post(this.state.insults[this.state.insultIndex]);
-		    	this.setState({insultIndex: ((this.state.insultIndex + 1) % this.state.insults.length)});  
-	    	}, 20000)
-		});
+	    this.props.setAntagonize();
 	}
 
 	render() {
@@ -193,4 +121,13 @@ class Challenge2 extends Component {
 	}
 }
 
-export default connect()(Challenge2);
+const mapStateToProps = state => ({
+	nodeList: state.challenge2.nodeList,
+	postNum: state.challenge2.postNum,
+	post: state.challenge2.post,
+	insults: state.challenge2.insults,
+	insultIndex: state.challenge2.insultIndex,
+	interval: state.challenge2.interval
+})
+
+export default connect(mapStateToProps, { post, setAntagonize, watchPosts })(Challenge2);
