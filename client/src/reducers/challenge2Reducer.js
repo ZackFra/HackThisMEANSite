@@ -17,8 +17,6 @@ let initialState = {
 
 const challenge2Reducer = (state = initialState, action) => {
 	switch(action.type) {
-		case 'UPDATE_NODELIST':
-			return {...state, nodeList: action.payload};
 		case 'INCREMENT_POSTNUM':
 			return {...state, postNum: state.postNum + 1};
 		case 'UPDATE_INSULTS':

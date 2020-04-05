@@ -1,29 +1,9 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import {Container} from 'reactstrap';
 import { connect } from 'react-redux';
-import sanitizeHTML from 'sanitize-html';
 import { post, setAntagonize, watchPosts } from '../../actions';
 
-sanitizeHTML.defaults.allowedTags = [ 'img', 'i', 'b', 'blockquote', 'em',
-	'br', 'cite', 'code', 'kbd', 'del', 'font', 'u', 'strong']; 
-    sanitizeHTML.defaults.allowedAttributes = 
-{ img: ['src', 'alt', 'onerror'], font: ['size', 'color'] };
-
 class Challenge2 extends Component {
-
-	constructor() {
-    	super();
-
-    	this.state = {
-			nodeList: [],
-			postNum: 0,
-			post: {},
-			insults: [],
-			insultIndex: 0,
-			interval: undefined
-		}
-  	}
 
 	post = e => {
     	e.preventDefault();
@@ -33,39 +13,8 @@ class Challenge2 extends Component {
 
 	componentDidMount() {
 
+		// set the mutationObserver to observe new posts
 		this.props.watchPosts();
-
-	    // create a mutation observer to watch for changes
-	    // if a link is created in the chat, change it's 
-	    // address to the victory page
-	    // const nodeList = document.querySelector('[id=posts]');
-	    // this.setState({nodeList});
-
-	    // const mutationObserver = new MutationObserver(mutations => {
-	    //   mutations.forEach(mutation => {
-	    //     const newNodes = mutation.addedNodes;
-	    //     newNodes.forEach(node => {
-	    //       if(node.href !== undefined) {
-	    //         node.href='/Victory2';
-	    //         document.getElementById('success').innerText="Click the link";
-	    //         clearInterval(this.state.interval);
-	    //       }
-
-	    //       if(node.nodeName === 'IMG') {
-	    //       	node.style = 'max-height: 100%; max-width: 100%';
-	    //       }
-	    //     })
-	    //   })
-	    // });
-
-	    // mutationObserver.observe(document.body, {
-	    //   attributes: true,
-	    //   characterData: false,
-	    //   childList: true,
-	    //   subtree: true,
-	    //   attributeOldValue: false,
-	    //   characterDataOldValue: false
-	    // });
 
 	    // every twenty seconds antagonize the user
 	    this.props.setAntagonize();
@@ -121,13 +70,4 @@ class Challenge2 extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	nodeList: state.challenge2.nodeList,
-	postNum: state.challenge2.postNum,
-	post: state.challenge2.post,
-	insults: state.challenge2.insults,
-	insultIndex: state.challenge2.insultIndex,
-	interval: state.challenge2.interval
-})
-
-export default connect(mapStateToProps, { post, setAntagonize, watchPosts })(Challenge2);
+export default connect(null, { post, setAntagonize, watchPosts })(Challenge2);

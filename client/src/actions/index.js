@@ -108,7 +108,6 @@ export const setAntagonize = () => dispatch => {
 	// computer posting function
 	const cPost = () => {
 		const {postNum, insults, insultIndex} = store.getState().challenge2;
-		console.log(store.getState().challenge2);
 		
 		let output = [
 			<div key = {"post" + postNum} style={{'color': 'black', 'borderRadius': '25px'}}>
@@ -143,10 +142,10 @@ export const setAntagonize = () => dispatch => {
 // of id is modified modified nodes
 export const setMutationObserver = (id, onMutation) => dispatch => {
 
-	const nodeList = document.querySelector(`[id={id}]`);
+	const nodeList = document.getElementById(id);
 	dispatch({
 		type: 'UPDATE_NODELIST',
-		payload = nodeList
+		payload: nodeList
 	});
 
 	const mutationObserver = new MutationObserver(mutations => {
@@ -158,7 +157,7 @@ export const setMutationObserver = (id, onMutation) => dispatch => {
 	    })
 	});
 
-	mutationObserver.observe(document.body, {
+	mutationObserver.observe(nodeList, {
 	    attributes: true,
 	    characterData: false,
 	    childList: true,
@@ -181,7 +180,7 @@ export const watchPosts = () => dispatch => {
 	        node.style = 'max-height: 100%; max-width: 100%';
 	   	}
 	}
-	setMutationObserver('posts', onMutation);
+	setMutationObserver('posts', onMutation)(dispatch);
 }
 
 
