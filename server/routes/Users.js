@@ -30,7 +30,6 @@ router.post('/Authenticate', (req, res) => {
 				if(err) {
 					res.status(500).json(err);
 				} else {
-					console.log(token);
 					res.status(200).json(token);
 				}
 			})

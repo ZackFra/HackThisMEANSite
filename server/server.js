@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 
 app.use('/Login', Users);
 app.use('/Challenge1', Users1);
-app.use('/Post', Post)
+app.use('/Forums', Post)
 
 
 const URI = process.env.ATLAS_URI;

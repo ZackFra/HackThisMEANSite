@@ -15,6 +15,7 @@ import Challenge2 from './components/challenges/Challenge2';
 import Victory2 from './components/challenges/Victory2';
 import Navi from './components/Navi';
 import Directory from './components/Directory';
+import OffTopic from './components/subforums/OffTopic';
 import Login from './components/Login'
 
 // redux
@@ -24,9 +25,11 @@ import { connect } from 'react-redux';
 function App(props) {
   
   function setLogin() {
-    if(props.user === '')
+    const user = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+    if(!user || !token)
       return <Route exact path='/Login' component={Login} />
-    else
+    else 
       return <Redirect from='/Login' to='/Home' />
   }
 
@@ -45,6 +48,7 @@ function App(props) {
             <Route exact path='/Challenge2' component={Challenge2} />
             <Route exact path='/Victory2' component={Victory2} />
             <Route exact path='/Forums' component={Directory} />
+            <Route exact path='/OffTopic' component={OffTopic} />
             {setLogin()}
   					<Redirect to='/Construction'/>
   				</Switch>
@@ -54,5 +58,4 @@ function App(props) {
   );
 }
 
-const mapStatesToProps = state => ({user: state.account.user});
-export default connect(mapStatesToProps)(App);
+export default connect()(App);

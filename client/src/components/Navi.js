@@ -21,18 +21,19 @@ function Navi(props) {
 
   const toggle = () => setIsOpen(!isOpen);
 
-
-  const logout = async (e) => {
+  const logout = e => {
     e.preventDefault();
     props.logout();
+    window.location = window.location;
   }
 
   // generates either login or logout button
   const setLog = () => {
-    if(!props.user || props.user === '') {
+    const user = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+    if(!user && !token) {
       return <NavLink href='/Login'>Login</NavLink> 
     }
-
     return (
       <NavLink onClick={logout} href='/'>
         Log out
@@ -105,6 +106,4 @@ function Navi(props) {
   );
 }
 
-const mapStateToProps = state => ({ user: state.account.user });
-
-export default connect(mapStateToProps, { logout })(Navi);
+export default connect(null, { logout })(Navi);

@@ -4,17 +4,11 @@ import { login, updatePass, updateUser } from '../actions/';
 import { connect } from 'react-redux';
 
 class Login extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			user: '',
-			pass: ''
-		}
-	}
 
 	authenticate = async e => {
 		e.preventDefault();
 		await this.props.login({user: this.props.user, pass: this.props.pass});
+		window.location = '/home';
 	}
 
 	render() {

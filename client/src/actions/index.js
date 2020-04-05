@@ -11,19 +11,27 @@ export const login = data => async dispatch => {
 	const {user, pass} = data;
 	await axios.post('/Login/Authenticate', { user, pass })
 	.then( (res) => {
-		console.log(res.token);
-		localStorage.setItem('bearer', res.token);
-		dispatch({
-			type: 'LOGIN',
-			payload: {user}
-		});
+		localStorage.setItem('token', res.data);
+		localStorage.setItem('user', user);
 	})
 	.catch( err => console.log(err));
 }
 
 export const logout = () => dispatch => {
-	dispatch({type: 'LOGOUT'});
+	localStorage.removeItem('token');
+	localStorage.removeItem('user');
 }
+
+/** Forums **/
+
+// returns all posts
+export const getPosts = postType => dispatch => {
+	axios.post('/Forums/GetPosts', {forum: postType})
+	.then( res => {
+		dispatch({type: 'GET_POSTS', payload: res.data});
+	})
+	.catch( err => console.log(err));
+} 
 
 /** challenges **/
 
