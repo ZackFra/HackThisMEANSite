@@ -31,9 +31,9 @@ class Challenge1 extends Component {
 							<form className="form-group" onSubmit={this.authenticate}>
 								<label className="form-text text-warning" id="invalid"></label>
 								<label className="form-control" htmlFor="password">
-									User: admin
+									admin
 								</label>
-								<input className="form-control" name='pass' type="password" id="password" onChange={this.props.updatePass}/>
+								<input className="form-control" name='pass' type="password" placeholder='password' onChange={this.props.updatePass}/>
 								<button 
 									className="btn btn-primary"
 									type="submit" 

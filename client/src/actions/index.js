@@ -24,10 +24,11 @@ export const logout = () => dispatch => {
 	dispatch({type: 'LOGOUT'});
 }
 
-// challenges
+/** challenges **/
 
-// challenge 0 login
 
+/* Challenge 0 */
+// challenge 0 login 
 export const login_challenge0 = data => dispatch => {
 	const { pass } = data;
 	const ft = document.querySelector('#invalid');
@@ -42,6 +43,7 @@ export const login_challenge0 = data => dispatch => {
 	}
 }
 
+/* Challenge 1 */
 // challenge 1 login
 export const login_challenge1 = data => dispatch => {
 	const {pass} = data;
@@ -71,13 +73,14 @@ export const login_challenge1 = data => dispatch => {
 	});
 }
 
-// challenge 2 
+/* challenge 2 */
 
 sanitizeHTML.defaults.allowedTags = [ 'img', 'i', 'b', 'blockquote', 'em',
 	'br', 'cite', 'code', 'kbd', 'del', 'font', 'u', 'strong']; 
 sanitizeHTML.defaults.allowedAttributes = 
     { img: ['src', 'alt', 'onerror'], font: ['size', 'color'] };
 
+// set insults to array of insults
 export const setInsults = arr => dispatch => {
 	dispatch({type: 'SET_INSULTS', payload: arr});
 }
@@ -194,7 +197,7 @@ export const clearMsg = () => dispatch => {
 }
 
 
-// these are generic onChange handlers
+/** these are generic onChange handlers **/
 export const updatePass = e => dispatch => {
 	dispatch({type: 'UPDATE_PASS', payload: e.target.value});
 }
