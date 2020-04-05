@@ -21,7 +21,6 @@ export const login = data => async dispatch => {
 }
 
 export const logout = () => dispatch => {
-	sessionStorage.removeItem('state');
 	dispatch({type: 'LOGOUT'});
 }
 
@@ -79,6 +78,10 @@ sanitizeHTML.defaults.allowedTags = [ 'img', 'i', 'b', 'blockquote', 'em',
 sanitizeHTML.defaults.allowedAttributes = 
     { img: ['src', 'alt', 'onerror'], font: ['size', 'color'] };
 
+export const setInsults = arr => dispatch => {
+	dispatch({type: 'SET_INSULTS', payload: arr});
+}
+
 // posting to chat function
 export const post = text => dispatch => {
 	const { postNum } = store.getState().challenge2; 
@@ -103,50 +106,47 @@ export const post = text => dispatch => {
 	dispatch({type: 'INCREMENT_POSTNUM'});
 }
 
-export const setAntagonize = () => dispatch => {
-	
-	// computer posting function
-	const cPost = () => {
-		const {postNum, insults, insultIndex} = store.getState().challenge2;
+// computer posting function
+export const cPost = text => dispatch => {
+	const { postNum } = store.getState().challenge2;
 		
-		let output = [
-			<div key = {"post" + postNum} style={{'color': 'black', 'borderRadius': '25px'}}>
-				<div className="card" style={{"marginBottom": "0.7rem"}}>
-		      		<div className="card-body" id={"post" + postNum} style={{'backgroundColor': 'lightblue'}}>
-		      		</div>
-		      	</div>
-		    </div>
-		];
+	let output = [
+		<div key = {"post" + postNum} style={{'color': 'black', 'borderRadius': '25px'}}>
+			<div className="card" style={{"marginBottom": "0.7rem"}}>
+	      		<div className="card-body" id={"post" + postNum} style={{'backgroundColor': 'lightblue'}}>
+	      		</div>
+	      	</div>
+	    </div>
+	];
 
-		const posts = document.getElementById('posts');
-		const post = posts.appendChild(document.createElement("li"));
-		post.style = 'margin-right: 2rem';
-		ReactDOM.render(output, post);
+	const posts = document.getElementById('posts');
+	const post = posts.appendChild(document.createElement("li"));
+	post.style = 'margin-right: 2rem';
+	ReactDOM.render(output, post);
 
-		const newPost = document.getElementById('post' + postNum);
-		newPost.innerHTML = sanitizeHTML(insults[insultIndex]);
-	}
+	const newPost = document.getElementById('post' + postNum);
+	newPost.innerHTML = sanitizeHTML(text);
+	dispatch({type: 'INCREMENT_POSTNUM'});
+}
 
+// set the anatagonize timer
+export const setAntagonize = () => dispatch => {
 	dispatch({
 		type: 'ANTAGONIZE', 
 		payload: setInterval(() => {
-			cPost();
+			const { insults, insultIndex } = store.getState().challenge2;
+			cPost(insults[insultIndex])(dispatch);
 			dispatch({type: 'INCREMENT_INSULTS'});
-			dispatch({type: 'INCREMENT_POSTNUM'});
 		}, 20000)
 	});
 }
 
 // sets the mutationObserver, and calls
-// onMutation when the sub-DOM with the id
-// of id is modified modified nodes
+// onMutation when the sub-DOM is modified
+// onMutation is a callback that respoonds to changes
 export const setMutationObserver = (id, onMutation) => dispatch => {
 
-	const nodeList = document.getElementById(id);
-	dispatch({
-		type: 'UPDATE_NODELIST',
-		payload: nodeList
-	});
+	const rootNode = document.getElementById(id);
 
 	const mutationObserver = new MutationObserver(mutations => {
 	    mutations.forEach(mutation => {
@@ -157,7 +157,7 @@ export const setMutationObserver = (id, onMutation) => dispatch => {
 	    })
 	});
 
-	mutationObserver.observe(nodeList, {
+	mutationObserver.observe(rootNode, {
 	    attributes: true,
 	    characterData: false,
 	    childList: true,
@@ -183,8 +183,18 @@ export const watchPosts = () => dispatch => {
 	setMutationObserver('posts', onMutation)(dispatch);
 }
 
+// update the message to be posted
+export const updateMsg = e => dispatch => {
+	dispatch({type: 'UPDATE_MESSAGE', payload: e.target.value});
+}
 
-// these are explicitly meant for onChange handlers
+// set message to ''
+export const clearMsg = () => dispatch => {
+	dispatch({type: 'UPDATE_MESSAGE', payload: ''});
+}
+
+
+// these are generic onChange handlers
 export const updatePass = e => dispatch => {
 	dispatch({type: 'UPDATE_PASS', payload: e.target.value});
 }

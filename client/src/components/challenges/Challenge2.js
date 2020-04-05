@@ -1,17 +1,28 @@
 import React, { Component } from 'react';
 import {Container} from 'reactstrap';
 import { connect } from 'react-redux';
-import { post, setAntagonize, watchPosts } from '../../actions';
+import { post, setAntagonize, watchPosts, setInsults, updateMsg, clearMsg } from '../../actions';
 
 class Challenge2 extends Component {
 
 	post = e => {
     	e.preventDefault();
-    	this.props.post(e.target[0].value);
-      	e.target[0].value = '';
+    	this.props.post(this.props.message);
+      	this.props.clearMsg();
     }
 
 	componentDidMount() {
+		// set the insults
+		let insults = [
+	    	"u rite now <img src='https://images.freeimages.com/images/large-previews/0e8/clown-trinket-1522905.jpg'>",
+	    	"Haha! you <i>still</i> haven't got it yet?",
+	    	"I hope you're not in college because you're dumb as a sack of bricks!",
+	    	"<i>Jeeesus</i> you still don't have it?",
+	    	"c'mon this took me like 5 minutes to do. <b>Google's your friend, bruh.</b>",
+	    	"Maybe you need to get yourself some programming socks?",
+	    	"I heard this rumor that if you google 'how to hack', you'll still fail. You suck."
+		]
+		this.props.setInsults(insults);
 
 		// set the mutationObserver to observe new posts
 		this.props.watchPosts();
@@ -44,7 +55,7 @@ class Challenge2 extends Component {
 							</div>
 							<form className="form-group" onSubmit={this.post}>
 								<label className="form-text text-warning" id="invalid"></label>
-								<textarea placeholder="message" style={{'width': '100%', 'resize': 'none', 'padding': '0.75rem'}}/>
+								<textarea placeholder="message" value={this.props.message} style={{'width': '100%', 'resize': 'none', 'padding': '0.75rem'}} onChange={this.props.updateMsg}/>
 								<button 
 									className="btn btn-primary"
 									type="submit" 
@@ -70,4 +81,6 @@ class Challenge2 extends Component {
 	}
 }
 
-export default connect(null, { post, setAntagonize, watchPosts })(Challenge2);
+const mapStateToProps = state =>  ({message: state.challenge2.message});
+
+export default connect(mapStateToProps, { post, setAntagonize, watchPosts, setInsults, updateMsg, clearMsg })(Challenge2);

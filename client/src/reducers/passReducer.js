@@ -3,7 +3,7 @@ const passReducer = (state = '', action) => {
 		case 'UPDATE_PASS': 
 			return action.payload;
 		default:
-			return ''
+			return state;
 	}
 }
 

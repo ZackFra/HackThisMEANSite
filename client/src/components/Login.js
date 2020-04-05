@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import {Container} from 'reactstrap';
-
-// redux stuff
-import { login } from '../actions/';
+import { login, updatePass, updateUser } from '../actions/';
 import { connect } from 'react-redux';
 
 class Login extends Component {
@@ -14,13 +12,9 @@ class Login extends Component {
 		}
 	}
 
-	onChange = e => {
-		this.setState({[e.target.name]: e.target.value})
-	}
-
 	authenticate = async e => {
 		e.preventDefault();
-		await this.props.login(this.state);
+		await this.props.login({user: this.props.user, pass: this.props.pass});
 	}
 
 	render() {
@@ -44,8 +38,8 @@ class Login extends Component {
 								<input 
 									className="form-control" 
 									name='user'
-									value = {this.state.user}
-									onChange = {this.onChange}
+									value = {this.props.user}
+									onChange = {this.props.updateUser}
 									type="text" 
 									placeholder="username" 
 									style = {{'marginBottom': '0.7rem'}}
@@ -53,8 +47,8 @@ class Login extends Component {
 								<input 
 									className="form-control"
 									name='pass'
-									value = {this.state.pass} 
-									onChange = {this.onChange}
+									value = {this.props.pass} 
+									onChange = {this.props.updatePass}
 									type="password" 
 									placeholder="password" 
 								/>
@@ -73,6 +67,6 @@ class Login extends Component {
 	}
 }
 
-const mapStateToProps = state => ({ user: state.account.user });
+const mapStateToProps = state => ({ user: state.user, pass: state.pass });
 
-export default connect(mapStateToProps, { login })(Login);
+export default connect(mapStateToProps, { login, updatePass, updateUser })(Login);

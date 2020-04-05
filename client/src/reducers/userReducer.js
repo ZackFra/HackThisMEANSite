@@ -3,7 +3,7 @@ const userReducer = (state = '', action) => {
 		case 'UPDATE_USER': 
 			return action.payload;
 		default:
-			return ''
+			return state;
 	}
 }
 
