@@ -202,6 +202,14 @@ export const updatePass = e => dispatch => {
 	dispatch({type: 'UPDATE_PASS', payload: e.target.value});
 }
 
+export const clearPass = () => dispatch => {
+	dispatch({type: 'UPDATE_PASS', payload: ''});
+}
+
 export const updateUser = e => dispatch => {
 	dispatch({type: 'UPDATE_USER', payload: e.target.value});
+}
+
+export const clearUser= () => dispatch => {
+	dispatch({type: 'UPDATE_USER', payload: ''});
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Container} from 'reactstrap';
 import { connect } from 'react-redux';
-import { updatePass, login_challenge0 } from '../../actions';
+import { updatePass, login_challenge0, clearPass } from '../../actions';
 
 class Challenge0 extends Component {
 
@@ -16,6 +16,7 @@ class Challenge0 extends Component {
 	authenticate = e => {
 		e.preventDefault();
 		this.props.login_challenge0({pass: this.props.pass});
+		this.props.clearPass();
 	}
 
 	render() {
@@ -52,7 +53,7 @@ class Challenge0 extends Component {
 								<label className="form-control" htmlFor="password">
 									admin
 								</label>
-								<input className="form-control" type="password" placeholder='password' onChange={this.props.updatePass}/>
+								<input className="form-control" type="password" placeholder='password' value={this.props.pass} onChange={this.props.updatePass}/>
 								<button 
 									className="btn btn-primary"
 									type="submit" 
@@ -70,4 +71,4 @@ class Challenge0 extends Component {
 
 
 const mapStatesToProps = state => ({pass: state.pass});
-export default connect(mapStatesToProps, {updatePass, login_challenge0})(Challenge0);
+export default connect(mapStatesToProps, {updatePass, login_challenge0, clearPass})(Challenge0);
