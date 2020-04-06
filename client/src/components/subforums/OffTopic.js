@@ -1,10 +1,10 @@
-import React, { useState, Link } from 'react';
-import {Container, Badge, Nav} from 'reactstrap';
-import { connect, useSelector, useDispatch } from 'react-redux';
-import { getPosts, incrementPostNum } from '../../actions';
+import React from 'react';
+import { Container, Badge, Nav } from 'reactstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import { getPosts} from '../../actions';
 
 function OffTopic(props) {
-	const {postNum, posts} = useSelector(state => state.forum);
+	const { posts } = useSelector(state => state.forum);
 	const dispatch = useDispatch();
 
 	function allowCreation() {

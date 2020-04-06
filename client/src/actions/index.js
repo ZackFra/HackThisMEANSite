@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Badge } from 'reactstrap';
 import axios from 'axios';
 import crypto from 'crypto';
 import store from '../store';

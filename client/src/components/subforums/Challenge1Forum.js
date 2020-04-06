@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getPosts } from '../../actions';
 
 function Challenge1Forum(props) {
-	const {postNum, posts} = useSelector(state => state.forum);
+	const { posts } = useSelector(state => state.forum);
 	const dispatch = useDispatch();
 
 	function allowCreation() {
@@ -34,18 +34,15 @@ function Challenge1Forum(props) {
 		return ''
 	}
 
-	const genCreate = allowCreation();
-	const postsToRender = listPosts();
-
 	return (
 		<Container>
 			<Nav>
 				<div className="card" style={{width: '100%', margin: 'auto'}}>
 					<div className="card-body bg-light text-dark">
 						<h1 className="card-title pb-2 mt-4 border-bottom">Forum: Challenge 1</h1>
-						{genCreate}
+						{allowCreation()}
 						<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
-							{postsToRender}
+							{listPosts()}
 						</div>
 					</div>
 				</div>
