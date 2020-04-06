@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { Container, Badge, Nav } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { getPosts} from '../../actions';
@@ -30,6 +31,10 @@ function OffTopic(props) {
 
 		return postsToRender;
 	}
+	
+	useEffect( () => {
+		ReactDOM.render(listPosts(), document.getElementById('content'));
+	}, [posts.length]); 
 
 	return (
 		<Container>
@@ -39,7 +44,7 @@ function OffTopic(props) {
 						<h1 className="card-title pb-2 mt-4 border-bottom">Forum: Off Topic</h1>
 						{allowCreation()}
 						<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
-							{listPosts()}
+
 						</div>
 					</div>
 				</div>
