@@ -14,7 +14,7 @@ function Directory() {
 
 		for(let i = 0; i <= 10; i++) {
 			subs.push(
-				<Badge key={'challenge' + i} href={'/Challenge' + i} className = 'text-dark' style={styles}>
+				<Badge key={'challenge' + i} href={`/Challenge${i}Forum`} className = 'text-dark' style={styles}>
 					Challenge {i}
 				</Badge>
 			);

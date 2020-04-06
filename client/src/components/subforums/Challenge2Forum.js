@@ -1,9 +1,9 @@
-import React, { useState, Link } from 'react';
+import React from 'react';
 import {Container, Badge, Nav} from 'reactstrap';
-import { connect, useSelector, useDispatch } from 'react-redux';
-import { getPosts, incrementPostNum } from '../../actions';
+import { useSelector, useDispatch } from 'react-redux';
+import { getPosts } from '../../actions';
 
-function OffTopic(props) {
+function Challenge2Forum(props) {
 	const {postNum, posts} = useSelector(state => state.forum);
 	const dispatch = useDispatch();
 
@@ -16,30 +16,36 @@ function OffTopic(props) {
 
 	function listPosts() {
 		const styles = {'padding': '1rem', 'margin': '0.1rem', 'width': '95%', 'textAlign': 'left', 'backgroundColor': 'white', 'border': '2px solid black'};
-		getPosts('OFFTOPIC')(dispatch);
-		
-		let i = 0;
-		const postsToRender = posts.map(post => {
-			i++;
-			return (
-				<Badge key={'post' + i} href='/OffTopic' className='text-dark' style={styles}>
-					{post.title} ~ by {post.author} at {post.date}
-				</Badge>
-			);
-		});
+		getPosts('CHALLENGE2')(dispatch);
 
-		return postsToRender;
+		if(posts.length > 0) {
+			let i = 0;
+			const postsToRender = posts.map(post => {
+				i++;
+				return (
+					<Badge key={'post' + i} href='/OffTopic' className='text-dark' style={styles}>
+						{post.title} ~ by {post.author} at {post.date}
+					</Badge>
+				);
+			});
+			return postsToRender;
+		} 
+		
+		return '';
 	}
+
+	const genCreate = allowCreation();
+	const postsToRender = listPosts();
 
 	return (
 		<Container>
 			<Nav>
 				<div className="card" style={{width: '100%', margin: 'auto'}}>
 					<div className="card-body bg-light text-dark">
-						<h1 className="card-title pb-2 mt-4 border-bottom">Forum: Off Topic</h1>
-						{allowCreation()}
+						<h1 className="card-title pb-2 mt-4 border-bottom">Forum: Challenge 2</h1>
+						{genCreate}
 						<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
-							{listPosts()}
+							{postsToRender}
 						</div>
 					</div>
 				</div>
@@ -49,4 +55,4 @@ function OffTopic(props) {
 }
 
 
-export default OffTopic;
+export default Challenge2Forum;

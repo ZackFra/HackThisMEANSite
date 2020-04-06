@@ -24,7 +24,7 @@ function Navi(props) {
   const logout = e => {
     e.preventDefault();
     props.logout();
-    window.location = window.location;
+    window.location.reload();
   }
 
   // generates either login or logout button
