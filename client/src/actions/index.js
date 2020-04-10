@@ -4,6 +4,7 @@ import axios from 'axios';
 import crypto from 'crypto';
 import store from '../store';
 import sanitizeHTML from 'sanitize-html';
+import { Badge } from 'reactstrap';
 
 
 // general login
@@ -31,6 +32,36 @@ export const getPosts = postType => dispatch => {
 		dispatch({type: 'GET_POSTS', payload: res.data});
 	})
 	.catch( err => console.log(err));
+}
+
+export const listPosts = postType => {
+	const dispatch = store.dispatch;
+	const { posts } = store.getState().forum;
+
+	const styles = {'padding': '1rem', 'margin': '0.1rem', 'width': '95%', 'textAlign': 'left', 'backgroundColor': 'white', 'border': '2px solid black'};
+	getPosts(postType)(dispatch);
+
+	if(posts.length > 0) {
+		let i = 0;
+		const postsToRender = posts.map(post => {
+			i++;
+			return (
+				<Badge key={'post' + i} href='/OffTopic' className='text-dark' style={styles}>
+					{post.title} ~ by {post.author} at {post.date}
+				</Badge>
+			);
+		});
+		return postsToRender;
+	}
+		
+	return '';
+}
+
+export const allowCreation = () => {
+	const {user, token} = localStorage;
+	if(user && token) {
+		return <a href="/CreatePost">Create Post</a>
+	}
 }
 
 /** challenges **/

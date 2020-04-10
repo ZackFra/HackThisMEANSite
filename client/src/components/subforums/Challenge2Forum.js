@@ -1,42 +1,14 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import {Container, Badge, Nav} from 'reactstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import { getPosts } from '../../actions';
+import {Container, Nav} from 'reactstrap';
+import { useSelector } from 'react-redux';
+import { listPosts, allowCreation } from '../../actions';
 
 function Challenge2Forum(props) {
 	const { posts } = useSelector(state => state.forum);
-	const dispatch = useDispatch();
-
-	function allowCreation() {
-		const {user, token} = localStorage;
-		if(user && token) {
-			return <a href="#">Create Post</a>
-		}
-	}
-
-	function listPosts() {
-		const styles = {'padding': '1rem', 'margin': '0.1rem', 'width': '95%', 'textAlign': 'left', 'backgroundColor': 'white', 'border': '2px solid black'};
-		getPosts('CHALLENGE2')(dispatch);
-
-		if(posts.length > 0) {
-			let i = 0;
-			const postsToRender = posts.map(post => {
-				i++;
-				return (
-					<Badge key={'post' + i} href='/OffTopic' className='text-dark' style={styles}>
-						{post.title} ~ by {post.author} at {post.date}
-					</Badge>
-				);
-			});
-			return postsToRender;
-		} 
-		
-		return '';
-	}
 
 	useEffect( () => {
-		ReactDOM.render(listPosts(), document.getElementById('content'));
+		ReactDOM.render(listPosts('CHALLENGE2'), document.getElementById('content'));
 	}, [posts.length]); 
 
 	return (
