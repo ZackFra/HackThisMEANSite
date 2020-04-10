@@ -1,23 +1,25 @@
-import React, { useSelector } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
 import {Container, Label} from 'reactstrap';
-import { updateMsg } from '../actions';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateMsg, updateTitle, updateForum } from '../actions';
 import axios from 'axios';
 
 function CreatePost(props) {
-	const { message } = useSelector(state => state.createPost);
+	const { message, title } = useSelector(state => state.createPost);
+	const dispatch = useDispatch();
 
 	function genOptions() {
 		let options = [];
 		options.push(<option value="Forum" selected disabled>select forum</option>);
-		options.push(<option value="Off Topic">Off Topic</option>);
+		options.push(<option value="OFFTOPIC">Off Topic</option>);
 		for(let i = 1; i <= 10; i++) {
-			options.push(<option value={`Challenge${i}`}>{`Challenge ${i}`}</option>)
+			options.push(<option value={`CHALLENGE${i}`}>{`Challenge ${i}`}</option>)
 		}
 		return options;
 	}
 
-	function onSubmit() {
+	function onSubmit(e) {
+		e.preventDefault();
 
 	}
 
@@ -29,12 +31,12 @@ function CreatePost(props) {
 					
 					<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
 						<form className="form-group-sizing-lg" onSubmit={onSubmit}>
-							<select className="selectpicker" id='forumChoices'>
+							<select className="selectpicker" id='forumChoices' onChange={e => updateForum()(dispatch)}>
 								{genOptions()}
 							</select>
 							{/* @todo add recaptcha */}
-							<input value={message} onChange={updateMsg} className="form-text" type="text" placeholder="title" style={{'width': '100%', 'padding': '0.5rem'}} />
-							<textarea className="form-text" placeholder="message"style={{'width': '100%', 'height': '16rem', 'padding': '0.5rem', 'resize': 'none'}} />
+							<input className="form-text" value={title} onChange={e => updateTitle(e)(dispatch)} type="text" placeholder="title" style={{'width': '100%', 'padding': '0.5rem'}} />
+							<textarea className="form-text" value={message} onChange={e => updateMsg(e)(dispatch)} placeholder="message" style={{'width': '100%', 'height': '16rem', 'padding': '0.5rem', 'resize': 'none'}} />
 							<button type="submit" className="btn btn-outline-primary" style={{'float': 'right', 'margin-top': '0.3rem'}}>Submit</button>
 						</form>
 					</div>

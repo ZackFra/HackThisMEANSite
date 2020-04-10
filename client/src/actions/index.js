@@ -66,8 +66,23 @@ export const allowCreation = () => {
 
 export const createPost = () => {
 	const {user, token} = localStorage;
+	const {message, title, forum} = store.getState().createPost;
+
+	// @todo finish setting up request
+	request = {
+		user,
+		token,
+		title,
+		message,
+		forum,
+	}
 
 	axios.post('/CreatePost', )
+}
+
+export const updateForum = () => dispatch => {
+	const payload = document.querySelector('select').value;
+	dispatch({type: 'UPDATE_FORUM', payload});
 }
 
 /** challenges **/
@@ -232,17 +247,6 @@ export const watchPosts = () => dispatch => {
 	setMutationObserver('posts', onMutation)(dispatch);
 }
 
-// update the message to be posted
-export const updateMsg = e => dispatch => {
-	dispatch({type: 'UPDATE_MESSAGE', payload: e.target.value});
-}
-
-// set message to ''
-export const clearMsg = () => dispatch => {
-	dispatch({type: 'UPDATE_MESSAGE', payload: ''});
-}
-
-
 /** these are generic onChange handlers **/
 export const updatePass = e => dispatch => {
 	dispatch({type: 'UPDATE_PASS', payload: e.target.value});
@@ -258,4 +262,18 @@ export const updateUser = e => dispatch => {
 
 export const clearUser= () => dispatch => {
 	dispatch({type: 'UPDATE_USER', payload: ''});
+}
+
+// update the message to be posted
+export const updateMsg = e => dispatch => {
+	dispatch({type: 'UPDATE_MESSAGE', payload: e.target.value});
+}
+
+// set message to ''
+export const clearMsg = () => dispatch => {
+	dispatch({type: 'UPDATE_MESSAGE', payload: ''});
+}
+
+export const updateTitle = e => dispatch => {
+	dispatch({type: 'UPDATE_TITLE', payload: e.target.value});
 }
