@@ -1,8 +1,7 @@
 import React from 'react';
-import {Container, Label} from 'reactstrap';
+import { Container } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateMsg, updateTitle, updateForum } from '../actions';
-import axios from 'axios';
+import { updateMsg, updateTitle, updateForum, createPost } from '../actions';
 
 function CreatePost(props) {
 	const { message, title } = useSelector(state => state.createPost);
@@ -20,7 +19,16 @@ function CreatePost(props) {
 
 	function onSubmit(e) {
 		e.preventDefault();
+		createPost();
 
+		// redirect to forum
+		const forumToGoTo = document.querySelector('select').value;
+		if(forumToGoTo === 'OFFTOPIC')
+			window.location = '/OffTopic';
+		else {
+			const num = forumToGoTo.slice(-1);
+			window.location = `/Challenge${num}Forum`;
+		}
 	}
 
 	return (

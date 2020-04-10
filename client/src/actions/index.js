@@ -69,15 +69,18 @@ export const createPost = () => {
 	const {message, title, forum} = store.getState().createPost;
 
 	// @todo finish setting up request
-	request = {
-		user,
-		token,
-		title,
-		message,
-		forum,
+	const request = {
+		title: title,
+		content: message,
+		author: user,
+		date: Date(Date.now()).toString(),
+		forum: forum,
+		token: token,
 	}
 
-	axios.post('/CreatePost', )
+	axios.post('/Forums/CreatePost', request)
+	.then( res => console.log(res))
+	.catch(err => console.log(err));
 }
 
 export const updateForum = () => dispatch => {
