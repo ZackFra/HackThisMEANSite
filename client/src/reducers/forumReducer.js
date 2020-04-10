@@ -1,4 +1,4 @@
-const forumReducer = (state = {posts: [], postNum: 0}, action) => {
+const forumReducer = (state = {posts: []}, action) => {
 	switch(action.type) {
 		case 'GET_POSTS': 
 			return {...state, posts: action.payload};

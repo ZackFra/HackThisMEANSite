@@ -64,6 +64,12 @@ export const allowCreation = () => {
 	}
 }
 
+export const createPost = () => {
+	const {user, token} = localStorage;
+
+	axios.post('/CreatePost', )
+}
+
 /** challenges **/
 
 

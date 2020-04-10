@@ -28,13 +28,20 @@ import { connect } from 'react-redux';
 
 function App(props) {
   
-  function setLogin() {
+  // sets routes based on login authentication
+  function setConditionals() {
     const user = localStorage.getItem('user');
     const token = localStorage.getItem('token');
     if(!user || !token)
-      return <Route exact path='/Login' component={Login} />
+      return [
+        <Route exact path='/Login' component={Login} />, 
+        <Redirect from='/CreatePost' to='/Home' />
+      ];
     else 
-      return <Redirect from='/Login' to='/Home' />
+      return [
+        <Redirect from='/Login' to='/Home' />,
+        <Route exact path='/CreatePost' component={CreatePost} />
+      ];
   }
 
   return (
@@ -51,13 +58,13 @@ function App(props) {
             <Route exact path='/Victory1' component={Victory1} />
             <Route exact path='/Challenge2' component={Challenge2} />
             <Route exact path='/Victory2' component={Victory2} />
-            <Route exact path='/CreatePost' component={CreatePost} />
+
             <Route exact path='/Forums' component={Directory} />
             <Route exact path='/OffTopic' component={OffTopic} />
             <Route exact path='/Challenge0Forum' component={Challenge0Forum} />
             <Route exact path='/Challenge1Forum' component={Challenge1Forum} />
             <Route exact path='/Challenge2Forum' component={Challenge2Forum} />
-            {setLogin()}
+            {setConditionals()}
   					<Redirect to='/Construction'/>
   				</Switch>
   			</div>

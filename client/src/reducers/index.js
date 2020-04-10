@@ -5,11 +5,13 @@ import challenge2Reducer from './challenge2Reducer';
 import passReducer from './passReducer';
 import userReducer from './userReducer';
 import forumReducer from './forumReducer';
+import createPostReducer from './createPostReducer';
 
 export default combineReducers({
 	user: userReducer,
 	pass: passReducer,
 	forum: forumReducer,
+	createPost: createPostReducer,
 	challenge0: challenge0Reducer,
 	challenge1: challenge1Reducer,
 	challenge2: challenge2Reducer
