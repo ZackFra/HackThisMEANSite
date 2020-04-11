@@ -22,25 +22,22 @@ import Challenge2Forum from './components/subforums/Challenge2Forum';
 import Login from './components/Login'
 import CreatePost from './components/CreatePost';
 
-// redux
-import { connect } from 'react-redux';
-
-
 function App(props) {
   
   // sets routes based on login authentication
   function setConditionals() {
     const user = localStorage.getItem('user');
     const token = localStorage.getItem('token');
+    // need keys because arrays are rendered as lists
     if(!user || !token)
       return [
-        <Route exact path='/Login' component={Login} />, 
-        <Redirect from='/CreatePost' to='/Home' />
+        <Route key="LoginRoute" exact path='/Login' component={Login} />, 
+        <Redirect key="createPostRedirect" from='/CreatePost' to='/Home' />
       ];
     else 
       return [
-        <Redirect from='/Login' to='/Home' />,
-        <Route exact path='/CreatePost' component={CreatePost} />
+        <Redirect key="loginRedirect" from='/Login' to='/Home' />,
+        <Route key="createPostRoute" exact path='/CreatePost' component={CreatePost} />
       ];
   }
 
@@ -73,4 +70,4 @@ function App(props) {
   );
 }
 
-export default connect()(App);
+export default App;
