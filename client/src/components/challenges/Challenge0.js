@@ -8,6 +8,8 @@ class Challenge0 extends Component {
 	componentDidMount() {
 		// is actually overwritten, but this gets rid
 		// of a warning in the console
+
+		// eslint-disable-next-line
 		window.eval('function authenticate(){return 1}');
 		document.querySelector('form').setAttribute('onsubmit', 'authenticate()');
 	}

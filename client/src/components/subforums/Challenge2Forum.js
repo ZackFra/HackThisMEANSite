@@ -2,16 +2,23 @@ import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import {Container, Nav} from 'reactstrap';
 import { useSelector } from 'react-redux';
-import { listPosts, allowCreation } from '../../actions';
+import { listPosts, allowCreation, setForum } from '../../actions';
 
 function Challenge2Forum(props) {
-	const { posts } = useSelector(state => state.forum);
+	const { posts, view } = useSelector(state => state.forum);
 
 	useEffect( () => {
-		ReactDOM.render(listPosts('CHALLENGE2'), document.getElementById('content'));
+		setForum('Challenge2Forum');
+	}, [])
+
+	useEffect( () => {
+		if(view === undefined) 
+			ReactDOM.render(listPosts('CHALLENGE2'), document.getElementById('content'));
+		else 
+			ReactDOM.render([], document.getElementById('content'));
 	}, [posts.length]); 
 
-	return (
+	return view || (
 		<Container>
 			<Nav>
 				<div className="card" style={{width: '100%', margin: 'auto'}}>

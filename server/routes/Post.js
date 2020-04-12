@@ -8,11 +8,10 @@ const jwt = require('jsonwebtoken');
 // @access  protected
 router.post('/CreatePost', (req, res) => {
 
-	const {title, content, author, date, forum, token} = req.body;
+	const {title, content, author, forum, token} = req.body;
 	if(typeof title !== 'string'
 		|| typeof content !== 'string'
 		|| typeof author !== 'string'
-		|| typeof date !== 'string'
 		|| typeof forum !== 'string'
 		|| typeof token !== 'string') {
 		res.status(500).json('bad request');
@@ -25,7 +24,7 @@ router.post('/CreatePost', (req, res) => {
 		if(err) {
 			res.status(500).json(err);
 		} else {
-			Post.create({title, content, author, date, forum}, (err, data) => {
+			Post.create({title, content: [content], author, date: (new Date()).toLocaleString(), forum}, (err, data) => {
 				if(err) {
 					res.status(500).json(err);
 				} else {
@@ -47,7 +46,7 @@ router.post('/GetPosts', (req, res) => {
 		res.status(500).json('bad request');
 	}
 
-	Post.find({forum: {"$eq": forum}}).sort({forum: -1})
+	Post.find({forum: {"$eq": forum}}).sort({date: 'desc'})
 	.then( (data, err) => {
 		if(err) res.status(500).json(err);
 		else res.status(200).json(data);

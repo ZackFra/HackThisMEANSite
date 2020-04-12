@@ -4,7 +4,7 @@ import axios from 'axios';
 import crypto from 'crypto';
 import store from '../store';
 import sanitizeHTML from 'sanitize-html';
-import { Badge } from 'reactstrap';
+import { Badge, Container, Nav, Button } from 'reactstrap';
 
 
 // general login
@@ -34,19 +34,57 @@ export const getPosts = postType => dispatch => {
 	.catch( err => console.log(err));
 }
 
+// returns the jsx that renders a post's content
+export const goToPosts = () => {
+	const { postId, forum, posts } = store.getState().forum; 
+
+	let contentsOfPost = 
+		<Container>
+			<Nav>
+				<div className="card" style={{width: '100%', margin: 'auto'}}>
+					<div className="card-body bg-light text-dark">
+						<h1 className="card-title pb-2 mt-4 border-bottom">{posts[postId].title}</h1>
+						<Button color="link" onClick= {() => {
+							setView(undefined);
+							getPosts(forum.toUpperCase())(store.dispatch);
+						}}>
+						Back
+						</Button>
+						<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
+							{posts[postId].content.map(message => <div style={{'width': '100%', 'height': '4rem', 'backgroundColor':'cyan'}}>{message}</div>)}
+						</div>
+					</div>
+				</div>
+			</Nav>
+		</Container>
+	return contentsOfPost
+}
+
+// sets view to a jsx object
+export const setView = jsx => {
+	store.dispatch({type: 'SET_VIEW', payload: jsx});
+}
+
+// lists all posts in a certain forum
 export const listPosts = postType => {
 	const dispatch = store.dispatch;
-	const { posts } = store.getState().forum;
+	const { posts, forum } = store.getState().forum;
 
 	const styles = {'padding': '1rem', 'margin': '0.1rem', 'width': '95%', 'textAlign': 'left', 'backgroundColor': 'white', 'border': '2px solid black'};
 	getPosts(postType)(dispatch);
 
 	if(posts.length > 0) {
-		let i = 0;
+		let i = -1;
 		const postsToRender = posts.map(post => {
 			i++;
 			return (
-				<Badge key={'post' + i} href='/OffTopic' className='text-dark' style={styles}>
+				<Badge key={'post' + i} id={i} href='#' 
+				onClick ={e => {
+					setPostId(e.target.id);
+					setView(goToPosts())
+					clearPosts();
+				}} 
+				className='text-dark' style={styles}>
 					{post.title} ~ by {post.author} at {post.date}
 				</Badge>
 			);
@@ -68,24 +106,43 @@ export const createPost = () => {
 	const {user, token} = localStorage;
 	const {message, title, forum} = store.getState().createPost;
 
-	// @todo finish setting up request
+	let validForums = ['OFFTOPIC'];
+	for(let i = 1; i <= 10; i++)
+		validForums.push(`CHALLENGE${i}`);
+
+	if(message === '' || title === '' || !validForums.includes(forum)) {
+		return false;
+	}
+
 	const request = {
 		title: title,
 		content: message,
+		date: (new Date()).toGMTString(),
 		author: user,
-		date: Date(Date.now()).toString(),
 		forum: forum,
 		token: token,
 	}
 
-	axios.post('/Forums/CreatePost', request)
-	.then( res => console.log(res))
-	.catch(err => console.log(err));
+	return axios.post('/Forums/CreatePost', request)
+	.then( res => true)
+	.catch( err => false);
 }
 
 export const updateForum = () => dispatch => {
 	const payload = document.querySelector('select').value;
 	dispatch({type: 'UPDATE_FORUM', payload});
+}
+
+export const setForum = forum => {
+	store.dispatch({type: 'SET_FORUM', payload: forum});
+}
+
+export const setPostId = id => {
+	store.dispatch({type: 'SET_POST_ID', payload: id});
+}
+
+export const clearPosts = () => {
+	store.dispatch({type: 'CLEAR_POSTS'});
 }
 
 /** challenges **/

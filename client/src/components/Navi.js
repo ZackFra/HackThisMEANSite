@@ -53,7 +53,7 @@ function Navi(props) {
               <DropdownToggle nav caret>
                 Challenges
               </DropdownToggle>
-              <DropdownMenu right>
+              <DropdownMenu>
                 <DropdownItem href='/Challenge0'>
                   Challenge 0
                 </DropdownItem>
@@ -90,9 +90,49 @@ function Navi(props) {
               </DropdownMenu>
             </UncontrolledDropdown>
 
-            <NavItem>
-              <NavLink href='/Forums'>Forum</NavLink>
-            </NavItem>
+            <UncontrolledDropdown nav inNavbar>
+              <DropdownToggle nav caret>
+                Forums
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem href='/OffTopic'>
+                  Off Topic
+                </DropdownItem>
+                <DropdownItem href='/Challenge0Forum'>
+                  Challenge 0
+                </DropdownItem>
+                <DropdownItem href='/Challenge1Forum'>
+                  Challenge 1
+                </DropdownItem>
+                <DropdownItem href='/Challenge2Forum'>
+                  Challenge 2
+                </DropdownItem>
+                <DropdownItem href='/Challenge3Forum'>
+                    Challenge 3
+                </DropdownItem>
+                <DropdownItem href='/Challenge4Forum'>
+                  Challenge 4
+                </DropdownItem>
+                <DropdownItem href='/Challenge5Forum'>
+                  Challenge 5
+                </DropdownItem>
+                <DropdownItem href='/Challenge6Forum'>
+                  Challenge 6
+                </DropdownItem>
+                <DropdownItem href='/Challenge7Forum'>
+                  Challenge 7
+                </DropdownItem>
+                <DropdownItem href='/Challenge8Forum'>
+                  Challenge 8
+                </DropdownItem>
+                <DropdownItem href='/Challenge9Forum'>
+                  Challenge 9
+                </DropdownItem>
+                <DropdownItem href='/Challenge10Forum'>
+                  Challenge 10
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
             <NavItem>
               <NavLink href="https://github.com/ZackFra/HackThisMEANSite">GitHub</NavLink>
             </NavItem>
