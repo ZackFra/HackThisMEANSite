@@ -51,7 +51,7 @@ export const goToPosts = () => {
 						Back
 						</Button>
 						<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
-							{posts[postId].content.map(message => <div style={{'width': '100%', 'height': '4rem', 'backgroundColor':'cyan'}}>{message}</div>)}
+							{posts[postId].content.map(message => <div key={message} style={{'width': '100%', 'height': '4rem', 'backgroundColor':'cyan'}}>{message}</div>)}
 						</div>
 					</div>
 				</div>

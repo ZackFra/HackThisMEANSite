@@ -8,7 +8,7 @@ function Challenge1Forum(props) {
 	const { posts, view } = useSelector(state => state.forum);
 
 	useEffect( () => {
-		setForum('Challenge1Forum');
+		setForum('Challenge1');
 	}, [])
 
 	useEffect( () => {

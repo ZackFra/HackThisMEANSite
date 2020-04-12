@@ -39,7 +39,7 @@ router.post('/CreatePost', (req, res) => {
 // @desc    get posts from a forum
 // @access  public
 router.post('/GetPosts', (req, res) => {
-	const {forum} = req.body;
+	const { forum } = req.body;
 	if(typeof forum !== 'string') {
 		res.status(500).json('bad request');
 	} else if(!forumTypes.includes(forum)) {
