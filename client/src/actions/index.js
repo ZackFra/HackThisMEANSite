@@ -50,6 +50,10 @@ export const goToPosts = () => {
 						}}>
 						Back
 						</Button>
+						|
+						<Button color="link" onClick = {() => {
+							setView(undefined);
+						}}>New Message</Button>
 						<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
 							{posts[postId].content.map(message => <div key={message} style={{'width': '100%', 'height': '4rem', 'backgroundColor':'cyan'}}>{message}</div>)}
 						</div>
@@ -81,8 +85,9 @@ export const listPosts = postType => {
 				<Badge key={'post' + i} id={i} href='#' 
 				onClick ={e => {
 					setPostId(e.target.id);
-					setView(goToPosts())
-					clearPosts();
+					dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
+					setView(goToPosts());
+					//clearPosts();
 				}} 
 				className='text-dark' style={styles}>
 					{post.title} ~ by {post.author} at {post.date}
@@ -107,7 +112,7 @@ export const createPost = () => {
 	const {message, title, forum} = store.getState().createPost;
 
 	let validForums = ['OFFTOPIC'];
-	for(let i = 1; i <= 10; i++)
+	for(let i = 0; i <= 10; i++)
 		validForums.push(`CHALLENGE${i}`);
 
 	if(message === '' || title === '' || !validForums.includes(forum)) {

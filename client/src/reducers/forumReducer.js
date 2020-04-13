@@ -1,4 +1,4 @@
-const forumReducer = (state = {posts: [], forum: undefined, postId: undefined, viewPost: undefined}, action) => {
+const forumReducer = (state = {posts: [], forum: undefined, postId: undefined, viewPost: undefined, tab: undefined}, action) => {
 	switch(action.type) {
 		case 'GET_POSTS': 
 			return {...state, posts: action.payload};
@@ -6,6 +6,8 @@ const forumReducer = (state = {posts: [], forum: undefined, postId: undefined, v
 			return {...state, forum: action.payload};
 		case 'SET_VIEW':
 			return {...state, view: action.payload};
+		case 'SET_TAB':
+			return {...state, tab: action.payload};
 		case 'SET_POST_ID':
 			return {...state, postId: action.payload};
 		case 'CLEAR_POSTS':

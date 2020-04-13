@@ -9,10 +9,10 @@ function CreatePost(props) {
 
 	function genOptions() {
 		let options = [];
-		options.push(<option key='option0' value="Forum" disabled>select forum</option>);
-		options.push(<option key='option1' value="OFFTOPIC">Off Topic</option>);
-		for(let i = 1; i <= 10; i++) {
-			options.push(<option key={`option${i+1}`} value={`CHALLENGE${i}`}>{`Challenge ${i}`}</option>)
+		options.push(<option key='optionDead' value="Forum" disabled>select forum</option>);
+		options.push(<option key='optionOT' value="OFFTOPIC">Off Topic</option>);
+		for(let i = 0; i <= 10; i++) {
+			options.push(<option key={`option${i}`} value={`CHALLENGE${i}`}>{`Challenge ${i}`}</option>)
 		}
 		return options;
 	}
@@ -21,7 +21,7 @@ function CreatePost(props) {
 		e.preventDefault();
 
 		let validForums = ['OFFTOPIC'];
-		for(let i = 1; i <= 10; i++)
+		for(let i = 0; i <= 10; i++)
 			validForums.push(`CHALLENGE${i}`);
 
 		// if createPost fails
