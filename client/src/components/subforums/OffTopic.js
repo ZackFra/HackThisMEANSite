@@ -6,6 +6,7 @@ import { listPosts, getPosts, allowCreation, setForum } from '../../actions';
 
 function OffTopic(props) {
 	const { posts, postId, view, tab, forum } = useSelector(state => state.forum);
+	const {user, token} = localStorage;
 	const dispatch = useDispatch();
 	const standard = (
 		<Container>
@@ -22,6 +23,11 @@ function OffTopic(props) {
 				</Nav>
 		</Container>
 	);
+	function allowMakeMessage() {
+		if(user && token) {
+			return <div>|<Button color="link">New Message</Button></div>
+		}
+	}
 
 	// dynamically generate page as tab changes
 	useEffect( () => {
@@ -56,8 +62,7 @@ function OffTopic(props) {
 									}}>
 									Back
 									</Button>
-									|
-									<Button color="link">New Message</Button>
+									{allowMakeMessage()}
 									<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
 										{posts[postId].content.map(message => <div key={message} style={{'width': '100%', 'height': '4rem', 'backgroundColor':'cyan'}}>{message}</div>)}
 									</div>

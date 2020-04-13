@@ -6,6 +6,7 @@ import { listPosts, getPosts, allowCreation, setForum } from '../../actions';
 
 function Challenge0Forum(props) {
 	const { posts, postId, view, tab, forum } = useSelector(state => state.forum);
+	const { user, token } = localStorage;
 	const dispatch = useDispatch();
 	const standard = (
 		<Container>
@@ -23,6 +24,12 @@ function Challenge0Forum(props) {
 		</Container>
 	);
 
+	function allowMakeMessage() {
+		if(user && token) {
+			return <div>|<Button color="link">New Message</Button></div>
+		}
+	}
+
 	// dynamically generate page as tab changes
 	useEffect( () => {
 		switch(tab) {
@@ -32,7 +39,7 @@ function Challenge0Forum(props) {
 						<Nav>
 							<div className="card" style={{width: '100%', margin: 'auto'}}>
 								<div className="card-body bg-light text-dark">
-									<h1 className="card-title pb-2 mt-4 border-bottom">Forum: Off Topic</h1>
+									<h1 className="card-title pb-2 mt-4 border-bottom">Forum: Challenge 0</h1>
 									{allowCreation()}
 									<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
 										{listPosts(forum)}			
@@ -56,8 +63,7 @@ function Challenge0Forum(props) {
 									}}>
 									Back
 									</Button>
-									|
-									<Button color="link">New Message</Button>
+									{allowMakeMessage()}
 									<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
 										{posts[postId].content.map(message => <div key={message} style={{'width': '100%', 'height': '4rem', 'backgroundColor':'cyan'}}>{message}</div>)}
 									</div>
