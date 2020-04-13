@@ -20,7 +20,7 @@ router.post('/CreatePost', (req, res) => {
 	}
 
 	const { jwtseed } = process.env;
-	jwt.verify(token, jwtseed, (err, data) => {
+	jwt.verify(token, author + jwtseed, (err, data) => {
 		if(err) {
 			res.status(500).json(err);
 		} else {

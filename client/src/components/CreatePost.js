@@ -17,7 +17,7 @@ function CreatePost(props) {
 		return options;
 	}
 
-	function onSubmit(e) {
+	async function onSubmit(e) {
 		e.preventDefault();
 
 		let validForums = ['OFFTOPIC'];
@@ -25,8 +25,10 @@ function CreatePost(props) {
 			validForums.push(`CHALLENGE${i}`);
 
 		// if createPost fails
-		if(!createPost()) {
+		const created = await createPost();
+		if(!created) {
 			const inval = document.querySelector('[id=invalid]');
+
 			if(!validForums.includes(forum)) {
 				inval.innerText = 'Select a forum to post to.';
 			} else if(title === '') {

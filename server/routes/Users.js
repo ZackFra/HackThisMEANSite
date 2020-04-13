@@ -26,7 +26,7 @@ router.post('/Authenticate', (req, res) => {
 	
 	User.findOne({'user': userHash, "pass": passHash}, (err, data) => {
 		if(data) {
-			jwt.sign({user}, jwtseed, (err, token) => {
+			jwt.sign({user}, user + jwtseed, (err, token) => {
 				if(err) {
 					res.status(500).json(err);
 				} else {
