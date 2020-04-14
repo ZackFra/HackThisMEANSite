@@ -13,6 +13,7 @@ import Challenge1 from './components/challenges/Challenge1';
 import Victory1 from './components/challenges/Victory1';
 import Challenge2 from './components/challenges/Challenge2';
 import Victory2 from './components/challenges/Victory2';
+import Challenge3 from './components/challenges/Challenge3';
 import Navi from './components/Navi';
 import OffTopic from './components/subforums/OffTopic';
 import Challenge0Forum from './components/subforums/Challenge0Forum';
@@ -54,6 +55,7 @@ function App(props) {
             <Route exact path='/Victory1' component={Victory1} />
             <Route exact path='/Challenge2' component={Challenge2} />
             <Route exact path='/Victory2' component={Victory2} />
+            <Route exact path='/Challenge3' component={Challenge3} />
 
             <Route exact path='/OffTopic' component={OffTopic} />
             <Route exact path='/Challenge0Forum' component={Challenge0Forum} />
