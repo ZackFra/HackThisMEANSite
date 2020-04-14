@@ -1,12 +1,60 @@
 import React from 'react';
 import { Container, Button, Label } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
+import { registerUser3, login3, changePass3 } from '../../actions';
+import { verify } from 'jsonwebtoken';
+import Cookies from 'js-cookie';
 
 function Challenge3(props) {
 	const { tab, username, password, confirm } = useSelector( state => state.challenge3 );
 	const dispatch = useDispatch();
 
 
+	function showAcc(needsClearing) {
+		const token = Cookies.get('token');
+		try {
+			verify(token, 'secret');
+			if(needsClearing) {
+				return ( 
+					<Button
+						color="link"
+						onClick={() => {
+							dispatch({type: 'CLEAR_ALL'}); 
+							dispatch({type: 'SET_TAB', payload: 'ACCOUNT'});
+					}}>account</Button>
+				);
+			} else {
+				return ( 
+					<Button
+						color="link"
+						onClick={() => {
+							dispatch({type: 'CLEAR_ALL'}); 
+							dispatch({type: 'SET_TAB', payload: 'ACCOUNT'});
+					}}>account</Button>
+				);
+			}
+		} catch(err) {
+			if(needsClearing) {
+				return ( 
+					<Button
+						color="link"
+						onClick={() => {
+							dispatch({type: 'CLEAR_ALL'}); 
+							dispatch({type: 'SET_TAB', payload: 'LOGIN'});
+					}}>login</Button>
+				);
+			} else {
+				return ( 
+					<Button
+						color="link"
+						onClick={() => {
+							dispatch({type: 'CLEAR_ALL'}); 
+							dispatch({type: 'SET_TAB', payload: 'LOGIN'});
+					}}>login</Button>
+				);
+			}
+		}
+	}
 	function register(e) {
 		e.preventDefault();
 		let re = /\s/;
@@ -24,22 +72,28 @@ function Challenge3(props) {
 			document.getElementById('inval').innerText='User name may not contain white spaces.\n\n';
 		}
 		else {
-			// @todo add actually call to back-end
-			localStorage.setItem('account', JSON.stringify({username, password}));
-			window.location.reload();
+			registerUser3({user: username, pass: password})
+			.then( res => {
+				if(res === true) {
+					window.location.reload();
+				}
+				document.getElementById('inval').innerText='User name is taken.\n\n';
+			});
 		}
 	}
 
 	function login(e) {
 		e.preventDefault();
-		let acc = JSON.parse(localStorage.getItem('account'));
-		if(username === acc.username && password === acc.password) {
-			document.cookie += `username=${username}`;
-			window.location.reload();
-		} else {
-			document.getElementById('inval').innerText = 'Incorrect password.\n\n';
-		}
-		// @todo add login functionality
+
+		login3({user: username, pass: password})
+		.then( res => {
+			if(res === true) {
+				window.location.reload();
+			} else {
+				console.log(res);
+				document.getElementById('inval').innerText = 'Incorrect password.\n\n';
+			}
+		});
 	}
 
 	// clear any errors
@@ -48,6 +102,8 @@ function Challenge3(props) {
 	}
 
 	function changePass(e) {
+		e.preventDefault();
+
 		let re = /\s/;
 		if(password === '') {
 			document.getElementById('inval').innerText='Password cannot be blank.\n\n';
@@ -57,10 +113,18 @@ function Challenge3(props) {
 			document.getElementById('inval').innerText='Password must be at least 8 characters long.\n\n';
 		} else if(re.test(password)) {
 			document.getElementById('inval').innerText='Password may not contain white spaces.\n\n';
-		} else if(username === 'admin') {
-			window.location = '/Victory3';
 		} else {
-			// do change password stuff
+			changePass3({user: Cookies.get('user'), newPass: password, token: Cookies.get('token')})
+			.then( (res) => {
+				dispatch({type: 'CLEAR_ALL'});
+				if(res === true && Cookies.get('user') === 'admin') {
+					window.location = '/Victory3';
+				} else if(res === true) {
+					document.getElementById('success').innerText = 'Password changed successfully!';
+				} else {
+					document.getElementById('inval').innerText = 'Internal error. Try again later.';
+				}
+			});
 		}
 	}
 
@@ -79,27 +143,32 @@ function Challenge3(props) {
 									<hr color="lightgray"/>
 									<div className="card-text">
 										<div className="text-warning" id="inval" />
-										<form className="form-group" onSubmit={register}>								
-											<Label for='passReg' style={{'margin':'0','float': 'left', 'width': '30%', 'marginRight': '0'}}>Password: </Label>
-											<input 
-												value={password}
-												onChange={e => dispatch({type: 'UPDATE_PASS', payload: e.target.value})}
-												className="form-control" 
-												type="password" 
-												placeholder="password" 
-												style={{'margin': '0', 'width': '70%'}} />
-
-											<Label for='confirm' style={{'margin': '0.4rem 0 0 0','float': 'left', 'width': '30%'}}>Password (confirm): </Label>
-											<input 
-												id='confirm'
-												value={confirm}
-												onChange={e => dispatch({type: 'UPDATE_CONFIRM', payload: e.target.value})}
-												className="form-control" 
-												type="password" 
-												placeholder="confirm password" 
-												style={{'marginTop': '0.4rem', 'width': '70%'}} />
-											<Button color="primary" type="submit" style={{'marginLeft': '86%', 'marginTop': '0.4rem'}}>Submit</Button>
+										<br />
+										<form className="form-group" onSubmit={changePass}>	
+											<span>							
+												<Label for='passReg' style={{'margin':'0','float': 'left', 'width': '35%', 'marginRight': '0'}}>Password: </Label>
+												<input 
+													value={password}
+													onChange={e => dispatch({type: 'UPDATE_PASS', payload: e.target.value})}
+													className="form-control" 
+													type="password" 
+													placeholder="password" 
+													style={{'margin': '0', 'width': '65%'}} />
+											</span>
+											<span>
+												<Label for='confirm' style={{'margin': '0.4rem 0 0 0','float': 'left', 'width': '35%'}}>Password (confirm): </Label>
+												<input 
+													id='confirm'
+													value={confirm}
+													onChange={e => dispatch({type: 'UPDATE_CONFIRM', payload: e.target.value})}
+													className="form-control" 
+													type="password" 
+													placeholder="confirm password" 
+													style={{'marginTop': '0.4rem', 'width': '65%'}} />
+											</span>
+											<Button color="primary" type="submit" style={{'float': 'right', 'marginTop': '0.4rem'}}>Submit</Button>
 										</form>
+										<br />
 										<div style={{'marginLeft': '5%'}}>
 											<Button 
 												color="link" 
@@ -115,20 +184,7 @@ function Challenge3(props) {
 													dispatch({type: 'CLEAR_ALL'}); 
 													dispatch({type: 'SET_TAB', payload: 'REGISTER'})
 											}}>register</Button>
-											<Button
-												color="link"
-												onClick={() => {
-													clear();
-													dispatch({type: 'CLEAR_ALL'}); 
-													dispatch({type: 'SET_TAB', payload: 'LOGIN'});
-											}}>login</Button>
-											<Button 
-												color="link" 
-												onClick={() => {
-													clear();
-													dispatch({type: 'CLEAR_ALL'}); 
-													dispatch({type: 'SET_TAB', payload: 'ACCOUNT'})
-											}}>account</Button>
+											{showAcc(true)}
 										</div>
 									</div>
 									<div className='text-success' id="success" />
@@ -152,14 +208,26 @@ function Challenge3(props) {
 									<hr color="lightgray"/>
 									<div className="card-text">
 										<Label for='userAcc' style={{'float':'left', 'width': '60%'}}>Username: </Label>
-										<div id='userAcc'>Placeholder</div>
+										<div id='userAcc'>{Cookies.get('user')}</div>
 										<br />
-										<Label for='since' style={{'float':'left', 'width': '60%'}}>User since: </Label>
-										<div id='since'>Placeholder</div>
+										<Label for='permissions' style={{'float':'left', 'width': '60%'}}>Permissions: </Label>
+										<div id='permissions'>{Cookies.get('user') === 'admin' ? 'God' : 'Peasant'}</div>
+										<br />
+										<Label for='logout' style={{'float':'left', 'width': '60%'}}>Log out: </Label>
+										<Button 
+											id='logout' 
+											style = {{'margin':'0.4rem 0 0 0', 'width': '20%'}}
+											color='primary'
+											onClick={ () => {
+												Cookies.remove('user', {path: ''});
+												Cookies.remove('token', {path: ''});
+												dispatch({type: 'SET_TAB', payload: 'STANDARD'});
+										}}>Logout</Button>
 										<br />
 										<Label for='reset' style={{'float': 'left', 'width': '60%'}}>Reset Password: </Label>
 										<Button 
 											id='reset' 
+											style = {{'margin':'0.4rem 0 0 0', 'width': '20%'}}
 											onClick={ () => 
 												dispatch({type: 'SET_TAB', payload: 'CHANGE_PASS'})
 										}>Reset</Button>
@@ -178,18 +246,7 @@ function Challenge3(props) {
 													dispatch({type: 'CLEAR_ALL'}); 
 													dispatch({type: 'SET_TAB', payload: 'REGISTER'})
 											}}>register</Button>
-											<Button
-												color="link"
-												onClick={() => {
-													dispatch({type: 'CLEAR_ALL'}); 
-													dispatch({type: 'SET_TAB', payload: 'LOGIN'});
-											}}>login</Button>
-											<Button 
-												color="link" 
-												onClick={() => {
-													dispatch({type: 'CLEAR_ALL'}); 
-													dispatch({type: 'SET_TAB', payload: 'ACCOUNT'})
-											}}>account</Button>
+											{showAcc(false)}
 										</div>
 									</div>
 									<div className='text-success' id="success"></div>
@@ -215,28 +272,34 @@ function Challenge3(props) {
 									<div className="card-text">
 										<div className='text-warning' id="inval" />
 										<form className="form-group" onSubmit={login}>
-											<Label for='userLog' style={{'float': 'left', 'width': '30%'}}>Username: </Label>
-											<input 
-												id='userLog'
-												value={username} 
-												className="form-control" 
-												placeholder="username" 
-												style={{'width': '70%'}} 
-												onChange= { e => dispatch({type: 'UPDATE_USER', payload: e.target.value})} 
-											/>
-											<Label for='passLog' style={{'marginTop': '0.4rem', 'float': 'left', 'width': '30%'}}>Password: </Label>
-											<input 
-												id='passLog'
-												value={password} 
-												className="form-control" 
-												type="password" 
-												placeholder="password" 
-												style={{'marginTop': '0.4rem', 'width': '70%'}} 
-												onChange={e => dispatch({type: 'UPDATE_PASS', payload: e.target.value})}
-											/>
+											<span>
+												<Label for='userLog' style={{'float': 'left', 'width': '30%'}}>Username: </Label>
+												<input 
+													id='userLog'
+													value={username} 
+													className="form-control" 
+													placeholder="username" 
+													style={{'width': '70%'}} 
+													onChange= { e => dispatch({type: 'UPDATE_USER', payload: e.target.value})} 
+												/>
+											</span>
+
+											<span>
+												<Label for='passLog' style={{'marginTop': '0.4rem', 'float': 'left', 'width': '30%'}}>Password: </Label>
+												<input 
+													id='passLog'
+													value={password} 
+													className="form-control" 
+													type="password" 
+													placeholder="password" 
+													style={{'marginTop': '0.4rem', 'width': '70%'}} 
+													onChange={e => dispatch({type: 'UPDATE_PASS', payload: e.target.value})}
+												/>
+											</span>
 											<br />
-											<Button color="primary" type="submit" style={{'marginLeft': '86%', 'marginTop': '0.4rem', 'display': 'inline-block'}}>Submit</Button>
+											<Button color="primary" type="submit" style={{'float': 'right', 'marginTop': '0.4rem'}}>Submit</Button>
 										</form>
+										<br />
 										<div style={{marginLeft: '5%'}}>
 											<Button 
 												color="link" 
@@ -252,20 +315,7 @@ function Challenge3(props) {
 													dispatch({type: 'CLEAR_ALL'}); 
 													dispatch({type: 'SET_TAB', payload: 'REGISTER'})
 											}}>register</Button>
-											<Button
-												color="link"
-												onClick={() => {
-													clear();
-													dispatch({type: 'CLEAR_ALL'}); 
-													dispatch({type: 'SET_TAB', payload: 'LOGIN'});
-											}}>login</Button>
-											<Button 
-												color="link" 
-												onClick={() => {
-													clear();
-													dispatch({type: 'CLEAR_ALL'}); 
-													dispatch({type: 'SET_TAB', payload: 'ACCOUNT'})
-											}}>account</Button>
+											{showAcc(true)}
 										</div>
 									</div>
 									<div className='text-success' id="success"></div>
@@ -291,35 +341,42 @@ function Challenge3(props) {
 									<div className="card-text">
 										<div className="text-warning" id="inval" />
 										<form className="form-group" onSubmit={register}>
-											<Label for='userReg' style={{'float': 'left', 'width': '35%'}}>Username: </Label>
-											<input 
-												id='userReg'
-												value={username}
-												onChange={e => dispatch({type: 'UPDATE_USER', payload: e.target.value})}
-												className="form-control" 
-												placeholder="username" 
-												style={{'marginTop': '0.2rem', 'width': '65%'}} />
-																					
-											<Label for='passReg' style={{'marginTop':'0.5rem','float': 'left', 'width': '35%'}}>Password: </Label>
-											<input 
-												value={password}
-												onChange={e => dispatch({type: 'UPDATE_PASS', payload: e.target.value})}
-												className="form-control" 
-												type="password" 
-												placeholder="password" 
-												style={{'marginTop': '0.4rem', 'width': '65%'}} />
+											<span>
+												<Label for='userReg' style={{'float': 'left', 'width': '35%'}}>Username: </Label>
+												<input 
+													id='userReg'
+													value={username}
+													onChange={e => dispatch({type: 'UPDATE_USER', payload: e.target.value})}
+													className="form-control" 
+													placeholder="username" 
+													style={{'marginTop': '0.2rem', 'width': '65%'}} />
+											</span>
+											
+											<span>								
+												<Label for='passReg' style={{'marginTop':'0.5rem','float': 'left', 'width': '35%'}}>Password: </Label>
+												<input 
+													value={password}
+													onChange={e => dispatch({type: 'UPDATE_PASS', payload: e.target.value})}
+													className="form-control" 
+													type="password" 
+													placeholder="password" 
+													style={{'marginTop': '0.4rem', 'width': '65%'}} />
+											</span>
 
-											<Label for='confirm' style={{'marginTop': '0.5rem','float': 'left', 'width': '35%'}}>Password (confirm): </Label>
-											<input 
-												id='confirm'
-												value={confirm}
-												onChange={e => dispatch({type: 'UPDATE_CONFIRM', payload: e.target.value})}
-												className="form-control" 
-												type="password" 
-												placeholder="confirm password" 
-												style={{'marginTop': '0.4rem', 'width': '65%'}} />
-											<Button color="primary" type="submit" style={{'marginLeft': '86%', 'marginTop': '0.4rem'}}>Submit</Button>
+											<span>
+												<Label for='confirm' style={{'marginTop': '0.5rem','float': 'left', 'width': '35%'}}>Password (confirm): </Label>
+												<input 
+													id='confirm'
+													value={confirm}
+													onChange={e => dispatch({type: 'UPDATE_CONFIRM', payload: e.target.value})}
+													className="form-control" 
+													type="password" 
+													placeholder="confirm password" 
+													style={{'marginTop': '0.4rem', 'width': '65%'}} />
+											</span>
+											<Button color="primary" type="submit" style={{'float': 'right', 'marginTop': '0.4rem'}}>Submit</Button>
 										</form>
+										<br />
 										<div style={{'marginLeft': '5%'}}>
 											<Button 
 												color="link" 
@@ -335,20 +392,7 @@ function Challenge3(props) {
 													dispatch({type: 'CLEAR_ALL'}); 
 													dispatch({type: 'SET_TAB', payload: 'REGISTER'})
 											}}>register</Button>
-											<Button
-												color="link"
-												onClick={() => {
-													clear();
-													dispatch({type: 'CLEAR_ALL'}); 
-													dispatch({type: 'SET_TAB', payload: 'LOGIN'});
-											}}>login</Button>
-											<Button 
-												color="link" 
-												onClick={() => {
-													clear();
-													dispatch({type: 'CLEAR_ALL'}); 
-													dispatch({type: 'SET_TAB', payload: 'ACCOUNT'})
-											}}>account</Button>
+											{showAcc(true)}
 										</div>
 									</div>
 									<div className='text-success' id="success" />
@@ -389,18 +433,7 @@ function Challenge3(props) {
 													dispatch({type: 'CLEAR_ALL'}); 
 													dispatch({type: 'SET_TAB', payload: 'REGISTER'})
 											}}>register</Button>
-											<Button
-												color="link"
-												onClick={() => {
-													dispatch({type: 'CLEAR_ALL'}); 
-													dispatch({type: 'SET_TAB', payload: 'LOGIN'});
-											}}>login</Button>
-											<Button 
-												color="link" 
-												onClick={() => {
-													dispatch({type: 'CLEAR_ALL'}); 
-													dispatch({type: 'SET_TAB', payload: 'ACCOUNT'})
-											}}>account</Button>
+											{showAcc(false)}
 										</div>
 									</div>
 									<div className='text-success' id="success"></div>

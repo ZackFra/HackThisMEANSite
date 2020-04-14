@@ -1,9 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
+mongoose.set('useCreateIndex', true);
 const bodyParser = require('body-parser');
 
 const Users = require('./routes/Users');
 const Users1 = require('./routes/challenge1_users');
+const Users3 = require('./routes/challenge3_users');
 const Post = require('./routes/Post');
 
 require('dotenv').config();
@@ -14,6 +16,7 @@ app.use(bodyParser.json());
 
 app.use('/Login', Users);
 app.use('/Challenge1', Users1);
+app.use('/Challenge3', Users3);
 app.use('/Forums', Post)
 
 

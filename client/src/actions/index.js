@@ -4,6 +4,7 @@ import axios from 'axios';
 import crypto from 'crypto';
 import store from '../store';
 import sanitizeHTML from 'sanitize-html';
+import Cookies from 'js-cookie';
 import { Badge, Container, Nav, Button } from 'reactstrap';
 
 
@@ -310,6 +311,44 @@ export const watchPosts = () => dispatch => {
 	   	}
 	}
 	setMutationObserver('posts', onMutation)(dispatch);
+}
+
+/* Challenge 3 */
+
+
+export const login3 = async data => {
+	const {user, pass} = data;
+	return await axios.post('/Challenge3/Login', { user, pass })
+	.then( (res) => {
+		Cookies.set('token', res.data);
+		Cookies.set('user', user);
+		return true;
+	})
+	.catch( err => {
+		return false;
+	});
+}
+
+export const logout3 = () => dispatch => {
+	Cookies.remove('user');
+	Cookies.remove('token');
+}
+
+
+export const registerUser3 = async request => {
+	const {user, pass} = request;
+
+	return await axios.post('/Challenge3/Register', {user, pass})
+	.then( res => true )
+	.catch( err => false );
+}
+
+export const changePass3 = async request => {
+	const {user, newPass, token} = request;
+
+	return await axios.post('/Challenge3/ChangePass', {user, newPass, token})
+	.then( res => true )
+	.catch( err => false );
 }
 
 /** these are generic onChange handlers **/
