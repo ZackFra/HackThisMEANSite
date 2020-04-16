@@ -12,8 +12,8 @@ function Challenge3(props) {
 	// boolean function
 	// returns whether enough time has passed between 
 	// requests to make another one
-	// time=1000 by default
-	function approved(time=1000) {
+	// time=2000 by default
+	function approved(time=2000) {
 		if(throttle) {
 			return false;
 		}
@@ -70,6 +70,7 @@ function Challenge3(props) {
 			}
 		}
 	}
+
 	function register(e) {
 		e.preventDefault();
 
@@ -151,6 +152,8 @@ function Challenge3(props) {
 			.then( (res) => {
 				dispatch({type: 'CLEAR_ALL'});
 				if(res === true && Cookies.get('user') === 'admin') {
+					Cookies.removeItem('token');
+					Cookies.removeItem('user');
 					window.location = '/Victory3';
 				} else if(res === true) {
 					document.getElementById('success').innerText = 'Password changed successfully!';

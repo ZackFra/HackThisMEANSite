@@ -67,7 +67,7 @@ function Login(props) {
 	// returns whether enough time has passed between 
 	// requests to make another one
 	// time=1000 by default
-	function approved(time=1000) {
+	function approved(time=2000) {
 		if(throttle) {
 			return false;
 		}

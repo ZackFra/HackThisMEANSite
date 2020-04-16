@@ -1,0 +1,1 @@
+export default { jwtseed: "2278951392" }

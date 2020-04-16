@@ -15,9 +15,11 @@ import {
 import { verify } from 'jsonwebtoken';
 import { connect } from 'react-redux';
 import { logout } from '../actions/';
+import env from '../.env';
 
 function Navi(props) {
   const { jwtseed } = process.env;
+  const { user } = localStorage;
   
   const [isOpen, setIsOpen] = useState(false);
 
@@ -32,15 +34,16 @@ function Navi(props) {
   // generates either login or logout button
   const setLog = () => {
     const token = localStorage.getItem('token');
-    console.log(jwtseed);
-    if(token && verify(token, jwtseed)) {
+    try { 
+      verify(token, user + env.jwtseed);
       return (
         <NavLink onClick={logout} href='/'>
           Log out
         </NavLink>
      ); 
+    } catch(e) {
+      return <NavLink href='/Login'>Login</NavLink>
     }
-    return <NavLink href='/Login'>Login</NavLink>
   }
   
 

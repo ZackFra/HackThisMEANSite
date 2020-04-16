@@ -1,5 +1,7 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
+import { verify } from 'jsonwebtoken';
+import env from './.env';
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -14,6 +16,7 @@ import Victory1 from './components/challenges/Victory1';
 import Challenge2 from './components/challenges/Challenge2';
 import Victory2 from './components/challenges/Victory2';
 import Challenge3 from './components/challenges/Challenge3';
+import Victory3 from './components/challenges/Victory3';
 import Navi from './components/Navi';
 import OffTopic from './components/subforums/OffTopic';
 import Challenge0Forum from './components/subforums/Challenge0Forum';
@@ -22,23 +25,28 @@ import Challenge2Forum from './components/subforums/Challenge2Forum';
 import Login from './components/Login'
 import CreatePost from './components/CreatePost';
 
+
+
 function App(props) {
   
   // sets routes based on login authentication
   function setConditionals() {
-    const user = localStorage.getItem('user');
-    const token = localStorage.getItem('token');
+
+    const { token, user} = localStorage;
     // need keys because arrays are rendered as lists
-    if(!user || !token)
-      return [
-        <Route key="LoginRoute" exact path='/Login' component={Login} />, 
-        <Redirect key="createPostRedirect" from='/CreatePost' to='/Home' />
-      ];
-    else 
+    try { 
+      verify(token, user + env.jwtseed);
       return [
         <Redirect key="loginRedirect" from='/Login' to='/Home' />,
         <Route key="createPostRoute" exact path='/CreatePost' component={CreatePost} />
       ];
+    }
+    catch(e) { 
+      return [
+        <Route key="LoginRoute" exact path='/Login' component={Login} />, 
+        <Redirect key="createPostRedirect" from='/CreatePost' to='/Home' />
+      ];
+    }
   }
 
   return (
@@ -56,6 +64,7 @@ function App(props) {
             <Route exact path='/Challenge2' component={Challenge2} />
             <Route exact path='/Victory2' component={Victory2} />
             <Route exact path='/Challenge3' component={Challenge3} />
+            <Route exact path='/Victory3' component={Victory3} />
 
             <Route exact path='/OffTopic' component={OffTopic} />
             <Route exact path='/Challenge0Forum' component={Challenge0Forum} />
