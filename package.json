@@ -18,9 +18,9 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ZackFra/test_forum/issues"
+    "url": "https://github.com/ZackFra/HackThisMEANSite/issues"
   },
-  "homepage": "https://github.com/ZackFra/test_forum#readme",
+  "homepage": "https://github.com/ZackFra/HackThisMEANSite#readme",
   "dependencies": {
     "axios": "^0.19.2",
     "dotenv": "^8.2.0",
