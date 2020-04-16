@@ -9,19 +9,27 @@ import { Badge, Container, Nav, Button } from 'reactstrap';
 
 
 // general login
-export const login = data => async dispatch => {
+export const login = async data  => {
 	const {user, pass} = data;
-	await axios.post('/Login/Authenticate', { user, pass })
+	return await axios.post('/Login/Authenticate', { user, pass })
 	.then( (res) => {
 		localStorage.setItem('token', res.data);
 		localStorage.setItem('user', user);
+		return true;
 	})
-	.catch( err => console.log(err));
+	.catch( err => false );
 }
 
 export const logout = () => dispatch => {
 	localStorage.removeItem('token');
 	localStorage.removeItem('user');
+}
+
+export async function register(data) {
+	const {user, pass} = data;
+	return await axios.post('/Login/Register', {user, pass})
+	.then( res => true )
+	.catch( err => false );
 }
 
 /** Forums **/
@@ -319,7 +327,8 @@ export const watchPosts = () => dispatch => {
 export const login3 = async data => {
 	const {user, pass} = data;
 	return await axios.post('/Challenge3/Login', { user, pass })
-	.then( (res) => {
+	.then( res => {
+		console.log(res);
 		Cookies.set('token', res.data);
 		Cookies.set('user', user);
 		return true;

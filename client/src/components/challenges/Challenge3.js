@@ -1,14 +1,27 @@
 import React from 'react';
 import { Container, Button, Label } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { registerUser3, login3, changePass3 } from '../../actions';
+import { registerUser3, login3, changePass3, approved } from '../../actions';
 import { verify } from 'jsonwebtoken';
 import Cookies from 'js-cookie';
 
 function Challenge3(props) {
-	const { tab, username, password, confirm } = useSelector( state => state.challenge3 );
+	const { tab, username, password, confirm, throttle } = useSelector( state => state.challenge3 );
 	const dispatch = useDispatch();
 
+	// boolean function
+	// returns whether enough time has passed between 
+	// requests to make another one
+	// time=1000 by default
+	function approved(time=1000) {
+		if(throttle) {
+			return false;
+		}
+
+		dispatch({type: 'TOGGLE_THROTTLE'});
+		setTimeout(() => dispatch({type: 'TOGGLE_THROTTLE'}), time);
+		return true;
+	}
 
 	function showAcc(needsClearing) {
 		const token = Cookies.get('token');
@@ -19,6 +32,7 @@ function Challenge3(props) {
 					<Button
 						color="link"
 						onClick={() => {
+							clear();
 							dispatch({type: 'CLEAR_ALL'}); 
 							dispatch({type: 'SET_TAB', payload: 'ACCOUNT'});
 					}}>account</Button>
@@ -39,6 +53,7 @@ function Challenge3(props) {
 					<Button
 						color="link"
 						onClick={() => {
+							clear();
 							dispatch({type: 'CLEAR_ALL'}); 
 							dispatch({type: 'SET_TAB', payload: 'LOGIN'});
 					}}>login</Button>
@@ -57,6 +72,12 @@ function Challenge3(props) {
 	}
 	function register(e) {
 		e.preventDefault();
+
+		if(!approved(throttle)) {
+			document.getElementById('inval').innerText = 'Too many requests at once. Wait a moment and try again.\n\n';
+			return;
+		}
+
 		let re = /\s/;
 		if(password === '') {
 			document.getElementById('inval').innerText='Password cannot be blank.\n\n';
@@ -76,8 +97,9 @@ function Challenge3(props) {
 			.then( res => {
 				if(res === true) {
 					window.location.reload();
+				} else {
+					document.getElementById('inval').innerText='User name is taken.\n\n';
 				}
-				document.getElementById('inval').innerText='User name is taken.\n\n';
 			});
 		}
 	}
@@ -85,12 +107,16 @@ function Challenge3(props) {
 	function login(e) {
 		e.preventDefault();
 
+		if(!approved(throttle)) {
+			document.getElementById('inval').innerText = 'Too many requests at once. Wait a moment and try again.\n\n';
+			return;
+		}
+
 		login3({user: username, pass: password})
 		.then( res => {
 			if(res === true) {
 				window.location.reload();
 			} else {
-				console.log(res);
 				document.getElementById('inval').innerText = 'Incorrect password.\n\n';
 			}
 		});
@@ -99,10 +125,17 @@ function Challenge3(props) {
 	// clear any errors
 	function clear() {
 		document.getElementById('inval').innerText = '';
+		document.getElementById('success').innerText = '';
 	}
 
 	function changePass(e) {
 		e.preventDefault();
+
+		if(!approved()) {
+			document.getElementById('inval').innerText = 'Too many requests at once. Wait a moment and try again.\n\n';
+			return;
+		}
+
 
 		let re = /\s/;
 		if(password === '') {

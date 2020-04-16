@@ -7,10 +7,12 @@ import passReducer from './passReducer';
 import userReducer from './userReducer';
 import forumReducer from './forumReducer';
 import createPostReducer from './createPostReducer';
+import loggedReducer from './loggedReducer';
 
 export default combineReducers({
 	user: userReducer,
 	pass: passReducer,
+	login: loggedReducer,
 	forum: forumReducer,
 	createPost: createPostReducer,
 	challenge0: challenge0Reducer,

@@ -45,10 +45,16 @@ router.post('/Authenticate', (req, res) => {
 router.post('/Register', (req, res) => {
 	const {user, pass, email} = req.body;
 	const {hash, useed, pseed, eseed} = process.env;
+	const re = /\s/;
+	
 	if(!user || !pass) {
 		res.status(500).json('Invalid parameters: Must have both user and pass');
 	} else if(typeof(user) !== 'string' || typeof(pass) !== 'string') {
 		res.status(500).json('Invalid parameters: Only accepts strings');
+	} else if(user.length < 8 || pass.length < 8) {
+		res.status(500).json('Invalid parameters: user and pass must be 8 or more characters');
+	} else if(re.test(user) || re.test(pass)) {
+		res.status(500).json('Invalid parameters: may not have spaces in username or password');
 	}
 
 	const userHash = crypto

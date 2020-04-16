@@ -3,6 +3,7 @@ let initialState = {
 	password: '',
 	confirm: '',
 	username: '',
+	throttle: false
 }
 
 const challenge3Reducer = (state = initialState, action) => {
@@ -17,6 +18,8 @@ const challenge3Reducer = (state = initialState, action) => {
 			return {...state, username: action.payload};
 		case 'CLEAR_ALL':
 			return {...state, username: '', password: '', confirm: ''};
+		case 'TOGGLE_THROTTLE':
+			return {...state, throttle: !state.throttle};
 		default: 
 			return state;
 	}

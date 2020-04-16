@@ -12,10 +12,12 @@ import {
   DropdownItem,
   NavbarText
 } from 'reactstrap';
+import { verify } from 'jsonwebtoken';
 import { connect } from 'react-redux';
 import { logout } from '../actions/';
 
 function Navi(props) {
+  const { jwtseed } = process.env;
   
   const [isOpen, setIsOpen] = useState(false);
 
@@ -29,16 +31,16 @@ function Navi(props) {
 
   // generates either login or logout button
   const setLog = () => {
-    const user = localStorage.getItem('user');
     const token = localStorage.getItem('token');
-    if(!user && !token) {
-      return <NavLink href='/Login'>Login</NavLink> 
+    console.log(jwtseed);
+    if(token && verify(token, jwtseed)) {
+      return (
+        <NavLink onClick={logout} href='/'>
+          Log out
+        </NavLink>
+     ); 
     }
-    return (
-      <NavLink onClick={logout} href='/'>
-        Log out
-      </NavLink>
-    );
+    return <NavLink href='/Login'>Login</NavLink>
   }
   
 

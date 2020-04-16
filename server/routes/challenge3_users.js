@@ -14,21 +14,27 @@ router.post('/Login', (req, res) => {
 
 	if(!user || !pass) {
 		res.status(500).json('bad request');
+		return ;
 	} else if(typeof user !== 'string' || typeof pass != 'string') {
 		res.status(500).json('bad request');
+		return ;
 	}
 	
-	User.find({user, pass}, (err, data) => {
+	User.find({user: {$eq: user}, pass: {$eq: pass}}, (err, data) => {
 		if(err) {
 			res.status(500).json(err);
 		} else {
-			jwt.sign({user}, 'secret', (err, token) => {
-				if(err) {
-					res.status(500).json('bad request');
-				}
-
-				res.status(200).json(token);
-			});
+			if( data.length === 1 ) { 
+				jwt.sign({user}, 'secret', (err, token) => {
+					if(err) {
+						res.status(500).json('bad request');
+					} else {
+						res.status(200).json(token);
+					}
+				});
+			} else {
+				res.status(404).json('User not found');
+			}
 		}
 	});
 });
@@ -41,6 +47,7 @@ router.post('/Register', (req, res) => {
 
 	User.create({user, pass}, (err, data) => {
 		if(err) {
+			console.log(err);
 			res.status(500).json(false);
 		}
 
