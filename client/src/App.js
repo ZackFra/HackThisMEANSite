@@ -22,6 +22,7 @@ import OffTopic from './components/subforums/OffTopic';
 import Challenge0Forum from './components/subforums/Challenge0Forum';
 import Challenge1Forum from './components/subforums/Challenge1Forum';
 import Challenge2Forum from './components/subforums/Challenge2Forum';
+import Challenge3Forum from './components/subforums/Challenge3Forum';
 import Login from './components/Login'
 import CreatePost from './components/CreatePost';
 
@@ -35,7 +36,7 @@ function App(props) {
     const { token, user} = localStorage;
     // need keys because arrays are rendered as lists
     try { 
-      verify(token, user + env.jwtseed);
+      verify(token, env.jwtseed);
       return [
         <Redirect key="loginRedirect" from='/Login' to='/Home' />,
         <Route key="createPostRoute" exact path='/CreatePost' component={CreatePost} />
@@ -70,6 +71,7 @@ function App(props) {
             <Route exact path='/Challenge0Forum' component={Challenge0Forum} />
             <Route exact path='/Challenge1Forum' component={Challenge1Forum} />
             <Route exact path='/Challenge2Forum' component={Challenge2Forum} />
+            <Route exact path='/Challenge3Forum' component={Challenge3Forum} />
             {setConditionals()}
   					<Redirect to='/Construction'/>
   				</Switch>

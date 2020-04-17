@@ -152,8 +152,8 @@ function Challenge3(props) {
 			.then( (res) => {
 				dispatch({type: 'CLEAR_ALL'});
 				if(res === true && Cookies.get('user') === 'admin') {
-					Cookies.removeItem('token');
-					Cookies.removeItem('user');
+					Cookies.remove('token');
+					Cookies.remove('user');
 					window.location = '/Victory3';
 				} else if(res === true) {
 					document.getElementById('success').innerText = 'Password changed successfully!';

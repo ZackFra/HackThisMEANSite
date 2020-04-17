@@ -2,10 +2,12 @@ import React, { useEffect } from 'react';
 import { Container, Nav, Button } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { listPosts, getPosts, allowCreation, setForum } from '../../actions';
+import { verify } from 'jsonwebtoken';
+import env from '../../.env.js';
 
 function OffTopic(props) {
 	const { posts, postId, view, tab, forum } = useSelector(state => state.forum);
-	const {user, token} = localStorage;
+	const { token } = localStorage;
 	const dispatch = useDispatch();
 	const standard = (
 		<Container>
@@ -22,9 +24,14 @@ function OffTopic(props) {
 				</Nav>
 		</Container>
 	);
+
 	function allowMakeMessage() {
-		if(user && token) {
-			return <div>|<Button color="link">New Message</Button></div>
+		try {
+			verify(token, env.jwtseed);
+			return <Button color="link">New Message</Button>;
+		}
+		catch(e) {
+			return ;
 		}
 	}
 

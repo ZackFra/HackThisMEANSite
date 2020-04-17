@@ -35,7 +35,7 @@ function Navi(props) {
   const setLog = () => {
     const token = localStorage.getItem('token');
     try { 
-      verify(token, user + env.jwtseed);
+      verify(token, env.jwtseed);
       return (
         <NavLink onClick={logout} href='/'>
           Log out

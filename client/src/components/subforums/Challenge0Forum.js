@@ -2,10 +2,12 @@ import React, { useEffect } from 'react';
 import { Container, Nav, Button } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { listPosts, getPosts, allowCreation, setForum } from '../../actions';
+import { verify } from 'jsonwebtoken';
+import env from '../../.env.js';
 
 function Challenge0Forum(props) {
 	const { posts, postId, view, tab, forum } = useSelector(state => state.forum);
-	const { user, token } = localStorage;
+	const { token } = localStorage;
 	const dispatch = useDispatch();
 	const standard = (
 		<Container>
@@ -24,8 +26,12 @@ function Challenge0Forum(props) {
 	);
 
 	function allowMakeMessage() {
-		if(user && token) {
-			return <div>|<Button color="link">New Message</Button></div>
+		try {
+			verify(token, env.jwtseed);
+			return <Button color="link">New Message</Button>;
+		}
+		catch(e) {
+			return ;
 		}
 	}
 
@@ -60,9 +66,7 @@ function Challenge0Forum(props) {
 										dispatch({type: 'SET_TAB', payload: 'STANDARD'})
 										getPosts(forum.toUpperCase())(dispatch);
 									}}>
-									Back
-									</Button>
-									{allowMakeMessage()}
+									Back</Button>{allowMakeMessage()}
 									<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
 										{posts[postId].content.map(message => <div key={message} style={{'width': '100%', 'height': '4rem', 'backgroundColor':'cyan'}}>{message}</div>)}
 									</div>

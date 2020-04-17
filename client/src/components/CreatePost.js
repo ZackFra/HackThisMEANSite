@@ -2,6 +2,8 @@ import React from 'react';
 import { Container } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateMsg, updateTitle, updateForum, createPost } from '../actions';
+import { verify } from 'jsonwebtoken';
+import env from '../.env.js';
 
 function CreatePost(props) {
 	const { message, title, forum } = useSelector(state => state.createPost);

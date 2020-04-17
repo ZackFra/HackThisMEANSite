@@ -49,9 +49,9 @@ router.post('/Register', (req, res) => {
 		if(err) {
 			console.log(err);
 			res.status(500).json(false);
+		} else {
+			res.status(200).json(true);
 		}
-
-		res.status(200).json(true);
 	});
 });
 
@@ -64,11 +64,12 @@ router.post('/ChangePass', (req, res) => {
 		if(err) {
 			console.log(err);
 			res.status(500).json(false);
-		}
+		} else {
 
-		User.findOneAndUpdate( {user: {$eq: user}}, {pass: newPass})
-		.then( data => res.status(200).json(true) )
-		.catch( err => res.status(500).json(false) );
+			User.findOneAndUpdate( {user: {$eq: user}}, {pass: newPass})
+			.then( data => res.status(200).json(true) )
+			.catch( err => res.status(500).json(false) );
+		}
 	});
 })
 

@@ -6,6 +6,8 @@ import store from '../store';
 import sanitizeHTML from 'sanitize-html';
 import Cookies from 'js-cookie';
 import { Badge, Container, Nav, Button } from 'reactstrap';
+import { verify } from 'jsonwebtoken';
+import env from '../.env';
 
 
 // general login
@@ -110,16 +112,28 @@ export const listPosts = postType => {
 }
 
 export const allowCreation = () => {
-	const {user, token} = localStorage;
-	if(user && token) {
+	const { token } = localStorage;
+	try {
+		verify(token, env.jwtseed);
 		return <a href="/CreatePost">Create Post</a>
+	} catch(e) {
+		return;
 	}
 }
 
 export const createPost = () => {
-	const {user, token} = localStorage;
+	const { token } = localStorage;
 	const {message, title, forum} = store.getState().createPost;
+	let user = '';
 
+	try {
+		user = verify(token, env.jwtseed).user;
+	} 
+	catch(e) {
+		return false;
+	}
+
+	// generates a list of valid forum options
 	let validForums = ['OFFTOPIC'];
 	for(let i = 0; i <= 10; i++)
 		validForums.push(`CHALLENGE${i}`);

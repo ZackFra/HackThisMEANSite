@@ -14,7 +14,7 @@ function Challenge0Forum(props) {
 				<Nav>
 					<div className="card" style={{width: '100%', margin: 'auto'}}>
 						<div className="card-body bg-light text-dark">
-							<h1 className="card-title pb-2 mt-4 border-bottom">Forum: Challenge 1</h1>
+							<h1 className="card-title pb-2 mt-4 border-bottom">Forum: Challenge 3</h1>
 							{allowCreation()}
 							<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
 								
@@ -43,7 +43,7 @@ function Challenge0Forum(props) {
 						<Nav>
 							<div className="card" style={{width: '100%', margin: 'auto'}}>
 								<div className="card-body bg-light text-dark">
-									<h1 className="card-title pb-2 mt-4 border-bottom">Forum: Challenge 1</h1>
+									<h1 className="card-title pb-2 mt-4 border-bottom">Forum: Challenge 3</h1>
 									{allowCreation()}
 									<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
 										{listPosts(forum)}			
@@ -64,7 +64,8 @@ function Challenge0Forum(props) {
 									<Button color="link" onClick= {() => {
 										dispatch({type: 'SET_TAB', payload: 'STANDARD'})
 										getPosts(forum.toUpperCase())(dispatch);
-									}}>Back</Button>{allowMakeMessage()}
+									}}>
+									Back</Button>{allowMakeMessage()}
 									<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
 										{posts[postId].content.map(message => <div key={message} style={{'width': '100%', 'height': '4rem', 'backgroundColor':'cyan'}}>{message}</div>)}
 									</div>
@@ -81,7 +82,7 @@ function Challenge0Forum(props) {
 
 	useEffect( () => {
 		dispatch({type: 'SET_TAB', payload: 'STANDARD'});
-		setForum('CHALLENGE1');
+		setForum('CHALLENGE3');
 	}, [])
 
 	return view || standard;
