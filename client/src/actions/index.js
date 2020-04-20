@@ -196,6 +196,7 @@ export const login_challenge0 = data => dispatch => {
 // challenge 1 login
 export const login_challenge1 = data => dispatch => {
 	const {pass} = data;
+	
 	let hash = crypto
 		.createHash('sha256')
 		.update(pass)
@@ -215,7 +216,7 @@ export const login_challenge1 = data => dispatch => {
 			const ft = document.querySelector('#invalid');
 			const pass = document.getElementById('password');
 			ft.innerText="Incorrect Password";
-			pass.value = '';
+			dispatch({type: 'UPDATE_PASS', payload: ''});
 			dispatch({type: 'LOGIN_FAIL'});
 		}
 		console.log({"url": res.config.url, "method": res.config.method, "data": res.config.data});		
