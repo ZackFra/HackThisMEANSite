@@ -25,6 +25,7 @@ import Challenge2Forum from './components/subforums/Challenge2Forum';
 import Challenge3Forum from './components/subforums/Challenge3Forum';
 import Login from './components/Login'
 import CreatePost from './components/CreatePost';
+import PostMessage from './components/PostMessage';
 
 
 
@@ -34,12 +35,12 @@ function App(props) {
   function setConditionals() {
 
     const { token, user} = localStorage;
-    // need keys because arrays are rendered as lists
     try { 
       verify(token, env.jwtseed);
       return [
         <Redirect key="loginRedirect" from='/Login' to='/Home' />,
-        <Route key="createPostRoute" exact path='/CreatePost' component={CreatePost} />
+        <Route key="createPostRoute" exact path='/CreatePost' component={CreatePost} />,
+        <Route key="postMessageRoute" exact path='/PostMessage' component={PostMessage} />
       ];
     }
     catch(e) { 

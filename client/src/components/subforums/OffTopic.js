@@ -25,10 +25,15 @@ function OffTopic(props) {
 		</Container>
 	);
 
-	function allowMakeMessage() {
+	function allowMakeMessage(post) {
 		try {
 			verify(token, env.jwtseed);
-			return <Button color="link">New Message</Button>;
+			return (
+				<Button color="link" onClick = {() => {
+					localStorage.setItem('post', posts[postId]._id);
+					window.location='/PostMessage';
+				}}>New Message</Button>
+			);
 		}
 		catch(e) {
 			return ;
@@ -68,7 +73,7 @@ function OffTopic(props) {
 									}}>
 									Back
 									</Button>
-									{allowMakeMessage()}
+									{allowMakeMessage(posts[postId])}
 									<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
 										{posts[postId].content.map(message => <div key={message} style={{'width': '100%', 'height': '4rem', 'backgroundColor':'cyan'}}>{message}</div>)}
 									</div>

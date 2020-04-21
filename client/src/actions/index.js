@@ -156,6 +156,31 @@ export const createPost = () => {
 	.catch( err => false);
 }
 
+export function postMessage() {
+	const { token } = localStorage;
+	const {message, post} = store.getState().postMessage;
+	let user = '';
+
+	// if invalid user, return false
+	try {
+		user = verify(token, env.jwtseed).user;
+	} 
+	catch(e) {
+		return false;
+	}
+
+	const request = {
+		user: user,
+		content: message,
+		id: post,
+		token: token,
+	}
+
+	return axios.post('/Forums/UpdatePost', request)
+	.then( res => true )
+	.catch( err => false )
+}
+
 export const updateForum = () => dispatch => {
 	const payload = document.querySelector('select').value;
 	dispatch({type: 'UPDATE_FORUM', payload});

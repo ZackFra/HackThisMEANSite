@@ -46,10 +46,13 @@ router.post('/UpdatePost', (req, res) => {
 	const { id, user, content, token} = req.body;
 	if(typeof id !== 'string' || typeof user !== 'string' || typeof content !== 'string' || typeof token !== 'string') {
 		res.status(500).json('bad request');
+		console.log(id, user, content, token);
+		return ;
 	}
 
-	jwt.verify(token, user + jwtseed, (err, data) => {
+	jwt.verify(token, jwtseed, (err, data) => {
 		if(err) {
+			console.log(err);
 			res.status(500).json('bad request');
 		} else {
 			Post.findByIdAndUpdate(id, {$push: {content: content}})
