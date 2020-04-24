@@ -6,6 +6,7 @@ import { verify } from 'jsonwebtoken';
 import uuid4 from 'uuid4';
 import env from '../../.env.js';
 
+// generic Forum component
 function Forum(props) {
 	const { posts, postId, view, tab } = useSelector(state => state.forum);
 	const { message } = useSelector(state => state.postMessage);
@@ -13,6 +14,9 @@ function Forum(props) {
 	const { token } = localStorage;
 	const { forum, forumTitle } = props;
 	const dispatch = useDispatch();
+
+	// standard view, it takes a second for the initial get request
+	// so while the user waits, this jsx is rendered.
 	const standard = (
 		<Container>
 				<Nav>
@@ -29,6 +33,7 @@ function Forum(props) {
 		</Container>
 	);
 
+	// allow post creation if user logged in
 	function allowCreation() {
 		const { token } = localStorage;
 		try {
@@ -65,6 +70,7 @@ function Forum(props) {
 		}
 	}
 
+	// submit handler for creating a post
 	async function createPostSubmit(e) {
 		e.preventDefault();
 
@@ -90,6 +96,7 @@ function Forum(props) {
 		}
 	}
 
+	// if user logged in, allow them to create message
 	function allowMakeMessage(post) {
 		try {
 			verify(token, env.jwtseed);
