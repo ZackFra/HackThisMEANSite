@@ -7,6 +7,7 @@ import sanitizeHTML from 'sanitize-html';
 import Cookies from 'js-cookie';
 import { Badge, Container, Nav, Button } from 'reactstrap';
 import { verify } from 'jsonwebtoken';
+import uuid4 from 'uuid4';
 import env from '../.env';
 
 
@@ -66,7 +67,7 @@ export const goToPosts = () => {
 							setView(undefined);
 						}}>New Message</Button>
 						<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
-							{posts[postId].content.map(message => <div key={message} style={{'width': '100%', 'height': '4rem', 'backgroundColor':'cyan'}}>{message}</div>)}
+							{posts[postId].content.map(message => <div key={uuid4()} style={{'width': '100%', 'height': '4rem', 'backgroundColor':'cyan'}}>{message}</div>)}
 						</div>
 					</div>
 				</div>
@@ -86,19 +87,18 @@ export const listPosts = postType => {
 	const { posts, forum } = store.getState().forum;
 
 	const styles = {'padding': '1rem', 'margin': '0.1rem', 'width': '95%', 'textAlign': 'left', 'backgroundColor': 'white', 'border': '2px solid black'};
-	getPosts(postType)(dispatch);
 
 	if(posts.length > 0) {
 		let i = -1;
 		const postsToRender = posts.map(post => {
 			i++;
 			return (
-				<Badge key={'post' + i} id={i} href='#' 
+				<Badge key={uuid4()} id={i} href='#' 
 				onClick ={e => {
 					setPostId(e.target.id);
 					dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
+					dispatch({type: 'SET_POST', payload: post._id});
 					setView(goToPosts());
-					//clearPosts();
 				}} 
 				className='text-dark' style={styles}>
 					{post.title} ~ by {post.author} at {post.date}
@@ -121,9 +121,9 @@ export const allowCreation = () => {
 	}
 }
 
-export const createPost = () => {
+export const createPost = forum => {
 	const { token } = localStorage;
-	const {message, title, forum} = store.getState().createPost;
+	const {initmessage, title} = store.getState().createPost;
 	let user = '';
 
 	try {
@@ -138,13 +138,13 @@ export const createPost = () => {
 	for(let i = 0; i <= 10; i++)
 		validForums.push(`CHALLENGE${i}`);
 
-	if(message === '' || title === '' || !validForums.includes(forum)) {
+	if(initmessage === '' || title === '' || !validForums.includes(forum)) {
 		return false;
 	}
 
 	const request = {
 		title: title,
-		content: message,
+		content: initmessage,
 		date: (new Date()).toGMTString(),
 		author: user,
 		forum: forum,
@@ -194,9 +194,6 @@ export const setPostId = id => {
 	store.dispatch({type: 'SET_POST_ID', payload: id});
 }
 
-export const clearPosts = () => {
-	store.dispatch({type: 'CLEAR_POSTS'});
-}
 
 /** challenges **/
 

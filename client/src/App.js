@@ -24,8 +24,6 @@ import Challenge1Forum from './components/subforums/Challenge1Forum';
 import Challenge2Forum from './components/subforums/Challenge2Forum';
 import Challenge3Forum from './components/subforums/Challenge3Forum';
 import Login from './components/Login'
-import CreatePost from './components/CreatePost';
-import PostMessage from './components/PostMessage';
 
 
 
@@ -39,14 +37,11 @@ function App(props) {
       verify(token, env.jwtseed);
       return [
         <Redirect key="loginRedirect" from='/Login' to='/Home' />,
-        <Route key="createPostRoute" exact path='/CreatePost' component={CreatePost} />,
-        <Route key="postMessageRoute" exact path='/PostMessage' component={PostMessage} />
       ];
     }
     catch(e) { 
       return [
         <Route key="LoginRoute" exact path='/Login' component={Login} />, 
-        <Redirect key="createPostRedirect" from='/CreatePost' to='/Home' />
       ];
     }
   }

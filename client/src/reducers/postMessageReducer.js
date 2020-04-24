@@ -1,11 +1,9 @@
-const postMessageReducer = (state = {message: '', title: '', post: ''}, action) => {
+const postMessageReducer = (state = {message: '', post: ''}, action) => {
 	switch(action.type) {
 		case 'SET_POST':
 			return {...state, post: action.payload};
-		case 'UPDATE_MESSAGE':
+		case 'UPDATE_POST_MESSAGE':
 			return {...state, message: action.payload};
-		case 'UPDATE_TITLE':
-			return {...state, title: action.payload};
 		default:
 			return state;
 	}

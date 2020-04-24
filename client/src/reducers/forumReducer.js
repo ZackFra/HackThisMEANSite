@@ -1,4 +1,12 @@
-const forumReducer = (state = {posts: [], forum: undefined, postId: undefined, viewPost: undefined, tab: undefined}, action) => {
+const init = {
+	posts: [], 
+	forum: undefined, 
+	postId: undefined, 
+	viewPost: undefined, 
+	tab: undefined
+};
+
+const forumReducer = (state = init, action) => {
 	switch(action.type) {
 		case 'GET_POSTS': 
 			return {...state, posts: action.payload};

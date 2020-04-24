@@ -45,8 +45,8 @@ router.post('/UpdatePost', (req, res) => {
 	const { jwtseed } = process.env;
 	const { id, user, content, token} = req.body;
 	if(typeof id !== 'string' || typeof user !== 'string' || typeof content !== 'string' || typeof token !== 'string') {
-		res.status(500).json('bad request');
 		console.log(id, user, content, token);
+		res.status(500).json('bad request');
 		return ;
 	}
 
@@ -57,7 +57,11 @@ router.post('/UpdatePost', (req, res) => {
 		} else {
 			Post.findByIdAndUpdate(id, {$push: {content: content}})
 			.then( data => res.status(200).json({success: true}))
-			.catch( err => res.status(500).json('bad request'));
+			.catch( err => {
+				console.log('am I here?');
+				console.log(id, user, content, token);
+				res.status(500).json('bad request');
+			});
 		}
 	});
 });
