@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Container } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { login_challenge1, updatePass, clearPass } from '../../actions';

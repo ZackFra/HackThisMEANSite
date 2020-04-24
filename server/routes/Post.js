@@ -19,6 +19,9 @@ router.post('/CreatePost', (req, res) => {
 		res.status(500).json('bad request');
 	}
 
+	// verifies login credentials
+	// if varified, attempts to create post
+	// if created, return the post
 	const { jwtseed } = process.env;
 	jwt.verify(token, jwtseed, (err, data) => {
 		if(err) {
@@ -28,7 +31,7 @@ router.post('/CreatePost', (req, res) => {
 				if(err) {
 					res.status(500).json('bad request');
 				} else {
-					res.status(200).json({posted: true});
+					res.status(200).json(data);
 				}
 			});
 		}

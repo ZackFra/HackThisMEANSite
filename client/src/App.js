@@ -41,7 +41,7 @@ function App(props) {
   // sets routes based on login authentication
   function setConditionals() {
 
-    const { token, user} = localStorage;
+    const { token } = localStorage;
     try { 
       verify(token, env.jwtseed);
       return [

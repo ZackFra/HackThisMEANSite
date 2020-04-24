@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Container, Nav, Button } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { listPosts, getPosts, setForum, postMessage, createPost } from '../../actions';
+import { listPosts, getPosts, postMessage, createPost } from '../../actions';
 import { verify } from 'jsonwebtoken';
 import uuid4 from 'uuid4';
 import env from '../../.env.js';
@@ -76,7 +76,7 @@ function Forum(props) {
 
 		// if createPost fails
 		const created = await createPost(forum);
-		if(!created) {
+		if(created === false) {
 			const inval = document.querySelector('[id=invalid]');
 
 			if(title === '') {
@@ -87,12 +87,12 @@ function Forum(props) {
 				inval.innerText = 'Internal server error. Try again later.';
 			}
 		} else {
-			dispatch({type: 'SET_TAB', payload: 'STANDARD'});
+			posts.unshift(created);
+			dispatch({type: 'SET_POST', payload: created._id});
+			dispatch({type: 'SET_POST_ID', payload: 0});
+			dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
 			dispatch({type: 'UPDATE_TITLE', payload: ''});
 			dispatch({type: 'UPDATE_CREATE_MESSAGE', payload: ''})
-
-			// @ todo fix so I don't need another get request
-			getPosts(forum)(dispatch);
 		}
 	}
 
@@ -218,7 +218,8 @@ function Forum(props) {
 	useEffect( () => {
 		dispatch({type: 'SET_TAB', payload: 'STANDARD'});
 		getPosts(forum)(dispatch);
-		setInterval(getPosts(forum)(dispatch), 10000);
+		// @todo figure out why setInterval isn't working
+		//setInterval(getPosts(forum)(dispatch), 5000);
 	}, [])
 
 	return view || standard;

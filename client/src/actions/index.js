@@ -84,27 +84,27 @@ export const setView = jsx => {
 // lists all posts in a certain forum
 export const listPosts = postType => {
 	const dispatch = store.dispatch;
-	const { posts, forum } = store.getState().forum;
+	const { posts } = store.getState().forum;
 
 	const styles = {'padding': '1rem', 'margin': '0.1rem', 'width': '95%', 'textAlign': 'left', 'backgroundColor': 'white', 'border': '2px solid black'};
 
 	if(posts.length > 0) {
-		let i = -1;
-		const postsToRender = posts.map(post => {
-			i++;
-			return (
-				<Badge key={uuid4()} id={i} href='#' 
+		let postsToRender = [];
+		for(let i = 0; i < posts.length; i++) {
+			postsToRender.push(
+				<Badge key={uuid4()} href='#' 
 				onClick ={e => {
-					setPostId(e.target.id);
+					console.log(i);
+					dispatch({type: 'SET_POST_ID', payload: i});
 					dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
-					dispatch({type: 'SET_POST', payload: post._id});
+					dispatch({type: 'SET_POST', payload: posts[i]._id});
 					setView(goToPosts());
 				}} 
 				className='text-dark' style={styles}>
-					{post.title} ~ by {post.author} at {post.date}
+					{posts[i].title} ~ by {posts[i].author} at {posts[i].date}
 				</Badge>
 			);
-		});
+		}
 		return postsToRender;
 	}
 		
@@ -152,7 +152,7 @@ export const createPost = forum => {
 	}
 
 	return axios.post('/Forums/CreatePost', request)
-	.then( res => true)
+	.then( res => res.data)
 	.catch( err => false);
 }
 
@@ -189,11 +189,6 @@ export const updateForum = () => dispatch => {
 export const setForum = forum => {
 	store.dispatch({type: 'SET_FORUM', payload: forum});
 }
-
-export const setPostId = id => {
-	store.dispatch({type: 'SET_POST_ID', payload: id});
-}
-
 
 /** challenges **/
 
@@ -236,12 +231,11 @@ export const login_challenge1 = data => dispatch => {
 			window.location = '/Victory1';
 		} else {
 			const ft = document.querySelector('#invalid');
-			const pass = document.getElementById('password');
 			ft.innerText="Incorrect Password";
 			dispatch({type: 'UPDATE_PASS', payload: ''});
 			dispatch({type: 'LOGIN_FAIL'});
 		}
-		console.log({"url": res.config.url, "method": res.config.method, "data": res.config.data});		
+		console.log(`url: ${res.config.url}\nmethod: ${res.config.method}\ndata ${res.config.data}`);		
 	});
 }
 

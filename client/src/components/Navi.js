@@ -18,9 +18,6 @@ import { logout } from '../actions/';
 import env from '../.env';
 
 function Navi(props) {
-  const { jwtseed } = process.env;
-  const { user } = localStorage;
-  
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);

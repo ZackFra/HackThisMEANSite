@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Button, Label } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { registerUser3, login3, changePass3, approved } from '../../actions';
+import { registerUser3, login3, changePass3 } from '../../actions';
 import { verify } from 'jsonwebtoken';
 import Cookies from 'js-cookie';
 
@@ -74,7 +74,7 @@ function Challenge3(props) {
 	function register(e) {
 		e.preventDefault();
 
-		if(!approved(throttle)) {
+		if(!approved()) {
 			document.getElementById('inval').innerText = 'Too many requests at once. Wait a moment and try again.\n\n';
 			return;
 		}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Label, Button } from 'reactstrap';
-import { login, updatePass, updateUser, register } from '../actions/';
+import { login, register } from '../actions/';
 import { useSelector, useDispatch } from 'react-redux';
 
 function Login(props) {
