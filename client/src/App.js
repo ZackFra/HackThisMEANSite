@@ -18,11 +18,20 @@ import Victory2 from './components/challenges/Victory2';
 import Challenge3 from './components/challenges/Challenge3';
 import Victory3 from './components/challenges/Victory3';
 import Navi from './components/Navi';
-import OffTopic from './components/subforums/OffTopic';
-import Challenge0Forum from './components/subforums/Challenge0Forum';
-import Challenge1Forum from './components/subforums/Challenge1Forum';
-import Challenge2Forum from './components/subforums/Challenge2Forum';
-import Challenge3Forum from './components/subforums/Challenge3Forum';
+import {
+  OffTopicForum,
+  Challenge0Forum,
+  Challenge1Forum,
+  Challenge2Forum,
+  Challenge3Forum,
+  Challenge4Forum,
+  Challenge5Forum,
+  Challenge6Forum,
+  Challenge7Forum,
+  Challenge8Forum,
+  Challenge9Forum,
+  Challenge10Forum
+} from './components/subforums/Forums';
 import Login from './components/Login'
 
 
@@ -63,11 +72,19 @@ function App(props) {
             <Route exact path='/Challenge3' component={Challenge3} />
             <Route exact path='/Victory3' component={Victory3} />
 
-            <Route exact path='/OffTopic' component={OffTopic} />
+            <Route exact path='/OffTopic' component={OffTopicForum} />
             <Route exact path='/Challenge0Forum' component={Challenge0Forum} />
             <Route exact path='/Challenge1Forum' component={Challenge1Forum} />
             <Route exact path='/Challenge2Forum' component={Challenge2Forum} />
             <Route exact path='/Challenge3Forum' component={Challenge3Forum} />
+            <Route exact path='/Challenge4Forum' component={Challenge4Forum} />
+            <Route exact path='/Challenge5Forum' component={Challenge5Forum} />
+            <Route exact path='/Challenge6Forum' component={Challenge6Forum} />
+            <Route exact path='/Challenge7Forum' component={Challenge7Forum} />
+            <Route exact path='/Challenge8Forum' component={Challenge8Forum} />
+            <Route exact path='/Challenge9Forum' component={Challenge9Forum} />
+            <Route exact path='/Challenge10Forum' component={Challenge10Forum} />
+
             {setConditionals()}
   					<Redirect to='/Construction'/>
   				</Switch>

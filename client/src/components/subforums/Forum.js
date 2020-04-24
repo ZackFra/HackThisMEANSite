@@ -18,7 +18,7 @@ function Forum(props) {
 				<Nav>
 					<div className="card" style={{width: '100%', margin: 'auto'}}>
 						<div className="card-body bg-light text-dark">
-							<h1 className="card-title pb-2 mt-4 border-bottom">Forum: Off Topic</h1>
+							<h1 className="card-title pb-2 mt-4 border-bottom">{forumTitle}</h1>
 							{allowCreation()}
 							<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
 								
