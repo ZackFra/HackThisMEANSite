@@ -21,7 +21,7 @@ function Challenge2() {
 	const dispatch = useDispatch();
 
 	// computer posting function
-	const cPost = useCallback( text => {
+	const cPost = useCallback( (text) => {
 		let output = (
 			<li key = {uuid4()} style={{'marginRight': '2rem', 'color': 'black', 'borderRadius': '25px'}}>
 				<div className="card" style={{"marginBottom": "0.7rem"}}>
@@ -36,6 +36,27 @@ function Challenge2() {
 		dispatch({type: 'UPDATE_POSTS', payload: output});
 		dispatch({type: 'INCREMENT_POSTNUM'});
 	}, [dispatch, postNum]);
+
+	// posting to chat function
+	function post(e) {
+		e.preventDefault();
+
+	    let output = (
+			<div key = {"post" + postNum} className="bg-light" style={{'marginLeft': '2rem','color': 'black', "borderRadius": "25px"}}>
+				<div className="card bg-light" style={{"marginBottom": "0.7rem"}}>
+		     			<div className="card-body" 
+		     				id={`post${postNum}`} 
+		     				dangerouslySetInnerHTML={{__html: sanitizeHTML(message)}}
+		     			/>
+		     			
+		   		</div>
+		  	</div>
+	    );
+
+		dispatch({type: 'UPDATE_POSTS', payload: output});
+		dispatch({type: 'INCREMENT_POSTNUM'});
+		dispatch({type: 'UPDATE_MESSAGE', payload: ''});
+	}
 
 	// every twenty seconds antagonize the user
 	useInterval(() => {
@@ -54,18 +75,18 @@ function Challenge2() {
     		{ img: ['src', 'alt', 'onerror'], font: ['size', 'color'] };
 
     	// add initial posting to app
-		posts.unshift(
+    	dispatch({type: 'UPDATE_POSTS', payload:
 			<li key ="intro Post" className="bg-light" style={{'color': 'black', "borderRadius": "25px", 'marginRight': '2rem'}}>
 				<div className="card" style={{"marginBottom": "0.7rem", 'backgroundColor': 'lightblue'}}>
-			      	<div className="card-body" style={{'backgroundColor': 'lightblue'}} id={`post${postNum}`}
+			      	<div className="card-body" style={{'backgroundColor': 'lightblue'}} id={`post0`}
 			      		dangerouslySetInnerHTML={{__html: "Click post to send a new message!"}} 
 			      	/>
 	      		</div>
 	      	</li>
-	    );
+	    });
 	    dispatch({type: 'INCREMENT_POSTNUM'});
 
-	}, [dispatch, posts, postNum]);
+	}, [dispatch]);
 
 	useEffect( () => {
 	    // set mutation observer to watch for nodes added to the DOM
@@ -108,28 +129,6 @@ function Challenge2() {
 			}
 		})
 	}, [tab, dispatch]);
-
-
-	// posting to chat function
-	function post(e) {
-		e.preventDefault();
-
-	    let output = (
-			<div key = {"post" + postNum} className="bg-light" style={{'marginLeft': '2rem','color': 'black', "borderRadius": "25px"}}>
-				<div className="card bg-light" style={{"marginBottom": "0.7rem"}}>
-		     			<div className="card-body" 
-		     				id={`post${postNum}`} 
-		     				dangerouslySetInnerHTML={{__html: sanitizeHTML(message)}}
-		     			/>
-		     			
-		   		</div>
-		  	</div>
-	    );
-
-		dispatch({type: 'UPDATE_POSTS', payload: output});
-		dispatch({type: 'INCREMENT_POSTNUM'});
-		dispatch({type: 'UPDATE_MESSAGE', payload: ''});
-	}
 
 	switch(tab) {
 		case 'LIVE_CHAT':
