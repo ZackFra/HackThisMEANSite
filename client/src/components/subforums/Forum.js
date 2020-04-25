@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Container, Nav, Button } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { listPosts, getPosts, postMessage, createPost } from '../../actions';
@@ -15,26 +15,8 @@ function Forum(props) {
 	const { forum, forumTitle } = props;
 	const dispatch = useDispatch();
 
-	// standard view, it takes a second for the initial get request
-	// so while the user waits, this jsx is rendered.
-	const standard = (
-		<Container>
-				<Nav>
-					<div className="card" style={{width: '100%', margin: 'auto'}}>
-						<div className="card-body bg-light text-dark">
-							<h1 className="card-title pb-2 mt-4 border-bottom">{forumTitle}</h1>
-							{allowCreation()}
-							<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
-								
-							</div>
-						</div>
-					</div>
-				</Nav>
-		</Container>
-	);
-
 	// allow post creation if user logged in
-	function allowCreation() {
+	const allowCreation = useCallback( () => {
 		const { token } = localStorage;
 		try {
 			verify(token, env.jwtseed);
@@ -47,31 +29,10 @@ function Forum(props) {
 		} catch(e) {
 			return;
 		}
-	}
-
-	// submit a new message to be posted
-	async function submitMessage(e) {
-		e.preventDefault();
-
-		const posted = await postMessage();
-		// if createPost fails
-		if(!posted) {
-			const inval = document.querySelector('[id=invalid]');
-			
-			if(message === '') {
-				inval.innerText = 'Message cannot be blank.';
-			} else {
-				inval.innerText = 'Internal server error. Try again later.';
-			}
-		} else {
-			dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
-			dispatch({type: 'UPDATE_POST_MESSAGE', payload: ''});
-			posts[postId].content.push(message);
-		}
-	}
+	}, [dispatch]);
 
 	// submit handler for creating a post
-	async function createPostSubmit(e) {
+	const createPostSubmit = useCallback( async e => {
 		e.preventDefault();
 
 		// if createPost fails
@@ -94,10 +55,10 @@ function Forum(props) {
 			dispatch({type: 'UPDATE_TITLE', payload: ''});
 			dispatch({type: 'UPDATE_CREATE_MESSAGE', payload: ''})
 		}
-	}
+	}, [dispatch, forum, message, posts, title]);
 
 	// if user logged in, allow them to create message
-	function allowMakeMessage(post) {
+	const allowMakeMessage = useCallback( post => {
 		try {
 			verify(token, env.jwtseed);
 			return (
@@ -109,7 +70,47 @@ function Forum(props) {
 		catch(e) {
 			return ;
 		}
-	}
+	}, [dispatch, token]);
+
+	// submit a new message to be posted
+	const submitMessage = useCallback( async e => {
+		e.preventDefault();
+
+		const posted = await postMessage();
+		// if createPost fails
+		if(!posted) {
+			const inval = document.querySelector('[id=invalid]');
+			
+			if(message === '') {
+				inval.innerText = 'Message cannot be blank.';
+			} else {
+				inval.innerText = 'Internal server error. Try again later.';
+			}
+		} else {
+			dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
+			dispatch({type: 'UPDATE_POST_MESSAGE', payload: ''});
+			posts[postId].content.push(message);
+		}
+	}, [dispatch, posts, postId, message]);
+
+
+	// standard view, it takes a second for the initial get request
+	// so while the user waits, this jsx is rendered.
+	const standard = (
+		<Container>
+				<Nav>
+					<div className="card" style={{width: '100%', margin: 'auto'}}>
+						<div className="card-body bg-light text-dark">
+							<h1 className="card-title pb-2 mt-4 border-bottom">{forumTitle}</h1>
+							{allowCreation()}
+							<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
+								
+							</div>
+						</div>
+					</div>
+				</Nav>
+		</Container>
+	);
 
 	// dynamically generate page as tab changes
 	// wrapped in useEffect to prevent infinite
@@ -213,14 +214,29 @@ function Forum(props) {
 			default:
 				dispatch({type: 'SET_TAB', payload: 'STANDARD'});
 		}
-	}, [tab, posts.length, message, initmessage, title]); 
+	}, 
+	[
+		tab,
+		message, 
+		initmessage, 
+		title, 
+		allowCreation, 
+		allowMakeMessage, 
+		dispatch,
+		postId,
+		submitMessage,
+		createPostSubmit,
+		forum,
+		forumTitle,
+		posts
+	]); 
 
 	useEffect( () => {
 		dispatch({type: 'SET_TAB', payload: 'STANDARD'});
-		getPosts(forum)(dispatch);
+		getPosts(forum);
 		// @todo figure out why setInterval isn't working
 		//setInterval(getPosts(forum)(dispatch), 5000);
-	}, [])
+	}, [forum, dispatch])
 
 	return view || standard;
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Container, Button } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import sanitizeHTML from 'sanitize-html';
@@ -21,7 +21,7 @@ function Challenge2() {
 	const dispatch = useDispatch();
 
 	// computer posting function
-	function cPost(text) {
+	const cPost = useCallback( text => {
 		let output = (
 			<li key = {uuid4()} style={{'marginRight': '2rem', 'color': 'black', 'borderRadius': '25px'}}>
 				<div className="card" style={{"marginBottom": "0.7rem"}}>
@@ -35,7 +35,7 @@ function Challenge2() {
 
 		dispatch({type: 'UPDATE_POSTS', payload: output});
 		dispatch({type: 'INCREMENT_POSTNUM'});
-	}
+	}, [dispatch, postNum]);
 
 	// every twenty seconds antagonize the user
 	useInterval(() => {
@@ -65,7 +65,7 @@ function Challenge2() {
 	    );
 	    dispatch({type: 'INCREMENT_POSTNUM'});
 
-	}, []);
+	}, [dispatch, posts, postNum]);
 
 	useEffect( () => {
 	    // set mutation observer to watch for nodes added to the DOM
@@ -107,7 +107,7 @@ function Challenge2() {
 			   	}
 			}
 		})
-	}, [tab]);
+	}, [tab, dispatch]);
 
 
 	// posting to chat function

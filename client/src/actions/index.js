@@ -39,10 +39,10 @@ export async function register(data) {
 /** Forums **/
 
 // returns all posts
-export const getPosts = postType => dispatch => {
+export const getPosts = (postType)  => {
 	axios.post('/Forums/GetPosts', {forum: postType})
 	.then( res => {
-		dispatch({type: 'GET_POSTS', payload: res.data});
+		store.dispatch({type: 'GET_POSTS', payload: res.data});
 	})
 	.catch( err => console.log(err));
 }
