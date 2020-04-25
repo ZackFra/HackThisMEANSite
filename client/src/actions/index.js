@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import crypto from 'crypto';
@@ -34,6 +34,7 @@ export async function register(data) {
 	.then( res => true )
 	.catch( err => false );
 }
+
 
 /** Forums **/
 
@@ -193,22 +194,6 @@ export const setForum = forum => {
 /** challenges **/
 
 
-/* Challenge 0 */
-// challenge 0 login 
-export const login_challenge0 = data => dispatch => {
-	const { pass } = data;
-	const ft = document.querySelector('#invalid');
-	if(pass === 'L33tHax') {
-		dispatch({type: 'LOGIN_SUCCESS'});
-		ft.className = 'form-text text-success';
-		ft.innerText="Correct!";
-		window.location = '/Victory0';
-	} else {
-		dispatch({type: 'LOGIN_FAIL'});
-		ft.innerText="Incorrect Password";
-	}
-}
-
 /* Challenge 1 */
 // challenge 1 login
 export const login_challenge1 = data => dispatch => {
@@ -313,7 +298,7 @@ export const setAntagonize = () => dispatch => {
 // sets the mutationObserver, and calls
 // onMutation when the sub-DOM is modified
 // onMutation is a callback that respoonds to changes
-export const setMutationObserver = (id, onMutation) => dispatch => {
+export const setMutationObserver = (id, onMutation) => {
 
 	const rootNode = document.getElementById(id);
 
@@ -334,22 +319,6 @@ export const setMutationObserver = (id, onMutation) => dispatch => {
 	    attributeOldValue: false,
 	    characterDataOldValue: false
 	});
-}
-
-// watches the posts DOM
-export const watchPosts = () => dispatch => {
-	const onMutation = node => {
-		if(node.href !== undefined) {
-	        node.href='/Victory2';
-	        document.getElementById('success').innerText="Click the link";
-	        dispatch({type: 'STOP_ANTAGONIZING'});
-	    }
-
-	    if(node.nodeName === 'IMG') {
-	        node.style = 'max-height: 100%; max-width: 100%';
-	   	}
-	}
-	setMutationObserver('posts', onMutation)(dispatch);
 }
 
 /* Challenge 3 */
@@ -420,4 +389,23 @@ export const clearMsg = () => dispatch => {
 
 export const updateTitle = e => dispatch => {
 	dispatch({type: 'UPDATE_TITLE', payload: e.target.value});
+}
+
+export function useInterval(callback, delay) {
+	const savedCallback = useRef();
+
+	// remember the latest callback
+	useEffect( () => {
+		savedCallback.current = callback;
+	});
+
+	useEffect( () => {
+		function tick() {
+			savedCallback.current();
+		}
+		if(delay !== null) {
+			let id = setInterval(tick, delay);
+			return () => clearInterval(id);
+		}
+	}, [delay]);
 }
