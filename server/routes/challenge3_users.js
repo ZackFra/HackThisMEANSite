@@ -1,7 +1,6 @@
 const Router = require('express').Router;
 const User = require('./modals/Users3.Modal');
 const jwt = require('jsonwebtoken');
-const Cookies = require('js-cookie');
 
 const router = Router();
 
