@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Container } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
+import { Title } from '../../StyleSheet';
 
 function Challenge0() {
 	const { pass } = useSelector(state => state);
@@ -46,11 +47,11 @@ function Challenge0() {
 	return (
 		<Container>
 			<script>{inject}</script>
-			<h1 className="pb-2 mt-4 border-bottom" style={{padding: '1rem 0'}}>Welcome to Challenge 0</h1>
+			<Title title='Welcome to Challenge 0' />
 			<br />
 			<Container>
 				<div className="card" style={{width: '18rem', margin: 'auto'}}>
-					<div className="card-body bg-dark text-light">
+					<div className="card-body secondary-bg text-light">
 						<div className="card-title">
 							Sanity Test
 						</div>

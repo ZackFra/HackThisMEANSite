@@ -5,6 +5,7 @@ import { listPosts, getPosts, postMessage, createPost } from '../../actions';
 import { verify } from 'jsonwebtoken';
 import uuid4 from 'uuid4';
 import env from '../../.env.js';
+import { Title } from '../../StyleSheet';
 
 // generic Forum component
 function Forum(props) {
@@ -95,16 +96,25 @@ function Forum(props) {
 
 
 	// standard view, it takes a second for the initial get request
-	// so while the user waits, this jsx is rendered.
+	// so while the user waits, this jsx is rendered. Might remove later.
 	const standard = (
 		<Container>
 				<Nav>
 					<div className="card" style={{width: '100%', margin: 'auto'}}>
-						<div className="card-body bg-light text-dark">
-							<h1 className="card-title pb-2 mt-4 border-bottom">{forumTitle}</h1>
+						<div className="card-body secondary-bg">
+							<Title title={forumTitle} />
 							{allowCreation()}
 							<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
-								
+								<ul className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll', listStyleType: 'none'}}>
+									<li key={uuid4()} style={{backgroundColor: '#637074', color: '#8AB0AB', width: '95%', padding: '1rem', border: '1px solid black', borderRadius: '5px'}}>
+										<div className='row'>
+											<div className='col-sm'>Topic</div>
+											<div className='col-sm'>Poster</div>
+											<div className='col-sm'>Post Date</div>
+										</div>
+									</li>			
+								</ul>
+
 							</div>
 						</div>
 					</div>
@@ -121,8 +131,8 @@ function Forum(props) {
 				dispatch({type: 'SET_VIEW', payload:
 					<Container>
 						<div className="card" style={{width: '100%', margin: 'auto'}}>
-							<div className="card-body bg-light text-dark">
-								<h1 className="card-title pb-2 mt-4 border-bottom">Create Post</h1>
+							<div className="card-body secondary-bg">
+								<Title title='Create Post' />
 								<Button color="link" onClick= {() => {
 									dispatch({type: 'SET_TAB', payload: 'STANDARD'});
 								}}>
@@ -132,8 +142,19 @@ function Forum(props) {
 										<div id='invalid' className='text-danger'/>
 	
 										{/* @todo add recaptcha */}
-										<input className="form-text" value={title} onChange={e => dispatch({type: 'UPDATE_TITLE', payload: e.target.value})} type="text" placeholder="title" style={{'width': '100%', 'padding': '0.5rem'}} />
-										<textarea className="form-text" value={initmessage} onChange={e => dispatch({type: 'UPDATE_CREATE_MESSAGE', payload: e.target.value})} placeholder="message" style={{'width': '100%', 'height': '16rem', 'padding': '0.5rem', 'resize': 'none'}} />
+										<input 
+											className="form-text form-bg" 
+											value={title} 
+											onChange={e => dispatch({type: 'UPDATE_TITLE', payload: e.target.value})} 
+											type="text" 
+											placeholder="title" 
+											style={{border: '1px', 'width': '100%', 'padding': '0.5rem'}} />
+										<textarea 
+											className="form-text form-bg" 
+											value={initmessage} 
+											onChange={e => dispatch({type: 'UPDATE_CREATE_MESSAGE', payload: e.target.value})} 
+											placeholder="message" 
+											style={{'width': '100%', 'height': '16rem', 'padding': '0.5rem', 'resize': 'none'}} />
 										<button type="submit" className="btn btn-outline-primary" style={{'float': 'right', 'marginTop': '0.3rem'}}>Submit</button>
 									</form>
 								</div>
@@ -146,8 +167,8 @@ function Forum(props) {
 				dispatch({type: 'SET_VIEW', payload:
 					<Container>
 						<div className="card" style={{width: '100%', margin: 'auto'}}>
-							<div className="card-body bg-light text-dark">
-								<h1 className="card-title pb-2 mt-4 border-bottom">Post Message</h1>
+							<div className="card-body secondary-bg">
+								<Title title='Post Message' />
 								<Button color="link" onClick= {() => {
 										dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
 								}}>
@@ -177,12 +198,19 @@ function Forum(props) {
 					<Container>
 						<Nav>
 							<div className="card" style={{width: '100%', margin: 'auto'}}>
-								<div className="card-body bg-light text-dark">
-									<h1 className="card-title pb-2 mt-4 border-bottom">{forumTitle}</h1>
+								<div className="card-body secondary-bg" >
+									<Title title={forumTitle} />
 									{allowCreation()}
-									<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
+									<ul className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll', listStyleType: 'none'}}>
+										<li key={uuid4()} className = 'title-post-bg title-post-color'style={{width: '95%', padding: '1rem', border: '1px solid black', borderRadius: '5px'}}>
+											<div className='row'>
+												<div className='col-sm'>Topic</div>
+												<div className='col-sm'>Poster</div>
+												<div className='col-sm'>Post Date</div>
+											</div>
+										</li>
 										{listPosts(forum)}			
-									</div>
+									</ul>
 								</div>
 							</div>
 						</Nav>
@@ -194,8 +222,8 @@ function Forum(props) {
 					<Container>
 						<Nav>
 							<div className="card" style={{width: '100%', margin: 'auto'}}>
-								<div className="card-body bg-light text-dark">
-									<h1 className="card-title pb-2 mt-4 border-bottom">{posts[postId].title}</h1>
+								<div className="card-body secondary-bg">
+									<Title title={posts[postId].title} />
 									<Button color="link" onClick= {() => {
 										dispatch({type: 'SET_TAB', payload: 'STANDARD'})
 									}}>
@@ -203,7 +231,26 @@ function Forum(props) {
 									</Button>
 									{allowMakeMessage(posts[postId])}
 									<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
-										{posts[postId].content.map(message => <div key={uuid4()} style={{'width': '100%', 'height': '4rem', 'backgroundColor':'cyan'}}>{message}</div>)}
+										{posts[postId].content.map(
+											message => (
+												<div 
+													key={uuid4()} 
+													className='row message-bg' 
+													style={{
+														borderRadius: '5px', 
+														padding: '1rem',
+														marginBottom: '1vh',
+														minHeight: '10vw'
+												}}>
+													<div className='col-2 post-author-color'>
+														Dumbo
+													</div>
+													<div className='post-color col-10'>
+														{message}
+													</div>
+												</div>
+											)
+										)}
 									</div>
 								</div>
 							</div>
@@ -234,8 +281,6 @@ function Forum(props) {
 	useEffect( () => {
 		dispatch({type: 'SET_TAB', payload: 'STANDARD'});
 		getPosts(forum);
-		// @todo figure out why setInterval isn't working
-		//setInterval(getPosts(forum)(dispatch), 5000);
 	}, [forum, dispatch])
 
 	return view || standard;

@@ -1,0 +1,42 @@
+
+.secondary-bg {
+	background-color: #0A0903;
+}
+
+.title-color {
+	color: #AAB9CF;
+}
+
+.title-post-bg {
+	background-color: #637074;
+}
+
+.title-post-color {
+	color: #8AB0AB;
+}
+
+.post-color {
+	color: #AAB9CF;
+}
+
+.post-bg {
+	background-color: #3F4045;
+}
+
+.post-author-color {
+	color: #7D98A1;
+}
+
+.message-bg {
+	background-color: #30343F;
+}
+
+::placeholder {
+	color: #70798C;
+	opacity: 0.5;
+	font-style: italic;
+}
+
+.form-bg {
+	background-color: #F5F1ED;
+}

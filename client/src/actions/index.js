@@ -5,7 +5,7 @@ import crypto from 'crypto';
 import store from '../store';
 import sanitizeHTML from 'sanitize-html';
 import Cookies from 'js-cookie';
-import { Badge, Container, Nav, Button } from 'reactstrap';
+import { Container, Nav, Button } from 'reactstrap';
 import { verify } from 'jsonwebtoken';
 import uuid4 from 'uuid4';
 import env from '../.env';
@@ -87,23 +87,42 @@ export const listPosts = postType => {
 	const dispatch = store.dispatch;
 	const { posts } = store.getState().forum;
 
-	const styles = {'padding': '1rem', 'margin': '0.1rem', 'width': '95%', 'textAlign': 'left', 'backgroundColor': 'white', 'border': '2px solid black'};
+	// @ todo figure out why I can't set post-color as background
+	const styles = {
+		padding: '1rem', 
+		backgroundColor: '#3F4045', 
+		color: '#8693AB', 
+		width: '95%', 
+		textAlign: 'left', 
+		borderWidth: '1px',
+		borderStyle: 'solid', 
+		borderColor: 'black', 
+		borderBottom: '0',
+		borderRadius: '5px'
+	};
 
 	if(posts.length > 0) {
 		let postsToRender = [];
 		for(let i = 0; i < posts.length; i++) {
 			postsToRender.push(
-				<Badge key={uuid4()} href='#' 
-				onClick ={e => {
-					console.log(i);
-					dispatch({type: 'SET_POST_ID', payload: i});
-					dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
-					dispatch({type: 'SET_POST', payload: posts[i]._id});
-					setView(goToPosts());
-				}} 
-				className='text-dark' style={styles}>
-					{posts[i].title} ~ by {posts[i].author} at {posts[i].date}
-				</Badge>
+				<a key={uuid4()} className='post-bg' href='#' style={{textDecoration: 'none'}}>
+					<li
+					key={uuid4()} 
+					onClick ={e => {
+						console.log(i);
+						dispatch({type: 'SET_POST_ID', payload: i});
+						dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
+						dispatch({type: 'SET_POST', payload: posts[i]._id});
+						setView(goToPosts());
+					}} 
+					style={styles}>
+						<div className='row'>
+							<div className='col-sm'>{posts[i].title}</div>
+							<div className='col-sm'>{posts[i].author}</div>
+							<div className='col-sm'>{posts[i].date}</div>
+						</div>
+					</li>
+				</a>
 			);
 		}
 		return postsToRender;

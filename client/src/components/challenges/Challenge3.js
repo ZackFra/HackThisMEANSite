@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { registerUser3, login3, changePass3 } from '../../actions';
 import { verify } from 'jsonwebtoken';
 import Cookies from 'js-cookie';
+import { Title } from '../../StyleSheet';
 
 function Challenge3(props) {
 	const { tab, username, password, confirm, throttle } = useSelector( state => state.challenge3 );
@@ -168,11 +169,11 @@ function Challenge3(props) {
 		case 'CHANGE_PASS':
 			return (
 				<Container>
-					<h1 className="pb-2 mt-4 border-bottom" style={{padding: '1rem 0'}}>Welcome to Challenge 3</h1>
+					<Title title='Welcome to Challenge 3' />
 						<br />
 						<Container>
 							<div className="card" style={{width: '50%', margin: 'auto'}}>
-								<div className="card-body bg-dark text-light">
+								<div className="card-body secondary-bg text-light">
 									<div className="card-title">
 										Change Password
 									</div>
@@ -233,11 +234,11 @@ function Challenge3(props) {
 		case 'ACCOUNT':
 			return (
 				<Container>
-					<h1 className="pb-2 mt-4 border-bottom" style={{padding: '1rem 0'}}>Welcome to Challenge 3</h1>
+					<Title title='Welcome to Challenge 3' />
 						<br />
 						<Container>
 							<div className="card" style={{width: '50%', margin: 'auto'}}>
-								<div className="card-body bg-dark text-light">
+								<div className="card-body secondary-bg text-light">
 									<div className="card-title">
 										Account
 									</div>
@@ -296,11 +297,11 @@ function Challenge3(props) {
 		case 'LOGIN':
 			return (
 				<Container>
-					<h1 className="pb-2 mt-4 border-bottom" style={{padding: '1rem 0'}}>Welcome to Challenge 3</h1>
+					<Title title='Welcome to Challenge 3' />
 						<br />
 						<Container>
 							<div className="card" style={{width: '50%', margin: 'auto'}}>
-								<div className="card-body bg-dark text-light">
+								<div className="card-body secondary-bg text-light">
 									<div className="card-title">
 										Log in
 									</div>
@@ -365,11 +366,11 @@ function Challenge3(props) {
 		case 'REGISTER':
 			return (
 				<Container>
-					<h1 className="pb-2 mt-4 border-bottom" style={{padding: '1rem 0'}}>Welcome to Challenge 3</h1>
+					<Title title='Welcome to Challenge 3' />
 						<br />
 						<Container>
 							<div className="card" style={{width: '50%', margin: 'auto'}}>
-								<div className="card-body bg-dark text-light">
+								<div className="card-body secondary-bg text-light">
 									<div className="card-title">
 										Register
 									</div>
@@ -441,11 +442,11 @@ function Challenge3(props) {
 		default:
 			return (
 				<Container>
-					<h1 className="pb-2 mt-4 border-bottom" style={{padding: '1rem 0'}}>Welcome to Challenge 3</h1>
+					<Title title='Welcome to Challenge 3' />
 						<br />
 						<Container>
 							<div className="card" style={{width: '40%', margin: 'auto'}}>
-								<div className="card-body bg-dark text-light">
+								<div className="card-body secondary-bg text-light">
 									<div className="card-title">
 										Session Hi-Jacking
 									</div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Container } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { login_challenge1, updatePass, clearPass } from '../../actions';
+import { Title } from '../../StyleSheet';
 
 function Challenge1() {
 	const {pass} = useSelector(state => state);
@@ -16,11 +17,11 @@ function Challenge1() {
 
 	return (
 		<Container>
-			<h1 className="pb-2 mt-4 border-bottom" style={{padding: '1rem 0'}}>Welcome to Challenge 1</h1>
+			<Title title='Welcome to Challenge 1' />
 			<br />
 			<Container>
 				<div className="card" style={{width: '18rem', margin: 'auto'}}>
-					<div className="card-body bg-dark text-light">
+					<div className="card-body secondary-bg text-light">
 						<div className="card-title">
 							Gotta Love the Classics
 						</div>

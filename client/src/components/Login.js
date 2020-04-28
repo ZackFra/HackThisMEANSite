@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Label, Button } from 'reactstrap';
 import { login, register } from '../actions/';
 import { useSelector, useDispatch } from 'react-redux';
+import { Title } from '../StyleSheet';
 
 function Login(props) {
 
@@ -81,13 +82,13 @@ function Login(props) {
 		case 'REGISTER':
 			return (
 				<Container>
-					<h1 className="pb-2 mt-4 border-bottom" style={{padding: '1rem 0'}}>Registration</h1>
+					<Title title='Registration' />
 					<br />
 					<Container>
 						<div className="card" style={{width: '50%', margin: 'auto'}}>
-							<div className="card-body bg-dark text-light">
+							<div className="card-body secondary-bg text-light">
 								<div className="card-title">
-									Register
+									Sign up
 								</div>
 								<hr color="lightgray"/>
 								<div className="card-text">
@@ -155,13 +156,13 @@ function Login(props) {
 		default:
 			return (
 				<Container>
-					<h1 className="pb-2 mt-4 border-bottom" style={{padding: '1rem 0'}}>Login Page</h1>
+					<Title title='Login' />
 					<br />
 					<Container>
 						<div className="card" style={{width: '18rem', margin: 'auto'}}>
-							<div className="card-body bg-dark text-light">
+							<div className="card-body secondary-bg text-light">
 								<div className="card-title">
-									Login
+									Checking in!
 								</div>
 								<hr color="lightgray"/>
 								<div className="card-text">
@@ -187,12 +188,12 @@ function Login(props) {
 										type="password" 
 										placeholder="password" 
 									/>
-									<button 
-										className="btn btn-primary"
+									<Button 
+										color="primary" 
 										type="submit" 
-										style={{padding: "0 1rem", marginTop: "0.7rem"}}
-										>
-										Submit</button>
+										style={{'float': 'right', 'marginTop': '0.9rem'}}
+										>Submit
+									</Button>
 								</form>
 								<div style={{'marginLeft': '5%'}}>
 									<Button 

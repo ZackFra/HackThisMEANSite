@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import sanitizeHTML from 'sanitize-html';
 import { setMutationObserver, useInterval } from '../../actions';
 import uuid4 from 'uuid4';
+import { Title } from '../../StyleSheet';
 
 
 function Challenge2() {
@@ -136,7 +137,7 @@ function Challenge2() {
 				<Container>
 					<br />
 					<div className="card" style={{width: '24rem', margin: 'auto'}}>
-						<div className="card-body bg-dark text-light">
+						<div className="card-body secondary-bg text-light">
 							<div className="card-title">
 								LiveChat
 							</div>
@@ -167,11 +168,11 @@ function Challenge2() {
 		default:
 			return (
 				<Container>
-					<h1 className="pb-2 mt-4 border-bottom" style={{padding: '1rem 0'}}>Welcome to Challenge 2</h1>
+					<Title title='Welcome to Challenge 2' />
 					<br />
 					<Container>
 						<div className="card" style={{width: '18rem', margin: 'auto'}}>
-							<div className="card-body bg-dark text-light">
+							<div className="card-body secondary-bg text-light">
 								<div className="card-title">
 									XSS Attack
 								</div>
