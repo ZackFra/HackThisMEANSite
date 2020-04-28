@@ -6,6 +6,8 @@ import rootReducer from './reducers';
 const initialState = {};
 const middleware = [thunk];
 
+// note to self, disable redux tools
+// when in development
 const store = createStore(
 	rootReducer, 
 	initialState, 
