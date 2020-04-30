@@ -81,7 +81,7 @@ function Login(props) {
 	switch(tab) {
 		case 'REGISTER':
 			return (
-				<Container>
+				<Container className='foreground-bg'>
 					<Title title='Registration' />
 					<br />
 					<Container>
@@ -155,7 +155,7 @@ function Login(props) {
 			);
 		default:
 			return (
-				<Container>
+				<Container className='foreground-bg'>
 					<Title title='Login' />
 					<br />
 					<Container>

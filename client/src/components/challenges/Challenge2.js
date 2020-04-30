@@ -135,8 +135,9 @@ function Challenge2() {
 		case 'LIVE_CHAT':
 			return (
 				<Container className='foreground-bg'>
+					<Title title='Welcome to Challenge 2' />
 					<br />
-					<div className="card" style={{width: '24rem', margin: 'auto'}}>
+					<div className="card" style={{width: '40%', margin: 'auto', height: '70%'}}>
 						<div className="card-body secondary-bg text-light">
 							<div className="card-title">
 								LiveChat
@@ -158,7 +159,7 @@ function Challenge2() {
 									Post</button>
 							</form>
 							<hr color="lightgray"/>
-							<ul id="posts" style={{'listStyleType': 'none', 'height': '40vh', 'overflow': 'scroll', 'paddingLeft': '0'}}>
+							<ul id="posts" style={{'listStyleType': 'none', 'height': '40%', 'overflow': 'scroll', 'paddingLeft': '0'}}>
 								{posts}
 							</ul>
 						</div>

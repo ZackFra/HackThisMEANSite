@@ -20,7 +20,7 @@ function Challenge1() {
 			<Title title='Welcome to Challenge 1' />
 			<br />
 			<Container>
-				<div className="card" style={{width: '18rem', margin: 'auto'}}>
+				<div className="card" style={{width: '40%', margin: 'auto', maxHeight: '90%'}}>
 					<div className="card-body secondary-bg text-light">
 						<div className="card-title">
 							Gotta Love the Classics

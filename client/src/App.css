@@ -10,7 +10,10 @@
 
 .foreground-bg {
 	background-color: rgba(14, 39, 60, 0.90); 
-	height: 88vh;
+	margin-top: 1vh;
+	margin-bottom: 1vh;
+	border-radius: 1%;
+	height: 86vh;
 }
 
 .title-color {
