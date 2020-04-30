@@ -98,7 +98,7 @@ function Forum(props) {
 	// standard view, it takes a second for the initial get request
 	// so while the user waits, this jsx is rendered. Might remove later.
 	const standard = (
-		<Container>
+		<Container style={{height: '88vh'}}>
 				<Nav>
 					<div className="card" style={{width: '100%', margin: 'auto'}}>
 						<div className="card-body secondary-bg">
@@ -130,14 +130,14 @@ function Forum(props) {
 			case 'CREATE_POST':
 				dispatch({type: 'SET_VIEW', payload:
 					<Container>
-						<div className="card" style={{width: '100%', margin: 'auto'}}>
+						<div className="card" style={{width: '100%', margin: 'auto', height: '88vh'}}>
 							<div className="card-body secondary-bg">
 								<Title title='Create Post' />
 								<Button color="link" onClick= {() => {
 									dispatch({type: 'SET_TAB', payload: 'STANDARD'});
 								}}>
 								Back</Button>
-								<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
+								<div className="card-body" id='content' style={{'width': '100%', 'overflow': 'scroll', paddingBottom: '0'}}>
 									<form className="form-group-sizing-lg" onSubmit={createPostSubmit}>
 										<div id='invalid' className='text-danger'/>
 	
@@ -165,15 +165,15 @@ function Forum(props) {
 				break;
 			case 'POST_MESSAGE':
 				dispatch({type: 'SET_VIEW', payload:
-					<Container>
-						<div className="card" style={{width: '100%', margin: 'auto'}}>
+					<Container style={{height: '88vh'}}>
+						<div className="card" style={{width: '100%', margin: 'auto', height: '88vh'}}>
 							<div className="card-body secondary-bg">
 								<Title title='Post Message' />
 								<Button color="link" onClick= {() => {
 										dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
 								}}>
 								Back</Button>
-								<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
+								<div className="card-body" id='content' style={{'height': '65%', 'width': '100%', 'overflow': 'scroll', paddingBottom: '0'}}>
 									<form className="form-group-sizing-lg" onSubmit={submitMessage}>
 										<div id='invalid' className='text-danger'/>
 
@@ -197,11 +197,11 @@ function Forum(props) {
 				dispatch({type: 'SET_VIEW', payload: 
 					<Container>
 						<Nav>
-							<div className="card" style={{width: '100%', margin: 'auto'}}>
-								<div className="card-body secondary-bg" >
+							<div className="card" style={{width: '100%', margin: 'auto', height: '88vh'}}>
+								<div className="card-body secondary-bg">
 									<Title title={forumTitle} />
 									{allowCreation()}
-									<ul className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll', listStyleType: 'none'}}>
+									<ul className="card-body" id='content' style={{height:'60%', 'width': '100%', 'overflow': 'scroll', listStyleType: 'none'}}>
 										<li key={uuid4()} className = 'title-post-bg title-post-color'style={{width: '95%', padding: '1rem', border: '1px solid black', borderRadius: '5px'}}>
 											<div className='row'>
 												<div className='col-sm'>Topic</div>
@@ -221,7 +221,7 @@ function Forum(props) {
 				dispatch({type: 'SET_VIEW', payload:
 					<Container>
 						<Nav>
-							<div className="card" style={{width: '100%', margin: 'auto'}}>
+							<div className="card" style={{width: '100%', margin: 'auto', height: '88vh'}}>
 								<div className="card-body secondary-bg">
 									<Title title={posts[postId].title} />
 									<Button color="link" onClick= {() => {
@@ -230,7 +230,7 @@ function Forum(props) {
 									Back
 									</Button>
 									{allowMakeMessage(posts[postId])}
-									<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
+									<div className="card-body" id='content' style={{'height': '65%', 'width': '100%', 'overflow': 'scroll'}}>
 										{posts[postId].content.map(
 											message => (
 												<div 

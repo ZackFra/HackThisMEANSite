@@ -1,11 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
 
+.nav-bg {
+	background-color: #191716;
+}
+
 .secondary-bg {
 	background-color: #0A0903;
 }
 
+.foreground-bg {
+	background-color: rgba(14, 39, 60, 0.90); 
+	height: 88vh;
+}
+
 .title-color {
 	color: #AAB9CF;
+}
+
+.title-bg {
+	background-color: #3D348B;
+	border: 2px dashed white;
+	border-radius: 10px;
 }
 
 .title-post-bg {

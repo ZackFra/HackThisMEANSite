@@ -16,7 +16,7 @@ function Challenge1() {
 	};
 
 	return (
-		<Container>
+		<Container className='foreground-bg'>
 			<Title title='Welcome to Challenge 1' />
 			<br />
 			<Container>

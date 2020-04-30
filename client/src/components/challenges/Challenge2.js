@@ -134,7 +134,7 @@ function Challenge2() {
 	switch(tab) {
 		case 'LIVE_CHAT':
 			return (
-				<Container>
+				<Container className='foreground-bg'>
 					<br />
 					<div className="card" style={{width: '24rem', margin: 'auto'}}>
 						<div className="card-body secondary-bg text-light">
@@ -167,7 +167,7 @@ function Challenge2() {
 			);
 		default:
 			return (
-				<Container>
+				<Container className='foreground-bg'>
 					<Title title='Welcome to Challenge 2' />
 					<br />
 					<Container>

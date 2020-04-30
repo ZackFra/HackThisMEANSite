@@ -100,7 +100,7 @@ function Login(props) {
 												id='userReg'
 												value={user}
 												onChange={e => dispatch({type: 'UPDATE_USER', payload: e.target.value})}
-												className="form-control" 
+												className="form-control form-bg" 
 												placeholder="username" 
 												style={{'marginTop': '0.2rem', 'width': '65%'}} />
 										</span>
@@ -110,7 +110,7 @@ function Login(props) {
 											<input 
 												value={pass}
 												onChange={e => dispatch({type: 'UPDATE_PASS', payload: e.target.value})}
-												className="form-control" 
+												className="form-control form-bg" 
 												type="password" 
 												placeholder="password" 
 												style={{'marginTop': '0.4rem', 'width': '65%'}} />
@@ -122,7 +122,7 @@ function Login(props) {
 												id='confirm'
 												value={confirm}
 												onChange={e => dispatch({type: 'UPDATE_CONFIRM', payload: e.target.value})}
-												className="form-control" 
+												className="form-control form-bg" 
 												type="password" 
 												placeholder="confirm password" 
 												style={{'marginTop': '0.4rem', 'width': '65%'}} />
@@ -172,7 +172,7 @@ function Login(props) {
 								<form className="form-group" onSubmit={authenticate}>
 									<label className="form-text text-warning" id="invalid" />
 									<input 
-										className="form-control" 
+										className="form-control form-bg" 
 										name='user'
 										value = {user}
 										onChange = {e => dispatch({type: 'UPDATE_USER', payload: e.target.value})}
@@ -181,7 +181,7 @@ function Login(props) {
 										style = {{'marginBottom': '0.7rem'}}
 									/> 
 									<input 
-										className="form-control"
+										className="form-control form-bg"
 										name='pass'
 										value = {pass} 
 										onChange = {e => dispatch({type: 'UPDATE_PASS', payload: e.target.value})}

@@ -168,7 +168,7 @@ function Challenge3(props) {
 	switch(tab) {
 		case 'CHANGE_PASS':
 			return (
-				<Container>
+				<Container className='foreground-bg'>
 					<Title title='Welcome to Challenge 3' />
 						<br />
 						<Container>
@@ -233,7 +233,7 @@ function Challenge3(props) {
 				);	
 		case 'ACCOUNT':
 			return (
-				<Container>
+				<Container className='foreground-bg'>
 					<Title title='Welcome to Challenge 3' />
 						<br />
 						<Container>
@@ -296,7 +296,7 @@ function Challenge3(props) {
 			);
 		case 'LOGIN':
 			return (
-				<Container>
+				<Container className='foreground-bg'>
 					<Title title='Welcome to Challenge 3' />
 						<br />
 						<Container>
@@ -365,7 +365,7 @@ function Challenge3(props) {
 
 		case 'REGISTER':
 			return (
-				<Container>
+				<Container className='foreground-bg'>
 					<Title title='Welcome to Challenge 3' />
 						<br />
 						<Container>
@@ -441,7 +441,7 @@ function Challenge3(props) {
 			);
 		default:
 			return (
-				<Container>
+				<Container className='foreground-bg'>
 					<Title title='Welcome to Challenge 3' />
 						<br />
 						<Container>

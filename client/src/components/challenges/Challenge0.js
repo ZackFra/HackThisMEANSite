@@ -45,7 +45,7 @@ function Challenge0() {
 					"	}\n" +
 					"}\n";
 	return (
-		<Container>
+		<Container className='foreground-bg'>
 			<script>{inject}</script>
 			<Title title='Welcome to Challenge 0' />
 			<br />

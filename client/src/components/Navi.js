@@ -46,7 +46,7 @@ function Navi(props) {
 
   return (
     <div>
-      <Navbar color="dark" dark expand="md">
+      <Navbar className='nav-bg' style={{height: '12vh'}} dark expand="md">
         <NavbarBrand href="/">Hack This MEAN Site</NavbarBrand>
         <NavbarToggler onClick={toggle} />
           <Nav className="mr-auto" navbar>
