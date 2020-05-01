@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 import { Container, Nav, Button } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { listPosts, getPosts, postMessage, createPost } from '../../actions';
+import { listPosts, getPosts, postMessage, createPost, useInterval } from '../../actions';
 import { verify } from 'jsonwebtoken';
 import uuid4 from 'uuid4';
 import env from '../../.env.js';
@@ -9,7 +9,7 @@ import { Title } from '../../StyleSheet';
 
 // generic Forum component
 function Forum(props) {
-	const { posts, postId, view, tab } = useSelector(state => state.forum);
+	const { posts, postId, view, tab, delta } = useSelector(state => state.forum);
 	const { message } = useSelector(state => state.postMessage);
 	const { initmessage, title } = useSelector(state => state.createPost);
 	const { token } = localStorage;
@@ -227,6 +227,13 @@ function Forum(props) {
 				});
 				break;
 			case 'VIEW_POST':
+				// if new posts have been posted, modify the postId
+				// to match the difference in length between the previous
+				// posts array and the new one
+				if(delta > 0) {
+					dispatch({type: 'UPDATE_POST_ID', payload: delta});
+					dispatch({type: 'SET_DELTA', payload: 0});
+				}
 				dispatch({type: 'SET_VIEW', payload:
 					<Container>
 						<Nav>
@@ -299,6 +306,10 @@ function Forum(props) {
 		dispatch({type: 'SET_TAB', payload: 'STANDARD'});
 		getPosts(forum);
 	}, [forum, dispatch])
+
+	useInterval(() => {
+		getPosts(forum);
+	}, [20000]);
 
 	return view || standard;
 }

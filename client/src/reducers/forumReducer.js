@@ -1,4 +1,5 @@
 const init = {
+	delta: 0,
 	posts: [], 
 	forum: undefined, 
 	postId: undefined, 
@@ -20,6 +21,10 @@ const forumReducer = (state = init, action) => {
 			return {...state, postId: action.payload};
 		case 'CLEAR_POSTS':
 			return {...state, posts: []};
+		case 'UPDATE_POST_ID':
+			return {...state, postId: state.postId + action.payload}
+		case 'SET_DELTA':
+			return {...state, delta: action.payload}
 		default:
 			return state;
 	}

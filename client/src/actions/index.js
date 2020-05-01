@@ -42,7 +42,15 @@ export async function register(data) {
 export const getPosts = (postType)  => {
 	axios.post('/Forums/GetPosts', {forum: postType})
 	.then( res => {
+		const { posts } = store.getState().forum;
 		store.dispatch({type: 'GET_POSTS', payload: res.data});
+
+		// delta is the difference in postId from the currently viewed
+		// postId and what it is in the new collection of posts
+		// set it here so we don't render a different post by trying
+		// to render the currently observed post with the wrong id
+		let delta = posts.length == 0 ? 0 : res.data.length - posts.length;
+		store.dispatch({type: 'SET_DELTA', payload: delta});
 	})
 	.catch( err => console.log(err));
 }
@@ -187,7 +195,6 @@ export function postMessage() {
 	catch(e) {
 		return false;
 	}
-	const date = (new Date()).toLocaleString();
 	const request = {
 		user: user,
 		content: message,

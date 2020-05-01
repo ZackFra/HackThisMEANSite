@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
+mongoose.set('useFindAndModify', false);
 const bodyParser = require('body-parser');
 
 const Users = require('./routes/Users');
