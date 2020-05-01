@@ -27,7 +27,8 @@ router.post('/CreatePost', (req, res) => {
 		if(err) {
 			res.status(500).json('bad request');
 		} else {
-			Post.create({title, content: [content], author, date: (new Date()).toLocaleString(), forum}, (err, data) => {
+			const date = (new Date()).toLocaleString();
+			Post.create({title, content: [[author, content, date]], author, date, forum}, (err, data) => {
 				if(err) {
 					res.status(500).json('bad request');
 				} else {
@@ -48,7 +49,6 @@ router.post('/UpdatePost', (req, res) => {
 	const { jwtseed } = process.env;
 	const { id, user, content, token} = req.body;
 	if(typeof id !== 'string' || typeof user !== 'string' || typeof content !== 'string' || typeof token !== 'string') {
-		console.log(id, user, content, token);
 		res.status(500).json('bad request');
 		return ;
 	}
@@ -58,11 +58,11 @@ router.post('/UpdatePost', (req, res) => {
 			console.log(err);
 			res.status(500).json('bad request');
 		} else {
-			Post.findByIdAndUpdate(id, {$push: {content: content}})
-			.then( data => res.status(200).json({success: true}))
+			const date = (new Date()).toLocaleString();
+			const newMessage = [data.user, content, date];
+			Post.findByIdAndUpdate(id, {$push: {content: newMessage}})
+			.then( data => { res.status(200).json(newMessage)})
 			.catch( err => {
-				console.log('am I here?');
-				console.log(id, user, content, token);
 				res.status(500).json('bad request');
 			});
 		}

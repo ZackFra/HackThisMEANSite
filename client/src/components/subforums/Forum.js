@@ -76,12 +76,21 @@ function Forum(props) {
 	// submit a new message to be posted
 	const submitMessage = useCallback( async e => {
 		e.preventDefault();
+		const inval = document.querySelector('[id=invalid]');
+		
+		// verify that the user is logged in
+		try {
+			verify(localStorage.getItem('token'), env.jwtseed);
+		}
+		catch(e) {
+			inval.innerText = 'Internal server error. Try again later.';
+			return;
+		}
 
 		const posted = await postMessage();
+
 		// if createPost fails
-		if(!posted) {
-			const inval = document.querySelector('[id=invalid]');
-			
+		if(posted === false) {	
 			if(message === '') {
 				inval.innerText = 'Message cannot be blank.';
 			} else {
@@ -90,7 +99,7 @@ function Forum(props) {
 		} else {
 			dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
 			dispatch({type: 'UPDATE_POST_MESSAGE', payload: ''});
-			posts[postId].content.push(message);
+			posts[postId].content.push(posted);
 		}
 	}, [dispatch, posts, postId, message]);
 
@@ -110,7 +119,7 @@ function Forum(props) {
 										<div className='row'>
 											<div className='col-sm'>Topic</div>
 											<div className='col-sm'>Poster</div>
-											<div className='col-sm'>Post Date</div>
+											<div className='col-sm'>Last Updated</div>
 										</div>
 									</li>			
 								</ul>
@@ -139,7 +148,7 @@ function Forum(props) {
 								Back</Button>
 								<div className="card-body" id='content' style={{'width': '100%', 'overflow': 'scroll', paddingBottom: '0'}}>
 									<form className="form-group-sizing-lg" onSubmit={createPostSubmit}>
-										<div id='invalid' className='text-danger'/>
+										<div id='invalid' className='text-warning'/>
 	
 										{/* @todo add recaptcha */}
 										<input 
@@ -175,7 +184,7 @@ function Forum(props) {
 								Back</Button>
 								<div className="card-body" id='content' style={{'height': '65%', 'width': '100%', 'overflow': 'scroll', paddingBottom: '0'}}>
 									<form className="form-group-sizing-lg" onSubmit={submitMessage}>
-										<div id='invalid' className='text-danger'/>
+										<div id='invalid' className='text-warning'/>
 
 										{/* @todo add recaptcha */}
 										<textarea 
@@ -206,7 +215,7 @@ function Forum(props) {
 											<div className='row'>
 												<div className='col-sm'>Topic</div>
 												<div className='col-sm'>Poster</div>
-												<div className='col-sm'>Post Date</div>
+												<div className='col-sm'>Last Updated</div>
 											</div>
 										</li>
 										{listPosts(forum)}			
@@ -232,24 +241,32 @@ function Forum(props) {
 									{allowMakeMessage(posts[postId])}
 									<div className="card-body" id='content' style={{'height': '65%', 'width': '100%', 'overflow': 'scroll'}}>
 										{posts[postId].content.map(
-											message => (
-												<div 
-													key={uuid4()} 
-													className='row message-bg' 
-													style={{
-														borderRadius: '5px', 
-														padding: '1rem',
-														marginBottom: '1vh',
-														minHeight: '10vw'
-												}}>
-													<div className='col-2 post-author-color'>
-														Dumbo
+											content => {
+												const [author, message, date] = content;
+												const [day, time] = date.split(',');
+												return (
+													<div 
+														key={uuid4()} 
+														className='row message-bg' 
+														style={{
+															borderRadius: '5px', 
+															padding: '1rem',
+															marginBottom: '1vh',
+															minHeight: '10vw'
+													}}>
+														<div className='col-3 post-author-color'>
+															{author}
+															<br />
+															{day}
+															<br />
+															{time}
+														</div>
+														<div className='post-color col-9'>
+															{message}
+														</div>
 													</div>
-													<div className='post-color col-10'>
-														{message}
-													</div>
-												</div>
-											)
+												);
+											}
 										)}
 									</div>
 								</div>

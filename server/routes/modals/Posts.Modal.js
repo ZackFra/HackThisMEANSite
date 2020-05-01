@@ -7,7 +7,7 @@ const PostSchema = new Schema({
     required: true
   },
   content: {
-    type: Array,
+    type: [Array],
     required: true
   },
   author: {

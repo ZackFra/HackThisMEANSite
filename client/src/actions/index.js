@@ -109,7 +109,6 @@ export const listPosts = postType => {
 					<li
 					key={uuid4()} 
 					onClick ={e => {
-						console.log(i);
 						dispatch({type: 'SET_POST_ID', payload: i});
 						dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
 						dispatch({type: 'SET_POST', payload: posts[i]._id});
@@ -119,7 +118,7 @@ export const listPosts = postType => {
 						<div className='row'>
 							<div className='col-sm'>{posts[i].title}</div>
 							<div className='col-sm'>{posts[i].author}</div>
-							<div className='col-sm'>{posts[i].date}</div>
+							<div className='col-sm'>{posts[i].content[posts[i].content.length-1][2]}</div>
 						</div>
 					</li>
 				</a>
@@ -188,7 +187,7 @@ export function postMessage() {
 	catch(e) {
 		return false;
 	}
-
+	const date = (new Date()).toLocaleString();
 	const request = {
 		user: user,
 		content: message,
@@ -197,7 +196,7 @@ export function postMessage() {
 	}
 
 	return axios.post('/Forums/UpdatePost', request)
-	.then( res => true )
+	.then( res => res.data )
 	.catch( err => false )
 }
 
