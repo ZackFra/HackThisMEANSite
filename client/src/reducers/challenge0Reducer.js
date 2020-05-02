@@ -1,9 +1,9 @@
-const challenge0Reducer = (state = {}, action) => {
+const challenge0Reducer = (state = {tab: 'STANDARD', pass: ''}, action) => {
 	switch(action.type) {
-		case 'LOGIN_SUCCESS':
-			return {success: true};
-		case 'LOGIN_FAIL':  
-			return {success: false};
+		case 'SET_TAB':
+			return {...state, tab: action.payload}
+		case 'UPDATE_PASS':
+			return {...state, pass: action.payload}
 		default: 
 			return state;
 	}

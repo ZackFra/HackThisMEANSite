@@ -49,7 +49,7 @@ export const getPosts = (postType)  => {
 		// postId and what it is in the new collection of posts
 		// set it here so we don't render a different post by trying
 		// to render the currently observed post with the wrong id
-		let delta = posts.length == 0 ? 0 : res.data.length - posts.length;
+		let delta = posts.length === 0 ? 0 : res.data.length - posts.length;
 		store.dispatch({type: 'SET_DELTA', payload: delta});
 	})
 	.catch( err => console.log(err));
@@ -237,13 +237,11 @@ export const login_challenge1 = data => dispatch => {
 			const ft = document.querySelector('#invalid')
 			ft.className = 'form-text text-success';
 			ft.innerText="Correct!";
-			dispatch({type: 'LOGIN_SUCCESS'});
-			window.location = '/Victory1';
+			dispatch({type: 'SET_TAB', payload: 'VICTORY'});
 		} else {
 			const ft = document.querySelector('#invalid');
 			ft.innerText="Incorrect Password";
 			dispatch({type: 'UPDATE_PASS', payload: ''});
-			dispatch({type: 'LOGIN_FAIL'});
 		}
 		console.log(`url: ${res.config.url}\nmethod: ${res.config.method}\ndata ${res.config.data}`);		
 	});

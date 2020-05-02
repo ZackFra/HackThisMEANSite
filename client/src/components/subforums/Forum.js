@@ -287,6 +287,7 @@ function Forum(props) {
 		}
 	}, 
 	[
+		delta,
 		tab,
 		message, 
 		initmessage, 

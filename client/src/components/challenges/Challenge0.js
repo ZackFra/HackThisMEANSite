@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 import { Container } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { Title } from '../../StyleSheet';
+import Victory from './Victory';
 
 function Challenge0() {
-	const { pass } = useSelector(state => state);
+	const { pass, tab } = useSelector(state => state.challenge0 );
 	const dispatch = useDispatch();
 
 
@@ -23,7 +24,7 @@ function Challenge0() {
 			dispatch({type: 'LOGIN_SUCCESS'});
 			ft.className = 'form-text text-success';
 			ft.innerText="Correct!";
-			window.location = '/Victory0';
+			dispatch({type: 'SET_TAB', payload: 'VICTORY'});
 		} else {
 			dispatch({type: 'LOGIN_FAIL'});
 			ft.innerText="Incorrect Password";
@@ -44,40 +45,46 @@ function Challenge0() {
 					"		pass.value = '';\n" +
 					"	}\n" +
 					"}\n";
-	return (
-		<Container className='foreground-bg'>
-			<script>{inject}</script>
-			<Title title='Welcome to Challenge 0' />
-			<br />
-			<Container>
-				<div className="card" style={{width: '18rem', margin: 'auto'}}>
-					<div className="card-body secondary-bg text-light">
-						<div className="card-title">
-							Sanity Test
+
+	switch(tab) {
+		case 'VICTORY':
+			return <Victory title='CONGRATULATIONS :)' message='You hacked challenge 0!' />
+		default:
+			return (
+				<Container className='foreground-bg'>
+					<script>{inject}</script>
+					<Title title='Welcome to Challenge 0' />
+					<br />
+					<Container>
+						<div className="card" style={{width: '18rem', margin: 'auto'}}>
+							<div className="card-body secondary-bg text-light">
+								<div className="card-title">
+									Sanity Test
+								</div>
+								<hr color="lightgray"/>
+								<div className="card-text">
+									Whoever made this test knows nothing about security. This is as basic as it gets.
+								</div>
+								<br />
+								<form className="form-group" onSubmit={e => login(e)}>
+									<label className="form-text text-warning" id="invalid"></label>
+									<label className="form-control" htmlFor="password">
+										admin
+									</label>
+									<input className="form-control" type="password" placeholder='password' value={pass} onChange={e => dispatch({type: 'UPDATE_PASS', payload: e.target.value})}/>
+									<button 
+										className="btn btn-primary"
+										type="submit" 
+										style={{padding: "0 1rem", marginTop: "0.7rem"}}
+										>
+										Submit</button>
+								</form>
+							</div>
 						</div>
-						<hr color="lightgray"/>
-						<div className="card-text">
-							Whoever made this test knows nothing about security. This is as basic as it gets.
-						</div>
-						<br />
-						<form className="form-group" onSubmit={e => login(e)}>
-							<label className="form-text text-warning" id="invalid"></label>
-							<label className="form-control" htmlFor="password">
-								admin
-							</label>
-							<input className="form-control" type="password" placeholder='password' value={pass} onChange={e => dispatch({type: 'UPDATE_PASS', payload: e.target.value})}/>
-							<button 
-								className="btn btn-primary"
-								type="submit" 
-								style={{padding: "0 1rem", marginTop: "0.7rem"}}
-								>
-								Submit</button>
-						</form>
-					</div>
-				</div>
-			</Container>
-		</Container>
-	);
+					</Container>
+				</Container>
+			);
+	}
 }
 
 

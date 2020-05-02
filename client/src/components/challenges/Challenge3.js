@@ -5,6 +5,7 @@ import { registerUser3, login3, changePass3 } from '../../actions';
 import { verify } from 'jsonwebtoken';
 import Cookies from 'js-cookie';
 import { Title } from '../../StyleSheet';
+import Victory from './Victory';
 
 function Challenge3(props) {
 	const { tab, username, password, confirm, throttle } = useSelector( state => state.challenge3 );
@@ -155,7 +156,7 @@ function Challenge3(props) {
 				if(res === true && Cookies.get('user') === 'admin') {
 					Cookies.remove('token');
 					Cookies.remove('user');
-					window.location = '/Victory3';
+					dispatch({type: 'SET_TAB', payload: 'VICTORY'});
 				} else if(res === true) {
 					document.getElementById('success').innerText = 'Password changed successfully!';
 				} else {
@@ -166,6 +167,8 @@ function Challenge3(props) {
 	}
 
 	switch(tab) {
+		case 'VICTORY':
+			return <Victory title='CONGRATULATIONS :)' message='You hacked challenge 3!' />
 		case 'CHANGE_PASS':
 			return (
 				<Container className='foreground-bg'>

@@ -5,6 +5,7 @@ import sanitizeHTML from 'sanitize-html';
 import { setMutationObserver, useInterval } from '../../actions';
 import uuid4 from 'uuid4';
 import { Title } from '../../StyleSheet';
+import Victory from './Victory';
 
 
 function Challenge2() {
@@ -90,48 +91,55 @@ function Challenge2() {
 	}, [dispatch]);
 
 	useEffect( () => {
-	    // set mutation observer to watch for nodes added to the DOM
-	    setMutationObserver("posts", node => {
 
-			// recursively gather every new node created
-	    	// from the user's input
-	    	function getAllNewNodes(node) {
-	    		let mutations = [];
-	    		function helper(node) {
-		    		mutations.push(node);
-		    		if(node.children !== undefined) {
-			    		for(let i = 0; i < node.children.length; i++) {
-			    			helper(node.children[i]);
-			    		}
-			    	}
-			    }
-			    helper(node);
-			    return mutations;
-	    	}
+		if(tab === 'LIVE_CHAT') {
+		    // set mutation observer to watch for nodes added to the DOM
+		    setMutationObserver("posts", node => {
+		    	console.log(node);
+				// recursively gather every new node created
+		    	// from the user's input
+		    	function getAllNewNodes(node) {
+		    		let mutations = [];
+		    		function helper(node) {
+			    		mutations.push(node);
+			    		if(node.children !== undefined) {
+				    		for(let i = 0; i < node.children.length; i++) {
+				    			helper(node.children[i]);
+				    		}
+				    	}
+				    }
+				    helper(node);
+				    return mutations;
+		    	}
 
-	    	let mutations = getAllNewNodes(node);
+		    	let mutations = getAllNewNodes(node);
 
-	    	// if a new node was added, gather all the nodes
-	    	// if any of them are images, resize them
-	    	// if one of them is an anchor tag with a href
-	    	// attribute, the user has won
+		    	// if a new node was added, gather all the nodes
+		    	// if any of them are images, resize them
+		    	// if one of them is an anchor tag with a href
+		    	// attribute, the user has won
 
-	    	for(let i = 0; i < mutations.length; i++) {
+		    	for(let i = 0; i < mutations.length; i++) {
 
-				if(mutations[i].nodeName === 'A' && mutations[i].href !== undefined) {
-			        mutations[i].href='/Victory2';
-			        document.getElementById('success').innerText="Click the link";
-			        dispatch({type: 'TOGGLE_ANTAGONIZE'});
-			    }
+		    		// @todo change this so I can set the link to 
+		    		// link to the victory tab
+					if(mutations[i].nodeName === 'A' && mutations[i].href !== undefined) {
+						dispatch({type: 'SET_TAB', payload: 'VICTORY'});
+				        dispatch({type: 'TOGGLE_ANTAGONIZE'});
+				    }
 
-			    if(mutations[i].nodeName === 'IMG') {
-			        mutations[i].style = 'max-height: 100%; max-width: 100%';
-			   	}
-			}
-		})
-	}, [tab, dispatch]);
+				    if(mutations[i].nodeName === 'IMG') {
+				        mutations[i].style = 'max-height: 100%; max-width: 100%';
+				   	}
+				}
+			});
+
+		}
+	}, [dispatch, tab]);
 
 	switch(tab) {
+		case 'VICTORY':
+			return <Victory title='CONGRATULATIONS :)' message='You hacked challenge 2!'/>
 		case 'LIVE_CHAT':
 			return (
 				<Container className='foreground-bg'>
