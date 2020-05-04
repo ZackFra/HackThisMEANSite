@@ -144,7 +144,7 @@ function Challenge4() {
 												dispatch({type: 'SET_TAB', payload: 'POEMS'});
 											}
 											catch(e) {
-												console.log(e);
+												console.error(e);
 												dispatch({type: 'SET_TAB', payload: 'POEMS'});
 											}
 										}

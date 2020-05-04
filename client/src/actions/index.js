@@ -395,7 +395,7 @@ export async function postPoem(JSONpoem) {
 		return poem;
 	}
 	catch(e) {
-		console.log(e);
+		console.error(e);
 		return {title: "", message: ""};
 	}
 }
