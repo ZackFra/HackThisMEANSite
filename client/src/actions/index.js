@@ -113,6 +113,7 @@ export const listPosts = postType => {
 		let postsToRender = [];
 		for(let i = 0; i < posts.length; i++) {
 			postsToRender.push(
+				// eslint-disable-next-line
 				<a key={uuid4()} className='post-bg' href='#' style={{textDecoration: 'none'}}>
 					<li
 					key={uuid4()} 
@@ -383,6 +384,23 @@ export const changePass3 = async request => {
 	.catch( err => false );
 }
 
+// Challenge 4
+
+export async function postPoem(JSONpoem) {
+	let poem = {};
+
+	try { 
+		const sanitized = (await axios.post('/Challenge4/Post', JSON.parse(JSONpoem))).data;
+		Object.assign(poem, sanitized);
+		return poem;
+	}
+	catch(e) {
+		console.log(e);
+		return {title: "", message: ""};
+	}
+}
+
+// @todo get rid of these
 /** these are generic onChange handlers **/
 export const updatePass = e => dispatch => {
 	dispatch({type: 'UPDATE_PASS', payload: e.target.value});
