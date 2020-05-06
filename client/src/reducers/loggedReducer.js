@@ -1,21 +1,32 @@
 
 const loggedReducer = (state = {user: '', pass: '', throttle: false, tab: 'STANDARD', confirm: ''}, action) => {
+	let ns = {};
+	Object.assign(ns, state);
 	switch(action.type) {
 		case 'UPDATE_PASS':
-			return {...state, pass: action.payload};
+			ns.pass = action.payload;
+			break;
 		case 'UPDATE_USER':
-			return {...state, user: action.payload};
+			ns.user = action.payload;
+			break;
 		case 'UPDATE_CONFIRM':
-			return {...state, confirm: action.payload};
+			ns.confirm = action.payload;
+			break;
 		case 'TOGGLE_THROTTLE':
-			return {...state, throttle: !state.throttle};
+			ns.throttle = !state.throttle;
+			break;
 		case 'SET_TAB':
-			return {...state, tab: action.payload};
+			ns.tab = action.payload;
+			break;
 		case 'CLEAR':
-			return {...state, user: '', pass: '', confirm: ''};
+			ns.user = '';
+			ns.pass = '';
+			ns.confirm = '';
+			break;
 		default:
-			return state;
+			break;
 	}
+	return ns;
 }
 
 export default loggedReducer;

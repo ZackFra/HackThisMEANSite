@@ -1,14 +1,20 @@
 const createPostReducer = (state = {initmessage: '', title: ''}, action) => {
+	let ns = {};
+	Object.assign(ns, state);
 	switch(action.type) {
 		case 'CREATE_POST': 
-			return {...state, success: true};
+			ns.success = true;
+			break;
 		case 'UPDATE_CREATE_MESSAGE':
-			return {...state, initmessage: action.payload};
+			ns.initmessage = action.payload;
+			break;
 		case 'UPDATE_TITLE':
-			return {...state, title: action.payload};
+			ns.title = action.payload;
+			break;
 		default:
-			return state;
+			break;
 	}
+	return ns;
 }
 
 export default createPostReducer;

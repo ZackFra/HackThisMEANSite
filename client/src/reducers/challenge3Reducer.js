@@ -7,22 +7,33 @@ let initialState = {
 }
 
 const challenge3Reducer = (state = initialState, action) => {
+	let ns = {};
+	Object.assign(ns, state);
 	switch(action.type) {
 		case 'SET_TAB':
-			return {...state, tab: action.payload};
+			ns.tab = action.payload;
+			break;
 		case 'UPDATE_PASS':
-			return {...state, password: action.payload};
+			ns.password = action.payload;
+			break;
 		case 'UPDATE_CONFIRM':
-			return {...state, confirm: action.payload};
+			ns.confirm = action.payload;
+			break;
 		case 'UPDATE_USER':
-			return {...state, username: action.payload};
+			ns.username = action.payload;
+			break;
 		case 'CLEAR_ALL':
-			return {...state, username: '', password: '', confirm: ''};
+			ns.username = '';
+			ns.password = '';
+			ns.confirm = '';
+			break;
 		case 'TOGGLE_THROTTLE':
-			return {...state, throttle: !state.throttle};
+			ns.throttle = !ns.throttle;
+			break;
 		default: 
-			return state;
+			break;
 	}
+	return ns;
 }
 
 export default challenge3Reducer;

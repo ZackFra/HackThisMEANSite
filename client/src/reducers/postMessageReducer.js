@@ -1,12 +1,17 @@
 const postMessageReducer = (state = {message: '', post: ''}, action) => {
+	let ns = {};
+	Object.assign(ns, state);
 	switch(action.type) {
 		case 'SET_POST':
-			return {...state, post: action.payload};
+			ns.post = action.payload;
+			break;
 		case 'UPDATE_POST_MESSAGE':
-			return {...state, message: action.payload};
+			ns.message = action.payload;
+			break;
 		default:
-			return state;
+			break;
 	}
+	return ns;
 }
 
 export default postMessageReducer;

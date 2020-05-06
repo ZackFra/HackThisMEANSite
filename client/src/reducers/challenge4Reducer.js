@@ -7,22 +7,31 @@ let initialState = {
 }
 
 const challenge4Reducer = (state = initialState, action) => {
+	let ns = {};
+	Object.assign(ns, state);
 	switch(action.type) {
 		case 'SET_TAB':
-			return {...state, tab: action.payload};
+			ns.tab = action.payload;
+			break;
 		case 'SET_TITLE':
-			return {...state, title: action.payload};
+			ns.title = action.payload
+			break;
 		case 'SET_MESSAGE':
-			return {...state, message: action.payload};
+			ns.message = action.payload;
+			break;
 		case 'UPDATE_POEMS':
-			return {...state, poems: [...state.poems, action.payload]};
+			ns.poems.push(action.payload);
+			break;
 		case 'SET_POEMS':
-			return {...state, poems: action.payload};
+			ns.poems = action.payload;
+			break;
 		case 'SET_ID':
-			return {...state, poemId: action.payload};
+			ns.poemId = action.payload;
+			break;
 		default: 
-			return state;
+			break;
 	}
+	return ns;
 }
 
 export default challenge4Reducer;

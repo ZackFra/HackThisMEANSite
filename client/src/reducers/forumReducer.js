@@ -8,26 +8,37 @@ const init = {
 };
 
 const forumReducer = (state = init, action) => {
+	let ns = {};
+	Object.assign(ns, state);
 	switch(action.type) {
 		case 'GET_POSTS': 
-			return {...state, posts: action.payload};
+			ns.posts = action.payload;
+			break;
 		case 'SET_FORUM':
-			return {...state, forum: action.payload};
+			ns.forum = action.payload;
+			break;
 		case 'SET_VIEW':
-			return {...state, view: action.payload};
+			ns.view = action.payload;
+			break;
 		case 'SET_TAB':
-			return {...state, tab: action.payload};
+			ns.tab = action.payload;
+			break;
 		case 'SET_POST_ID':
-			return {...state, postId: action.payload};
+			ns.postId = action.payload;
+			break;
 		case 'CLEAR_POSTS':
-			return {...state, posts: []};
+			ns.posts = [];
+			break;
 		case 'UPDATE_POST_ID':
-			return {...state, postId: state.postId + action.payload}
+			ns.postId = ns.postId + ns.payload;
+			break;
 		case 'SET_DELTA':
-			return {...state, delta: action.payload}
+			ns.delta = ns.payload;
+			break;
 		default:
-			return state;
+			break;
 	}
+	return ns;
 }
 
 export default forumReducer;

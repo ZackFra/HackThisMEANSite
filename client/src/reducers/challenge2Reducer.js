@@ -17,24 +17,34 @@ let initialState = {
 }
 
 const challenge2Reducer = (state = initialState, action) => {
+	let ns = {};
+	Object.assign(ns, state);
 	switch(action.type) {
 		case 'INCREMENT_POSTNUM':
-			return {...state, postNum: state.postNum + 1};
+			ns.postNum++;
+			break;
 		case 'SET_INSULTS':
-			return {...state, insults: action.payload};
+			ns.insults = action.payload;
+			break;
 		case 'INCREMENT_INSULTS':
-			return {...state, insultIndex: (state.insultIndex + 1) % state.insults.length};
+			ns.insultIndex = (ns.insultIndex + 1) % ns.insults.length;
+			break;
 		case 'TOGGLE_ANTAGONIZE':
-			return {...state, isAntagonizing: !state.isAntagonizing};
+			ns.isAntagonizing = !ns.isAntagonizing;
+			break;
 		case 'UPDATE_MESSAGE':
-			return {...state, message: action.payload};
+			ns.message = action.payload;
+			break;
 		case 'UPDATE_POSTS':
-			return {...state, posts: [action.payload, ...state.posts]};
+			ns.posts.unshift(action.payload);
+			break;
 		case 'SET_TAB':
-			return {...state, tab: action.payload}
+			ns.tab = action.payload;
+			break;
 		default: 
-			return state;
+			break;
 	}
+	return ns;
 }
 
 export default challenge2Reducer;
