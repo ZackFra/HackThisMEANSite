@@ -27,7 +27,7 @@ router.post('/CreatePost', (req, res) => {
 		if(err) {
 			res.status(500).json('bad request');
 		} else {
-			const date = (new Date()).toLocaleString();
+			const date = (new Date()).toLocaleString('en-US', {timeZone: 'America/New_York'});
 			Post.create({title, content: [[author, content, date]], author, date, forum}, (err, data) => {
 				if(err) {
 					res.status(500).json('bad request');
@@ -48,22 +48,27 @@ router.post('/UpdatePost', (req, res) => {
 	// curr is the current content
 	const { jwtseed } = process.env;
 	const { id, user, content, token} = req.body;
-	if(typeof id !== 'string' || typeof user !== 'string' || typeof content !== 'string' || typeof token !== 'string') {
-		res.status(500).json('bad request');
-		return ;
+	if(typeof id !== 'string' 
+		|| typeof user !== 'string' 
+		|| typeof content !== 'string' 
+		|| typeof token !== 'string') {
+		return res.status(500).json('bad request');
 	}
 
 	jwt.verify(token, jwtseed, (err, data) => {
 		if(err) {
 			console.log(err);
-			res.status(500).json('bad request');
+			return res.status(500).json('bad request');
 		} else {
-			const date = (new Date()).toLocaleString();
+			const date = (new Date()).toLocaleString('en-US', {timeZone: 'America/New_York'});
 			const newMessage = [data.user, content, date];
+
 			Post.findByIdAndUpdate(id, {$push: {content: newMessage}})
-			.then( data => { res.status(200).json(newMessage)})
+			.then( data => { 
+				return res.status(200).json(newMessage);
+			})
 			.catch( err => {
-				res.status(500).json('bad request');
+				return res.status(500).json('bad request');
 			});
 		}
 	});
@@ -75,15 +80,15 @@ router.post('/UpdatePost', (req, res) => {
 router.post('/GetPosts', (req, res) => {
 	const { forum } = req.body;
 	if(typeof forum !== 'string') {
-		res.status(500).json('bad request');
+		return res.status(500).json('bad request');
 	} else if(!forumTypes.includes(forum)) {
-		res.status(500).json('bad request');
+		return res.status(500).json('bad request');
 	}
 
-	Post.find({forum: {$eq: forum}}).sort({date: 'desc'})
+	Post.find({forum: {$eq: forum}}).sort({date: -1})
 	.then( (data, err) => {
-		if(err) res.status(500).json(err);
-		else res.status(200).json(data);
+		if(err) return res.status(500).json(err);
+		else return res.status(200).json(data);
 	});
 });
 
