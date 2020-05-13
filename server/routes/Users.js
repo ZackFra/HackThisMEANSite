@@ -28,13 +28,13 @@ router.post('/Authenticate', (req, res) => {
 		if(data) {
 			jwt.sign({user}, jwtseed, (err, token) => {
 				if(err) {
-					res.status(500).json(err);
+					return res.status(500).json(err);
 				} else {
-					res.status(200).json(token);
+					return res.status(200).json(token);
 				}
 			})
 		} else {
-			res.status(500).json(err);
+			return res.status(500).json(err);
 		}
 	});
 });
@@ -48,13 +48,13 @@ router.post('/Register', (req, res) => {
 	const re = /\s/;
 	
 	if(!user || !pass) {
-		res.status(500).json('Invalid parameters: Must have both user and pass');
+		return res.status(500).json('Invalid parameters: Must have both user and pass');
 	} else if(typeof(user) !== 'string' || typeof(pass) !== 'string') {
-		res.status(500).json('Invalid parameters: Only accepts strings');
+		return res.status(500).json('Invalid parameters: Only accepts strings');
 	} else if(user.length < 8 || pass.length < 8) {
-		res.status(500).json('Invalid parameters: user and pass must be 8 or more characters');
+		return res.status(500).json('Invalid parameters: user and pass must be 8 or more characters');
 	} else if(re.test(user) || re.test(pass)) {
-		res.status(500).json('Invalid parameters: may not have spaces in username or password');
+		return res.status(500).json('Invalid parameters: may not have spaces in username or password');
 	}
 
 	const userHash = crypto
@@ -74,8 +74,8 @@ router.post('/Register', (req, res) => {
 	
 
 	User.create({'user': userHash, 'pass': passHash, 'email': emailHash}, (err, data) => {
-		if(err) res.status(500).json(err);
-		res.status(200).json(data);
+		if(err) return res.status(500).json(err);
+		return res.status(200).json(data);
 	});
 });
 

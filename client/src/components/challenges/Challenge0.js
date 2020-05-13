@@ -1,22 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Container } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { Title } from '../../StyleSheet';
 import Victory from './Victory';
+import Panel from './Panel';
 
 function Challenge0() {
 	const { pass, tab } = useSelector(state => state.challenge0 );
 	const dispatch = useDispatch();
 
 
-	// onsubmit added for realism
-	useEffect( () => {
-		// eslint-disable-next-line
-		window.eval('function authenticate(){return 1}');
-		document.querySelector('form').setAttribute('onsubmit', 'authenticate()');
-	}, []);
-
-	function login(e) {
+	// handles login auth
+	const login = useCallback( e => {
 		e.preventDefault();
 
 		const ft = document.querySelector('#invalid');
@@ -31,7 +26,31 @@ function Challenge0() {
 		}
 
 		dispatch({type: 'UPDATE_PASS', payload: ''});
-	}
+	}, [dispatch, pass]);
+
+	const innerPanel = useCallback(() => {
+		return (
+			<form className="form-group" onSubmit={e => login(e)} dangerouslysetattributes={{onsubmit: 'authenticate()'}}>
+				<label className="form-text text-warning" id="invalid"></label>
+				<label className="form-control" htmlFor="password">
+					admin
+				</label>
+				<input className="form-control" type="password" placeholder='password' value={pass} onChange={e => dispatch({type: 'UPDATE_PASS', payload: e.target.value})}/>
+				<button 
+					className="btn btn-primary"
+					type="submit" 
+					style={{padding: "0 1rem", marginTop: "0.7rem"}}
+					>
+					Submit</button>
+			</form>
+		);
+	}, [dispatch, login, pass]);
+
+	// onsubmit added for realism
+	useEffect( () => {
+		// eslint-disable-next-line
+		window.eval('function authenticate(){return 1}');
+	}, [innerPanel]);
 
 	const inject =  "function authenticate() {\n" +
 					"	const pass = document.getElementById('password');\n" +
@@ -55,33 +74,11 @@ function Challenge0() {
 					<script>{inject}</script>
 					<Title title='Welcome to Challenge 0' />
 					<br />
-					<Container>
-						<div className="card" style={{width: '18rem', margin: 'auto'}}>
-							<div className="card-body secondary-bg text-light">
-								<div className="card-title">
-									Sanity Test
-								</div>
-								<hr color="lightgray"/>
-								<div className="card-text">
-									Whoever made this test knows nothing about security. This is as basic as it gets.
-								</div>
-								<br />
-								<form className="form-group" onSubmit={e => login(e)}>
-									<label className="form-text text-warning" id="invalid"></label>
-									<label className="form-control" htmlFor="password">
-										admin
-									</label>
-									<input className="form-control" type="password" placeholder='password' value={pass} onChange={e => dispatch({type: 'UPDATE_PASS', payload: e.target.value})}/>
-									<button 
-										className="btn btn-primary"
-										type="submit" 
-										style={{padding: "0 1rem", marginTop: "0.7rem"}}
-										>
-										Submit</button>
-								</form>
-							</div>
-						</div>
-					</Container>
+					<Panel 
+						title='Sanity Test' 
+						content='Whoever made this test knows nothing about security. This is as basic as it gets.'
+						innerComponent={innerPanel}
+					/>
 				</Container>
 			);
 	}

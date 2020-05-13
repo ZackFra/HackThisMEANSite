@@ -14,9 +14,9 @@ router.post('/CreatePost', (req, res) => {
 		|| typeof author !== 'string'
 		|| typeof forum !== 'string'
 		|| typeof token !== 'string') {
-		res.status(500).json('bad request');
+		return res.status(500).json('bad request');
 	} else if(!forumTypes.includes(forum)) {
-		res.status(500).json('bad request');
+		return res.status(500).json('bad request');
 	}
 
 	// verifies login credentials
@@ -25,14 +25,14 @@ router.post('/CreatePost', (req, res) => {
 	const { jwtseed } = process.env;
 	jwt.verify(token, jwtseed, (err, data) => {
 		if(err) {
-			res.status(500).json('bad request');
+			return res.status(500).json('bad request');
 		} else {
 			const date = (new Date()).toLocaleString('en-US', {timeZone: 'America/New_York'});
 			Post.create({title, content: [[author, content, date]], author, date, forum}, (err, data) => {
 				if(err) {
-					res.status(500).json('bad request');
+					return res.status(500).json('bad request');
 				} else {
-					res.status(200).json(data);
+					return res.status(200).json(data);
 				}
 			});
 		}
