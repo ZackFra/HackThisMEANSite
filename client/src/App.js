@@ -14,6 +14,7 @@ import Challenge1 from './components/challenges/Challenge1';
 import Challenge2 from './components/challenges/Challenge2';
 import Challenge3 from './components/challenges/Challenge3';
 import Challenge4 from './components/challenges/Challenge4';
+import Challenge5 from './components/challenges/Challenge5';
 import Navi from './components/Navi';
 
 import {
@@ -66,6 +67,7 @@ function App(props) {
             <Route exact path='/Challenge2' component={Challenge2} />
             <Route exact path='/Challenge3' component={Challenge3} />
             <Route exact path='/Challenge4' component={Challenge4} />
+            <Route exact path='/Challenge5' component={Challenge5} />
 
             <Route exact path='/OffTopic' component={OffTopicForum} />
             <Route exact path='/Challenge0Forum' component={Challenge0Forum} />
