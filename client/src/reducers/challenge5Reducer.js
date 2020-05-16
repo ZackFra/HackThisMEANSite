@@ -1,7 +1,8 @@
 
 let initialState = {
 	query: '',
-	tab: 'STANDARD'
+	tab: 'STANDARD',
+	added: false
 }
 
 const challenge5Reducer = (state = initialState, action) => {
@@ -14,6 +15,9 @@ const challenge5Reducer = (state = initialState, action) => {
 			break;
 		case 'SET_TAB':
 			ns.tab = action.payload;
+			break;
+		case 'SET_ADDED':
+			ns.added = action.payload;
 			break;
 		default:
 			break;

@@ -7,7 +7,7 @@ const regexWorker = () => {
 		if(!e) return;
 
 		let data = e.data;
-		let regex = /^(([a-z])+.)+[A-Z]([a-z])+$/;
+		let regex = /^([a-zA-Z0-9])(([\-.]|[_]+)?([a-zA-Z0-9]+))*(@){1}[a-z0-9]+[.]{1}(([a-z]{2,3})|([a-z]{2,3}[.]{1}[a-z]{2,3}))$/;
 
 		postMessage(regex.test(data));
 	});

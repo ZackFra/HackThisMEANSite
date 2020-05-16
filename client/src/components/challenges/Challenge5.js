@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
-import { Container } from 'reactstrap';
+import { Container, Button } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { Title } from '../../StyleSheet';
 import Victory from './Victory';
@@ -8,7 +8,7 @@ import regexWorker from './Challenge5/regexWorker';
 import WebWorker from './Challenge5/setupWorker';
 
 function Challenge5() {
-	const {query, tab} = useSelector( state => state.challenge5 );
+	const {query, tab, added} = useSelector( state => state.challenge5 );
 	const dispatch = useDispatch();
 
 	const submit = useCallback( e => {
@@ -23,13 +23,15 @@ function Challenge5() {
 		let killWorker = setTimeout(() => {
 			worker.terminate();
 			dispatch({type: 'SET_TAB', payload: 'VICTORY'});
-		}, 10000);
+		}, 45000);
 		
 		// when the worker responds
 		// tell the worker to kill itself
 		worker.onmessage = e => {
 			clearTimeout(killWorker);
-			dispatch({type: 'SET_TAB', payload: 'STANDARD'});
+			dispatch({type: 'SET_QUERY', payload: ''});
+			dispatch({type: 'SET_ADDED', payload: e.data});
+			dispatch({type: 'SET_TAB', payload: 'DONE'});
 
 			// tell it to kill itself
 			worker.terminate()
@@ -47,10 +49,11 @@ function Challenge5() {
 				<form className="form-group" onSubmit={submit}>
 					<input 
 						className='form-control'
-						placeholder='search' 
+						placeholder='email@website.com' 
 						value={query} 
 						onChange={e => dispatch({type: 'SET_QUERY', payload: e.target.value})}
 					/>
+					<Button color='primary' type='submit' style={{marginTop: '0.5rem'}}>Submit</Button>
 				</form>
 			);
 		}
@@ -63,10 +66,23 @@ function Challenge5() {
 		)
 	}, [query, dispatch, submit]);
 
+	const DonePanel = useCallback( () => {
+		return (
+			<Button 
+				color='link' 
+				onClick={() => {
+					dispatch({type: 'SET_ADDED', payload: false});
+					dispatch({type:'SET_TAB', payload: 'STANDARD'});
+				}}
+				>Back
+			</Button>
+		);
+	}, [dispatch]);
+
 	// waiting for regex to respond panel
 	function WaitingPanel() {
 		return (
-			<div>Waiting...</div>
+			<div>Verifying...</div>
 		)
 	}
 
@@ -80,8 +96,20 @@ function Challenge5() {
 					<br />
 					<Panel 
 						title='ReDoS attack' 
-						content='So this search bar seems to verify results via a regex... you know what to do.'
+						content='This should only take a second.'
 						innerComponent={WaitingPanel}
+					/>
+				</Container>
+			);
+		case 'DONE':
+			return (
+				<Container className='foreground-bg'>
+					<Title title='Welcome to Challenge 5' />
+					<br />
+					<Panel 
+						title='ReDoS attack' 
+						content={added ? 'Finished! :)' : 'Invalid email: failed to add to mailing list :('}
+						innerComponent={DonePanel}
 					/>
 				</Container>
 			);
@@ -92,7 +120,7 @@ function Challenge5() {
 					<br />
 					<Panel 
 						title='ReDoS attack' 
-						content='So this search bar seems to verify results via a regex... you know what to do.'
+						content='Hey! Welcome to EvilRegex.com! If you would like to add yourself to our mailing list, enter your email right here! :)'
 						innerComponent={InnerPanel}
 					/>
 				</Container>
