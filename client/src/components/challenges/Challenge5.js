@@ -19,17 +19,16 @@ function Challenge5() {
 		let worker = new WebWorker(regexWorker);
 		
 		// kill the worker if it takes too long
+		// set the screen to victory
 		let killWorker = setTimeout(() => {
 			worker.terminate();
-			console.log('failed');
-			dispatch({type: 'SET_TAB', payload: 'STANDARD'});
-		}, 2000);
+			dispatch({type: 'SET_TAB', payload: 'VICTORY'});
+		}, 10000);
 		
-		// when the worker responds, output it's response
-		// and tell the worker to kill itself
+		// when the worker responds
+		// tell the worker to kill itself
 		worker.onmessage = e => {
 			clearTimeout(killWorker);
-			console.log(e.data);
 			dispatch({type: 'SET_TAB', payload: 'STANDARD'});
 
 			// tell it to kill itself
@@ -64,11 +63,12 @@ function Challenge5() {
 		)
 	}, [query, dispatch, submit]);
 
-	const WaitingPanel = useCallback(() => {
+	// waiting for regex to respond panel
+	function WaitingPanel() {
 		return (
 			<div>Waiting...</div>
 		)
-	});
+	}
 
 	switch(tab) {
 		case 'VICTORY':
