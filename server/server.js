@@ -15,6 +15,8 @@ require('dotenv').config();
 
 const app = express();
 
+// @todo disable javascript in $where clauses
+
 app.use(bodyParser.json());
 
 app.use('/Login', Users);
