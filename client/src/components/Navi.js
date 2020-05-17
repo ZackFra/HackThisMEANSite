@@ -46,7 +46,7 @@ function Navi(props) {
 
   return (
     <div>
-      <Navbar className='nav-bg' style={{height: '12vh'}} dark expand="md">
+      <Navbar className='nav-bg nav-font' style={{height: '12vh'}} dark expand="md">
         <NavbarBrand href="/">Hack This MEAN Site</NavbarBrand>
         <NavbarToggler onClick={toggle} />
           <Nav className="mr-auto" navbar>
@@ -55,7 +55,7 @@ function Navi(props) {
               <DropdownToggle nav caret>
                 Challenges
               </DropdownToggle>
-              <DropdownMenu>
+              <DropdownMenu className='dropdown-font'>
                 <DropdownItem href='/Challenge0'>
                   Challenge 0
                 </DropdownItem>
@@ -96,7 +96,7 @@ function Navi(props) {
               <DropdownToggle nav caret>
                 Forums
               </DropdownToggle>
-              <DropdownMenu>
+              <DropdownMenu className='dropdown-font'>
                 <DropdownItem href='/OffTopic'>
                   Off Topic
                 </DropdownItem>
