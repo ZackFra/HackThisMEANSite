@@ -4,13 +4,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { listPosts, getPosts, postMessage, createPost, useInterval } from '../../actions';
 import { verify } from 'jsonwebtoken';
 import uuid4 from 'uuid4';
-import env from '../../.env.js';
+import env from '../../.env';
 import { Title } from '../../StyleSheet';
+
+// @todo refacter tf out of this
 
 // generic Forum component
 function Forum(props) {
-	const { posts, postId, view, tab, delta } = useSelector(state => state.forum);
-	const { message } = useSelector(state => state.postMessage);
+	const { posts, postId, postMongoId, tab, newMessage } = useSelector(state => state.forum);
 	const { initmessage, title } = useSelector(state => state.createPost);
 	const { token } = localStorage;
 	const { forum, forumTitle } = props;
@@ -33,17 +34,17 @@ function Forum(props) {
 	}, [dispatch]);
 
 	// submit handler for creating a post
-	const createPostSubmit = useCallback( async e => {
+	const createPostSubmit = useCallback( e => {
 		e.preventDefault();
 
 		// if createPost fails
-		const created = await createPost(forum);
+		const created = (async () => await createPost(forum))();
 		if(created === false) {
 			const inval = document.querySelector('[id=invalid]');
 
 			if(title === '') {
 				inval.innerText = 'Title cannot be blank.';
-			} else if(message === '') {
+			} else if(newMessage === '') {
 				inval.innerText = 'Message cannot be blank.';
 			} else {
 				inval.innerText = 'Internal server error. Try again later.';
@@ -56,7 +57,7 @@ function Forum(props) {
 			dispatch({type: 'UPDATE_TITLE', payload: ''});
 			dispatch({type: 'UPDATE_CREATE_MESSAGE', payload: ''})
 		}
-	}, [dispatch, forum, message, posts, title]);
+	}, [dispatch, forum, newMessage, posts, title]);
 
 	// if user logged in, allow them to create message
 	const allowMakeMessage = useCallback( post => {
@@ -74,7 +75,7 @@ function Forum(props) {
 	}, [dispatch, token]);
 
 	// submit a new message to be posted
-	const submitMessage = useCallback( async e => {
+	const submitMessage = useCallback( e => {
 		e.preventDefault();
 		const inval = document.querySelector('[id=invalid]');
 		
@@ -87,232 +88,196 @@ function Forum(props) {
 			return;
 		}
 
-		const posted = await postMessage();
-
-		// if createPost fails
-		if(posted === false) {	
-			if(message === '') {
-				inval.innerText = 'Message cannot be blank.';
+		postMessage(postMongoId, newMessage)
+		.then(posted => {
+			if(posted === false) {	
+				if(newMessage === '') {
+					inval.innerText = 'Message cannot be blank.';
+				} else {
+					inval.innerText = 'Internal server error. Try again later.';
+				}
 			} else {
-				inval.innerText = 'Internal server error. Try again later.';
+				dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
+				dispatch({type: 'UPDATE_MESSAGES', payload: posted});
+				dispatch({type: 'SET_POST_ID', payload: 0});
 			}
-		} else {
-			dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
-			dispatch({type: 'UPDATE_POST_MESSAGE', payload: ''});
-			posts[postId].content.push(posted);
+		})
+		.catch(err => console.log(err))
+
+		dispatch({type: 'UPDATE_NEW_MESSAGE', payload: ''});
+	}, [dispatch, postMongoId, newMessage]);
+
+	// initial post grab
+	useEffect( () => {
+		getPosts(forum)
+		.then(data => {
+			if(data !== false) {
+				dispatch({type: 'GET_POSTS', payload: data});
+			}
+		})
+		.catch( err => console.log(err));
+	}, [forum, dispatch]);
+
+	// get the posts every 20 seconds and update postId
+	useInterval( async () => {
+		let newPosts = await getPosts(forum);
+
+		if(newPosts !== false) {
+
+			dispatch({type: 'GET_POSTS', payload: newPosts});
+
+			// if the postId should be changed, changed it.
+			for(let i = 0; i < newPosts.length; i++) {
+				if(postMongoId === newPosts[i]._id) {
+					dispatch({type: 'SET_POST_ID', payload: i});
+					break;
+				}
+			}
 		}
-	}, [dispatch, posts, postId, message]);
+	}, [20000]);
 
-
-	// standard view, it takes a second for the initial get request
-	// so while the user waits, this jsx is rendered. Might remove later.
-	const standard = (
-		<Container style={{height: '88vh'}}>
-				<Nav>
-					<div className="card" style={{width: '100%', margin: 'auto'}}>
+	// dynamically generate page as tab changes
+	switch(tab) {
+		case 'CREATE_POST':
+			return (
+				<Container>
+					<div className="card" style={{width: '100%', margin: 'auto', height: '88vh'}}>
 						<div className="card-body secondary-bg">
-							<Title title={forumTitle} />
-							{allowCreation()}
-							<div className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll'}}>
-								<ul className="card-body" id='content' style={{'height': '28rem', 'width': '100%', 'overflow': 'scroll', listStyleType: 'none'}}>
-									<li key={uuid4()} style={{backgroundColor: '#637074', color: '#8AB0AB', width: '95%', padding: '1rem', border: '1px solid black', borderRadius: '5px'}}>
+							<Title title='Create Post' />
+							<Button color="link" onClick= {() => {
+								dispatch({type: 'SET_TAB', payload: 'STANDARD'});
+							}}>
+							Back</Button>
+							<div className="card-body" id='content' style={{'width': '100%', 'overflow': 'scroll', paddingBottom: '0'}}>
+								<form className="form-group-sizing-lg" onSubmit={createPostSubmit}>
+									<div id='invalid' className='text-warning'/>
+
+									{/* @todo add recaptcha */}
+									<input 
+										className="form-text form-bg" 
+										value={title} 
+										onChange={e => dispatch({type: 'UPDATE_TITLE', payload: e.target.value})} 
+										type="text" 
+										placeholder="title" 
+										style={{border: '1px', 'width': '100%', 'padding': '0.5rem'}} />
+									<textarea 
+										className="form-text form-bg" 
+										value={initmessage} 
+										onChange={e => dispatch({type: 'UPDATE_CREATE_MESSAGE', payload: e.target.value})} 
+										placeholder="message" 
+										style={{'width': '100%', 'height': '16rem', 'padding': '0.5rem', 'resize': 'none'}} />
+									<button type="submit" className="btn btn-outline-primary" style={{'float': 'right', 'marginTop': '0.3rem'}}>Submit</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</Container>
+			);
+		case 'POST_MESSAGE':
+			return (
+				<Container style={{height: '88vh'}}>
+					<div className="card" style={{width: '100%', margin: 'auto', height: '88vh'}}>
+						<div className="card-body secondary-bg">
+							<Title title='Post Message' />
+							<Button color="link" onClick= {() => {
+									dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
+							}}>
+							Back</Button>
+							<div className="card-body" id='content' style={{'height': '65%', 'width': '100%', 'overflow': 'scroll', paddingBottom: '0'}}>
+								<form className="form-group-sizing-lg" onSubmit={submitMessage}>
+									<div id='invalid' className='text-warning'/>
+
+									{/* @todo add recaptcha */}
+									<textarea 
+										className="form-text" 
+										value={newMessage} 
+										onChange={e => dispatch({type: 'UPDATE_NEW_MESSAGE', payload: e.target.value})}
+										placeholder="message" 
+										style={{'width': '100%', 'height': '16rem', 'padding': '0.5rem', 'resize': 'none'}} 
+									/>
+									<button type="submit" className="btn btn-outline-primary" style={{'float': 'right', 'marginTop': '0.3rem'}}>Submit</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</Container>
+			);
+		case 'VIEW_POST':
+			// if new posts have been posted, modify the postId
+			// to match the difference in length between the previous
+			// posts array and the new one
+
+			return (
+				<Container>
+					<Nav>
+						<div className="card" style={{width: '100%', margin: 'auto', height: '88vh'}}>
+							<div className="card-body secondary-bg">
+								<Title title={posts[postId].title} />
+								<Button color="link" onClick= {() => {
+									dispatch({type: 'SET_TAB', payload: 'STANDARD'})
+								}}>
+								Back
+								</Button>
+								{allowMakeMessage(posts[postId])}
+								<div className="card-body" id='content' style={{'height': '65%', 'width': '100%', 'overflow': 'scroll'}}>
+									{posts[postId].content.map(
+										content => {
+											const [author, message, date] = content;
+											const [day, time] = date.split(',');
+											return (
+												<div 
+													key={uuid4()} 
+													className='row message-bg' 
+													style={{
+														borderRadius: '5px', 
+														padding: '1rem',
+														marginBottom: '1vh',
+														minHeight: '10vw'
+												}}>
+													<div className='col-3 post-author-color'>
+														{author}
+														<br />
+														{day}
+														<br />
+														{time}
+													</div>
+													<div className='post-color col-9'>
+														{message}
+													</div>
+												</div>
+											);
+										}
+									)}
+								</div>
+							</div>
+						</div>
+					</Nav>
+				</Container>
+			);
+		default:
+			return (
+				<Container>
+					<Nav>
+						<div className="card" style={{width: '100%', margin: 'auto', height: '88vh'}}>
+							<div className="card-body secondary-bg">
+								<Title title={forumTitle} />
+								{allowCreation()}
+								<ul className="card-body" id='content' style={{height:'60%', 'width': '100%', 'overflow': 'scroll', listStyleType: 'none'}}>
+									<li key={uuid4()} className = 'title-post-bg title-post-color'style={{width: '95%', padding: '1rem', border: '1px solid black', borderRadius: '5px'}}>
 										<div className='row'>
 											<div className='col-sm'>Topic</div>
 											<div className='col-sm'>Poster</div>
 											<div className='col-sm'>Last Updated</div>
 										</div>
-									</li>			
+									</li>
+									{listPosts(forum)}			
 								</ul>
-
 							</div>
 						</div>
-					</div>
-				</Nav>
-		</Container>
-	);
-
-	// dynamically generate page as tab changes
-	// wrapped in useEffect to prevent infinite
-	// get requests for forum posts
-	useEffect( () => {
-		switch(tab) {
-			case 'CREATE_POST':
-				dispatch({type: 'SET_VIEW', payload:
-					<Container>
-						<div className="card" style={{width: '100%', margin: 'auto', height: '88vh'}}>
-							<div className="card-body secondary-bg">
-								<Title title='Create Post' />
-								<Button color="link" onClick= {() => {
-									dispatch({type: 'SET_TAB', payload: 'STANDARD'});
-								}}>
-								Back</Button>
-								<div className="card-body" id='content' style={{'width': '100%', 'overflow': 'scroll', paddingBottom: '0'}}>
-									<form className="form-group-sizing-lg" onSubmit={createPostSubmit}>
-										<div id='invalid' className='text-warning'/>
-	
-										{/* @todo add recaptcha */}
-										<input 
-											className="form-text form-bg" 
-											value={title} 
-											onChange={e => dispatch({type: 'UPDATE_TITLE', payload: e.target.value})} 
-											type="text" 
-											placeholder="title" 
-											style={{border: '1px', 'width': '100%', 'padding': '0.5rem'}} />
-										<textarea 
-											className="form-text form-bg" 
-											value={initmessage} 
-											onChange={e => dispatch({type: 'UPDATE_CREATE_MESSAGE', payload: e.target.value})} 
-											placeholder="message" 
-											style={{'width': '100%', 'height': '16rem', 'padding': '0.5rem', 'resize': 'none'}} />
-										<button type="submit" className="btn btn-outline-primary" style={{'float': 'right', 'marginTop': '0.3rem'}}>Submit</button>
-									</form>
-								</div>
-							</div>
-						</div>
-					</Container>
-				});
-				break;
-			case 'POST_MESSAGE':
-				dispatch({type: 'SET_VIEW', payload:
-					<Container style={{height: '88vh'}}>
-						<div className="card" style={{width: '100%', margin: 'auto', height: '88vh'}}>
-							<div className="card-body secondary-bg">
-								<Title title='Post Message' />
-								<Button color="link" onClick= {() => {
-										dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
-								}}>
-								Back</Button>
-								<div className="card-body" id='content' style={{'height': '65%', 'width': '100%', 'overflow': 'scroll', paddingBottom: '0'}}>
-									<form className="form-group-sizing-lg" onSubmit={submitMessage}>
-										<div id='invalid' className='text-warning'/>
-
-										{/* @todo add recaptcha */}
-										<textarea 
-											className="form-text" 
-											value={message} 
-											onChange={e => dispatch({type: 'UPDATE_POST_MESSAGE', payload: e.target.value})}
-											placeholder="message" 
-											style={{'width': '100%', 'height': '16rem', 'padding': '0.5rem', 'resize': 'none'}} 
-										/>
-										<button type="submit" className="btn btn-outline-primary" style={{'float': 'right', 'marginTop': '0.3rem'}}>Submit</button>
-									</form>
-								</div>
-							</div>
-						</div>
-					</Container>
-				})
-				break;
-			case 'STANDARD':
-				dispatch({type: 'SET_VIEW', payload: 
-					<Container>
-						<Nav>
-							<div className="card" style={{width: '100%', margin: 'auto', height: '88vh'}}>
-								<div className="card-body secondary-bg">
-									<Title title={forumTitle} />
-									{allowCreation()}
-									<ul className="card-body" id='content' style={{height:'60%', 'width': '100%', 'overflow': 'scroll', listStyleType: 'none'}}>
-										<li key={uuid4()} className = 'title-post-bg title-post-color'style={{width: '95%', padding: '1rem', border: '1px solid black', borderRadius: '5px'}}>
-											<div className='row'>
-												<div className='col-sm'>Topic</div>
-												<div className='col-sm'>Poster</div>
-												<div className='col-sm'>Last Updated</div>
-											</div>
-										</li>
-										{listPosts(forum)}			
-									</ul>
-								</div>
-							</div>
-						</Nav>
-					</Container>
-				});
-				break;
-			case 'VIEW_POST':
-				// if new posts have been posted, modify the postId
-				// to match the difference in length between the previous
-				// posts array and the new one
-				if(delta > 0) {
-					dispatch({type: 'UPDATE_POST_ID', payload: delta});
-					dispatch({type: 'SET_DELTA', payload: 0});
-				}
-				dispatch({type: 'SET_VIEW', payload:
-					<Container>
-						<Nav>
-							<div className="card" style={{width: '100%', margin: 'auto', height: '88vh'}}>
-								<div className="card-body secondary-bg">
-									<Title title={posts[postId].title} />
-									<Button color="link" onClick= {() => {
-										dispatch({type: 'SET_TAB', payload: 'STANDARD'})
-									}}>
-									Back
-									</Button>
-									{allowMakeMessage(posts[postId])}
-									<div className="card-body" id='content' style={{'height': '65%', 'width': '100%', 'overflow': 'scroll'}}>
-										{posts[postId].content.map(
-											content => {
-												const [author, message, date] = content;
-												const [day, time] = date.split(',');
-												return (
-													<div 
-														key={uuid4()} 
-														className='row message-bg' 
-														style={{
-															borderRadius: '5px', 
-															padding: '1rem',
-															marginBottom: '1vh',
-															minHeight: '10vw'
-													}}>
-														<div className='col-3 post-author-color'>
-															{author}
-															<br />
-															{day}
-															<br />
-															{time}
-														</div>
-														<div className='post-color col-9'>
-															{message}
-														</div>
-													</div>
-												);
-											}
-										)}
-									</div>
-								</div>
-							</div>
-						</Nav>
-					</Container>
-				});
-				break;
-			default:
-				dispatch({type: 'SET_TAB', payload: 'STANDARD'});
-		}
-	}, 
-	[
-		delta,
-		tab,
-		message, 
-		initmessage, 
-		title, 
-		allowCreation, 
-		allowMakeMessage, 
-		dispatch,
-		postId,
-		submitMessage,
-		createPostSubmit,
-		forum,
-		forumTitle,
-		posts
-	]); 
-
-	useEffect( () => {
-		dispatch({type: 'SET_TAB', payload: 'STANDARD'});
-		getPosts(forum);
-	}, [forum, dispatch])
-
-	useInterval(() => {
-		getPosts(forum);
-	}, [20000]);
-
-	return view || standard;
+					</Nav>
+				</Container>
+			);
+	}
 }
 
 

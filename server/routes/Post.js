@@ -52,6 +52,7 @@ router.post('/UpdatePost', (req, res) => {
 		|| typeof user !== 'string' 
 		|| typeof content !== 'string' 
 		|| typeof token !== 'string') {
+		console.log(id, user, content, token);
 		return res.status(500).json('bad request');
 	}
 
@@ -68,6 +69,7 @@ router.post('/UpdatePost', (req, res) => {
 				return res.status(200).json(newMessage);
 			})
 			.catch( err => {
+				console.log('wtf?');
 				return res.status(500).json('bad request');
 			});
 		}
@@ -85,7 +87,7 @@ router.post('/GetPosts', (req, res) => {
 		return res.status(500).json('bad request');
 	}
 
-	Post.find({forum: {$eq: forum}}).sort({date: -1})
+	Post.find({forum: {$eq: forum}})
 	.then( (data, err) => {
 		if(err) return res.status(500).json(err);
 		else return res.status(200).json(data);

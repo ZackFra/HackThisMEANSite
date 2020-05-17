@@ -1,10 +1,10 @@
 const init = {
-	delta: 0,
 	posts: [], 
 	forum: undefined, 
 	postId: undefined, 
-	viewPost: undefined, 
-	tab: undefined
+	postMongoId: undefined,
+	newMessage: undefined,
+	tab: 'STANDARD'
 };
 
 const forumReducer = (state = init, action) => {
@@ -17,23 +17,24 @@ const forumReducer = (state = init, action) => {
 		case 'SET_FORUM':
 			ns.forum = action.payload;
 			break;
-		case 'SET_VIEW':
-			ns.view = action.payload;
-			break;
 		case 'SET_TAB':
 			ns.tab = action.payload;
 			break;
 		case 'SET_POST_ID':
 			ns.postId = action.payload;
 			break;
-		case 'CLEAR_POSTS':
-			ns.posts = [];
+		case 'SET_MONGO_ID':
+			ns.postMongoId = action.payload;
 			break;
-		case 'UPDATE_POST_ID':
-			ns.postId = ns.postId + ns.payload;
+		// creating new messages in posts
+		case 'UPDATE_MESSAGES':
+			ns.posts[ns.postId].content.push(action.payload);
+			let post = ns.posts[ns.postId];
+			ns.posts.splice(ns.postId, 1);
+			ns.posts.unshift(post);
 			break;
-		case 'SET_DELTA':
-			ns.delta = ns.payload;
+		case 'UPDATE_NEW_MESSAGE':
+			ns.newMessage = action.payload;
 			break;
 		default:
 			break;

@@ -39,20 +39,16 @@ export async function register(data) {
 /** Forums **/
 
 // returns all posts
-export const getPosts = (postType)  => {
-	axios.post('/Forums/GetPosts', {forum: postType})
-	.then( res => {
-		const { posts } = store.getState().forum;
-		store.dispatch({type: 'GET_POSTS', payload: res.data});
+export async function getPosts(postType) {
+	
+	// compares the date of each post
+	function dateComparator(a, b) {
+		return (new Date(b.content[b.content.length-1][2])).getTime() - new Date(a.content[a.content.length-1][2]).getTime();
+	}
 
-		// delta is the difference in postId from the currently viewed
-		// postId and what it is in the new collection of posts
-		// set it here so we don't render a different post by trying
-		// to render the currently observed post with the wrong id
-		let delta = posts.length === 0 ? 0 : res.data.length - posts.length;
-		store.dispatch({type: 'SET_DELTA', payload: delta});
-	})
-	.catch( err => console.log(err));
+	return await axios.post('/Forums/GetPosts', {forum: postType})
+	.then( res => res.data.sort(dateComparator) )
+	.catch( err => false )
 }
 
 // returns the jsx that renders a post's content
@@ -120,7 +116,7 @@ export const listPosts = postType => {
 					onClick ={e => {
 						dispatch({type: 'SET_POST_ID', payload: i});
 						dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
-						dispatch({type: 'SET_POST', payload: posts[i]._id});
+						dispatch({type: 'SET_MONGO_ID', payload: posts[i]._id});
 						setView(goToPosts());
 					}} 
 					style={styles}>
@@ -184,9 +180,8 @@ export const createPost = forum => {
 	.catch( err => false);
 }
 
-export function postMessage() {
+export function postMessage(post, message) {
 	const { token } = localStorage;
-	const {message, post} = store.getState().postMessage;
 	let user = '';
 
 	// if invalid user, return false
