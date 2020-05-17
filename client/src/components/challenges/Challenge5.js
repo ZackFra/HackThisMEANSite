@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { Container, Button } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { Title } from '../../StyleSheet';
@@ -18,12 +18,12 @@ function Challenge5() {
 		// https://www.newline.co/fullstack-react/articles/introduction-to-web-workers-with-react
 		let worker = new WebWorker(regexWorker);
 		
-		// kill the worker if it takes too long
+		// kill the worker if it takes too long (30 sec.)
 		// set the screen to victory
 		let killWorker = setTimeout(() => {
 			worker.terminate();
 			dispatch({type: 'SET_TAB', payload: 'VICTORY'});
-		}, 45000);
+		}, 30000);
 		
 		// when the worker responds
 		// tell the worker to kill itself
@@ -41,7 +41,7 @@ function Challenge5() {
 
 		dispatch({type: 'SET_TAB', payload: 'WAITING'});
 
-	})
+	}, [dispatch, query]);
 
 	const InnerPanel = useCallback(() => {
 		if(window.Worker) {

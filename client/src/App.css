@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
-
 .nav-bg {
 	background-color: #191716;
 }
@@ -12,7 +10,7 @@
 	background-color: rgba(14, 39, 60, 0.90); 
 	margin-top: 1vh;
 	margin-bottom: 1vh;
-	border-radius: 1%;
+	border-radius: 25px;
 	height: 86vh;
 }
 
@@ -24,6 +22,15 @@
 	background-color: #3D348B;
 	border: 2px dashed white;
 	border-radius: 10px;
+}
+
+.title-font {
+	font-family: "comic sans ms";
+	font-size: 32px;
+	line-height: 1.5;
+	font-weight: 800;
+	letter-spacing: 0.4px;
+	word-spacing: 0.4px;
 }
 
 .title-post-bg {
