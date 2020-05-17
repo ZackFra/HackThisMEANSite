@@ -5,8 +5,15 @@ import { Title } from '../StyleSheet';
 function PageNotFound() {
 	return (
 		<Container className='foreground-bg' style={{padding: '0 5vw 5vh 5vw'}}>
-			<Title title='Page Not Found' />
-			<img className="img-fluid" src='./page_not_found.jpg' alt="This site is under construction." style={{width: '100%', height: '80%', marginTop: '1vh'}}></img>
+			<Title title='404 Page Not Found' />
+			<div style={{textAlign: 'center', height: '100%', width: '100%'}}>
+				<img 
+					className="img-fluid text-center" 
+					src='./PageNotFound.jpg' 
+					alt="Page Not Found :(" 
+					style={{width: '70%', height: '70%', marginTop: '1vh', marginLeft: '0'}} 
+				/>
+			</div>
 		</Container>
 	);
 }

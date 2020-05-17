@@ -32,6 +32,7 @@ import {
   Challenge10Forum
 } from './components/subforums/Forums';
 import Login from './components/Login'
+import PageNotFound from './components/PageNotFound';
 
 
 
@@ -61,6 +62,7 @@ function App(props) {
   			<div>
   				<Switch>
             <Route exact path='/Home' component={Home} />
+            <Route exact path='/' component={Home} />
   					<Route exact path='/Construction' component={Construction}/>
   					<Route exact path='/Challenge0' component={Challenge0} />
             <Route exact path='/Challenge1' component={Challenge1} />
@@ -82,8 +84,16 @@ function App(props) {
             <Route exact path='/Challenge9Forum' component={Challenge9Forum} />
             <Route exact path='/Challenge10Forum' component={Challenge10Forum} />
 
+            <Route exact path='/PageNotFound' component={PageNotFound} />
+            
+            <Redirect from='/Challenge6' to='/Construction' />
+            <Redirect from='/Challenge7' to='/Construction' />
+            <Redirect from='/Challenge8' to='/Construction' />
+            <Redirect from='/Challenge9' to='/Construction' />
+            <Redirect from='/Challenge10' to='/Construction' />
+
             {setConditionals()}
-  					<Redirect to='/Construction'/>
+  					<Redirect to='/PageNotFound'/>
   				</Switch>
   			</div>
   		</Router>
