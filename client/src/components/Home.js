@@ -8,10 +8,10 @@ function Home() {
 			<Title title='Welcome Home' />
 			<Content>
 				<h2>WHOAMI</h2>
-				<p>HackThisMEANSite is a free and legal training ground for Javascript hackers who want to develop their hacking skills
+				<p>Hack This MEAN Site is a free and legal training ground for Javascript hackers who want to develop their hacking skills
 				in a safe and realistic environment. This site is intended for everyone, whether you're a web developer who wants to 
-				learn more about cybersecurity or just a bored kid with too much free time on your hands. Our belief is that education should 
-				be free and readily available for those who seek it regardless of any ethical arguments against it.</p>
+				learn more about cybersecurity or just a bored kid with too much free time on your hands. The motivation for this project is 
+				that education should be free and readily available for those who seek it regardless of any ethical arguments against it.</p>
 				<aside>
 				<h2>DISCLAIMER</h2>
 					<p>We are not affiliated with <a href='http://hackthissite.org'>HackThisSite.org</a>, although

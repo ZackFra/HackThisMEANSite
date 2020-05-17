@@ -1,6 +1,5 @@
 
-// @todo make this verify something
-// break this so ReDoS attack destroys it
+
 const regexWorker = () => {
 	// eslint-disable-next-line no-restricted-globals
 	self.addEventListener('message', e => {
