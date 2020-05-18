@@ -3,7 +3,7 @@ const init = {
 	forum: undefined, 
 	postId: undefined, 
 	postMongoId: undefined,
-	newMessage: undefined,
+	newMessage: '',
 	tab: 'STANDARD'
 };
 

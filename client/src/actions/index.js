@@ -145,7 +145,7 @@ export const allowCreation = () => {
 	}
 }
 
-export const createPost = forum => {
+export async function createPost(forum) {
 	const { token } = localStorage;
 	const {initmessage, title} = store.getState().createPost;
 	let user = '';
@@ -175,7 +175,7 @@ export const createPost = forum => {
 		token: token,
 	}
 
-	return axios.post('/Forums/CreatePost', request)
+	return await axios.post('/Forums/CreatePost', request)
 	.then( res => res.data)
 	.catch( err => false);
 }

@@ -44,7 +44,7 @@
 }
 
 .title-font {
-	font-family: 'monospace';
+	font-family: monospace;
 	font-size: 32px;
 	line-height: 1.5;
 	font-weight: 800;

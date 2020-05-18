@@ -38,25 +38,29 @@ function Forum(props) {
 		e.preventDefault();
 
 		// if createPost fails
-		const created = (async () => await createPost(forum))();
-		if(created === false) {
-			const inval = document.querySelector('[id=invalid]');
+		createPost(forum)
+		.then( created => {
+			if(created === false) {
+				const inval = document.querySelector('[id=invalid]');
 
-			if(title === '') {
-				inval.innerText = 'Title cannot be blank.';
-			} else if(newMessage === '') {
-				inval.innerText = 'Message cannot be blank.';
+				console.log(newMessage);
+				if(title === '') {
+					inval.innerText = 'Title cannot be blank.';
+				} else if(newMessage === '') {
+					inval.innerText = 'Message cannot be blank.';
+				} else {
+					inval.innerText = 'Internal server error. Try again later.';
+				}
 			} else {
-				inval.innerText = 'Internal server error. Try again later.';
+				posts.unshift(created);
+				dispatch({type: 'SET_POST', payload: created._id});
+				dispatch({type: 'SET_POST_ID', payload: 0});
+				dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
+				dispatch({type: 'UPDATE_TITLE', payload: ''});
+				dispatch({type: 'UPDATE_CREATE_MESSAGE', payload: ''})
 			}
-		} else {
-			posts.unshift(created);
-			dispatch({type: 'SET_POST', payload: created._id});
-			dispatch({type: 'SET_POST_ID', payload: 0});
-			dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
-			dispatch({type: 'UPDATE_TITLE', payload: ''});
-			dispatch({type: 'UPDATE_CREATE_MESSAGE', payload: ''})
-		}
+		})
+		.catch(err => console.log(err));
 	}, [dispatch, forum, newMessage, posts, title]);
 
 	// if user logged in, allow them to create message
@@ -148,7 +152,7 @@ function Forum(props) {
 								dispatch({type: 'SET_TAB', payload: 'STANDARD'});
 							}}>
 							Back</Button>
-							<div className="card-body" id='content' style={{'width': '100%', 'overflow': 'scroll', paddingBottom: '0'}}>
+							<div className="card-body" id='content' style={{'width': '100%', paddingBottom: '0'}}>
 								<form className="form-group-sizing-lg" onSubmit={createPostSubmit}>
 									<div id='invalid' className='text-warning'/>
 
@@ -183,7 +187,7 @@ function Forum(props) {
 									dispatch({type: 'SET_TAB', payload: 'VIEW_POST'});
 							}}>
 							Back</Button>
-							<div className="card-body" id='content' style={{'height': '65%', 'width': '100%', 'overflow': 'scroll', paddingBottom: '0'}}>
+							<div className="card-body" id='content' style={{'height': '65%', 'width': '100%', paddingBottom: '0'}}>
 								<form className="form-group-sizing-lg" onSubmit={submitMessage}>
 									<div id='invalid' className='text-warning'/>
 
@@ -219,7 +223,7 @@ function Forum(props) {
 								Back
 								</Button>
 								{allowMakeMessage(posts[postId])}
-								<div className="card-body" id='content' style={{'height': '65%', 'width': '100%', 'overflow': 'scroll'}}>
+								<div className="card-body overflow-auto" id='content' style={{'height': '65%', 'width': '100%'}}>
 									{posts[postId].content.map(
 										content => {
 											const [author, message, date] = content;
@@ -262,7 +266,7 @@ function Forum(props) {
 							<div className="card-body secondary-bg">
 								<Title title={forumTitle} />
 								{allowCreation()}
-								<ul className="card-body" id='content' style={{height:'60%', 'width': '100%', 'overflow': 'scroll', listStyleType: 'none'}}>
+								<ul className="card-body overflow-auto" id='content' style={{height:'60%', 'width': '100%', listStyleType: 'none'}}>
 									<li key={uuid4()} className = 'title-post-bg title-post-color'style={{width: '95%', padding: '1rem', border: '1px solid black', borderRadius: '5px'}}>
 										<div className='row'>
 											<div className='col-sm'>Topic</div>

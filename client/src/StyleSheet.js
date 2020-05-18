@@ -6,7 +6,7 @@ export function Title(props) {
 
 export function Content(props) {
 	return (
-		<div className='content-font' style={{height: '65vh', padding: '4vh 0 5vh 0', margin: '0 6vw 0 2vw', fontFamily: 'monospace', overflow: 'scroll'}}>
+		<div className='content-font overflow-auto' style={{height: '65vh', padding: '4vh 0 5vh 0', margin: '0 6vw 0 2vw', fontFamily: 'monospace'}}>
 			{props.children}
 		</div>
 	);
