@@ -65,7 +65,7 @@ function Challenge4() {
 							<div id='success' />
 						</Col>
 					</Row>
-					<div style={{color: 'white', overflow: 'scroll', height: '60vh', marginLeft: '2vw'}}>
+					<div className='overflow-auto' style={{color: 'white', height: '60vh', marginLeft: '2vw'}}>
 						<br />
 						<h2><div dangerouslySetInnerHTML = {{__html: poems[poemId].title }}/></h2>
 						<br />
@@ -87,7 +87,7 @@ function Challenge4() {
 									Prototype Pollution
 								</div>
 								<hr color="lightgray" />
-								<div style={{height: '40vh', overflow: 'scroll'}}>
+								<div className='overflow-auto' style={{height: '40vh'}}>
 								{poems.map( (poem, i) => <div key={uuid4()}><PoemButton key={uuid4()} id={i} title={poem.title} /><br /></div> )}
 								</div>
 								<Row>

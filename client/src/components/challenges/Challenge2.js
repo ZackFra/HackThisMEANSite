@@ -167,7 +167,7 @@ function Challenge2() {
 									Post</button>
 							</form>
 							<hr color="lightgray"/>
-							<ul id="posts" style={{'listStyleType': 'none', 'height': '40%', 'overflow': 'scroll', 'paddingLeft': '0'}}>
+							<ul id="posts" className='overflow-auto' style={{'listStyleType': 'none', 'height': '40%', 'paddingLeft': '0'}}>
 								{posts}
 							</ul>
 						</div>
