@@ -16,16 +16,13 @@ function Challenge4() {
 	const dispatch = useDispatch();
 
 	function sanitizePoem(JSONpoem) {
+		// will not contain "message" if
+		// "__proto__" is injected
+		const keys = Object.keys(JSONpoem);
 
-		// possible to eliminate if you mess with it enough
-		if(Object.keys(JSONpoem).includes('title')) {
-			JSONpoem.title = sanitizeHTML(JSONpoem.title);
-		}
-
-		// will not have this key if __proto__ overwritten properly
-		if(Object.keys(JSONpoem).includes('message')) {
-			JSONpoem.message = sanitizeHTML(JSONpoem.message);
-		}
+		keys.forEach(key => {
+			JSONpoem[key] = sanitizeHTML(JSONpoem[key]);
+		});
 
 		return JSONpoem;
 	}
