@@ -57,7 +57,7 @@ function App(props) {
 
   return (
   	<div className="App">
-		<Navi />
+		  <Navi />
   		<Router>
   			<div>
   				<Switch>

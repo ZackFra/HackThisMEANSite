@@ -1,9 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import ReactDOM from 'react-dom';
 import axios from 'axios';
 import crypto from 'crypto';
 import store from '../store';
-import sanitizeHTML from 'sanitize-html';
 import Cookies from 'js-cookie';
 import { Container, Nav, Button } from 'reactstrap';
 import { verify } from 'jsonwebtoken';
@@ -21,11 +19,6 @@ export const login = async data  => {
 		return true;
 	})
 	.catch( err => false );
-}
-
-export const logout = () => dispatch => {
-	localStorage.removeItem('token');
-	localStorage.removeItem('user');
 }
 
 export async function register(data) {
@@ -217,7 +210,7 @@ export const setForum = forum => {
 
 /* Challenge 1 */
 // challenge 1 login
-export const login_challenge1 = data => dispatch => {
+export const login1 = data => {
 	const {pass} = data;
 	
 	let hash = crypto
@@ -227,91 +220,8 @@ export const login_challenge1 = data => dispatch => {
 	const request = {user: 'admin', pass: hash};
 
 
-	axios.post('/Challenge1/login', request) 
-	.then( res => {
-		if(res.data.length > 0) {
-			const ft = document.querySelector('#invalid')
-			ft.className = 'form-text text-success';
-			ft.innerText="Correct!";
-			dispatch({type: 'SET_TAB', payload: 'VICTORY'});
-		} else {
-			const ft = document.querySelector('#invalid');
-			ft.innerText="Incorrect Password";
-			dispatch({type: 'UPDATE_PASS', payload: ''});
-		}
-		console.log(`url: ${res.config.url}\nmethod: ${res.config.method}\ndata ${res.config.data}`);		
-	});
-}
-
-/* challenge 2 */
-
-sanitizeHTML.defaults.allowedTags = [ 'img', 'i', 'b', 'blockquote', 'em',
-	'br', 'cite', 'code', 'kbd', 'del', 'font', 'u', 'strong']; 
-sanitizeHTML.defaults.allowedAttributes = 
-    { img: ['src', 'alt', 'onerror'], font: ['size', 'color'] };
-
-// set insults to array of insults
-export const setInsults = arr => dispatch => {
-	dispatch({type: 'SET_INSULTS', payload: arr});
-}
-
-// posting to chat function
-export const post = text => dispatch => {
-	const { postNum } = store.getState().challenge2; 
-
-    let output = [
-		<div key = {"post" + postNum} className="bg-light" style={{'color': 'black', "borderRadius": "25px"}}>
-			<div className="card bg-light" style={{"marginBottom": "0.7rem"}}>
-	     			<div className="card-body" id={"post" + postNum}>
-	     			</div>
-	   		</div>
-	  	</div>
-    ];
-
-	const posts = document.getElementById('posts');
-	const post = posts.appendChild(document.createElement("li"));
-	post.style = 'margin-left: 2rem';
-	ReactDOM.render(output, post);
-
-	const newPost = document.getElementById('post' + postNum);
-	newPost.innerHTML = sanitizeHTML(text);
-
-	dispatch({type: 'INCREMENT_POSTNUM'});
-}
-
-// computer posting function
-export const cPost = text => dispatch => {
-	const { postNum } = store.getState().challenge2;
-		
-	let output = [
-		<div key = {"post" + postNum} style={{'color': 'black', 'borderRadius': '25px'}}>
-			<div className="card" style={{"marginBottom": "0.7rem"}}>
-	      		<div className="card-body" id={"post" + postNum} style={{'backgroundColor': 'lightblue'}}>
-	      		</div>
-	      	</div>
-	    </div>
-	];
-
-	const posts = document.getElementById('posts');
-	const post = posts.appendChild(document.createElement("li"));
-	post.style = 'margin-right: 2rem';
-	ReactDOM.render(output, post);
-
-	const newPost = document.getElementById('post' + postNum);
-	newPost.innerHTML = sanitizeHTML(text);
-	dispatch({type: 'INCREMENT_POSTNUM'});
-}
-
-// set the anatagonize timer
-export const setAntagonize = () => dispatch => {
-	dispatch({
-		type: 'ANTAGONIZE', 
-		payload: setInterval(() => {
-			const { insults, insultIndex } = store.getState().challenge2;
-			cPost(insults[insultIndex])(dispatch);
-			dispatch({type: 'INCREMENT_INSULTS'});
-		}, 20000)
-	});
+	return axios.post('/Challenge1/login', request) 
+	.then( res =>  res.data.length > 0);
 }
 
 // sets the mutationObserver, and calls
@@ -355,11 +265,6 @@ export const login3 = async data => {
 	.catch( err => {
 		return false;
 	});
-}
-
-export const logout3 = () => dispatch => {
-	Cookies.remove('user');
-	Cookies.remove('token');
 }
 
 

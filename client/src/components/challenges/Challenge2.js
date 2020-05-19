@@ -95,7 +95,6 @@ function Challenge2() {
 		if(tab === 'LIVE_CHAT') {
 		    // set mutation observer to watch for nodes added to the DOM
 		    setMutationObserver("posts", node => {
-		    	console.log(node);
 				// recursively gather every new node created
 		    	// from the user's input
 		    	function getAllNewNodes(node) {
@@ -145,7 +144,7 @@ function Challenge2() {
 				<Container className='foreground-bg'>
 					<Title title='Welcome to Challenge 2' />
 					<br />
-					<div className="card" style={{width: '40%', margin: 'auto', height: '70%'}}>
+					<div className="card" style={{width: '40vw', margin: 'auto', height: '60vh'}}>
 						<div className="card-body secondary-bg text-light">
 							<div className="card-title">
 								LiveChat
@@ -167,7 +166,7 @@ function Challenge2() {
 									Post</button>
 							</form>
 							<hr color="lightgray"/>
-							<ul id="posts" className='overflow-auto' style={{'listStyleType': 'none', 'height': '40%', 'paddingLeft': '0'}}>
+							<ul id="posts" className='overflow-auto' style={{'listStyleType': 'none', 'height': '25vh', 'paddingLeft': '0'}}>
 								{posts}
 							</ul>
 						</div>

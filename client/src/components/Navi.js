@@ -14,22 +14,24 @@ import {
 } from 'reactstrap';
 import { verify } from 'jsonwebtoken';
 import { connect } from 'react-redux';
-import { logout } from '../actions/';
 import env from '../.env';
 
 function Navi(props) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggle = () => setIsOpen(!isOpen);
+  function toggle() {
+    setIsOpen(!isOpen);
+  }
 
-  const logout = e => {
+  function logout(e) {
     e.preventDefault();
-    props.logout();
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
     window.location.reload();
   }
 
   // generates either login or logout button
-  const setLog = () => {
+  function setLog() {
     const token = localStorage.getItem('token');
     try { 
       verify(token, env.jwtseed);
@@ -37,7 +39,7 @@ function Navi(props) {
         <NavLink onClick={logout} href='/'>
           Log out
         </NavLink>
-     ); 
+      ); 
     } catch(e) {
       return <NavLink href='/Login'>Login</NavLink>
     }
@@ -148,4 +150,4 @@ function Navi(props) {
   );
 }
 
-export default connect(null, { logout })(Navi);
+export default Navi;

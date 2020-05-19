@@ -4,7 +4,7 @@ import { Container } from 'reactstrap';
 export default function Panel(props) {
 	return 	(
 		<Container>
-			<div className="card" style={{width: '18rem', margin: 'auto'}}>
+			<div className="card" style={{width: '35vw', height: '55vh', margin: 'auto'}}>
 				<div className="card-body secondary-bg text-light">
 					<div className="card-title">
 						{props.title}
@@ -14,7 +14,9 @@ export default function Panel(props) {
 						{props.content}
 					</div>
 					<br />
-					{props.innerComponent()}
+					<div className='overflow-auto'>
+						{props.innerComponent()}
+					</div>
 				</div>
 			</div>
 		</Container>

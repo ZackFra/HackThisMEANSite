@@ -11,6 +11,13 @@ function Challenge3(props) {
 	const { tab, username, password, confirm, throttle } = useSelector( state => state.challenge3 );
 	const dispatch = useDispatch();
 
+	// logout function,
+	// removes user and token from cookies
+	function logout() {
+		Cookies.remove('user', {path: ''});
+		Cookies.remove('token', {path: ''});
+	}
+
 	// boolean function
 	// returns whether enough time has passed between 
 	// requests to make another one
@@ -154,8 +161,7 @@ function Challenge3(props) {
 			.then( (res) => {
 				dispatch({type: 'CLEAR_ALL'});
 				if(res === true && Cookies.get('user') === 'admin') {
-					Cookies.remove('token');
-					Cookies.remove('user');
+					logout();
 					dispatch({type: 'SET_TAB', payload: 'VICTORY'});
 				} else if(res === true) {
 					document.getElementById('success').innerText = 'Password changed successfully!';
@@ -259,8 +265,7 @@ function Challenge3(props) {
 											style = {{'margin':'0.4rem 0 0 0', 'width': '20%'}}
 											color='primary'
 											onClick={ () => {
-												Cookies.remove('user', {path: ''});
-												Cookies.remove('token', {path: ''});
+												logout();
 												dispatch({type: 'SET_TAB', payload: 'STANDARD'});
 										}}>Logout</Button>
 										<br />

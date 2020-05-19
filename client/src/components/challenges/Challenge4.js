@@ -41,6 +41,7 @@ function Challenge4() {
 	}
 
 	useEffect( () => {
+		// hint that eval is being used on this page
 		console.warn("./src/components/challenges/Challenge4.js\nLine 133:28:  eval can be harmful  no-eval");
 		dispatch({type: 'SET_POEMS', payload: basePoems});
 	}, [dispatch]);

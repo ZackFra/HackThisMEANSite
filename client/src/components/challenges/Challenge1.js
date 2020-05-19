@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Container } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { login_challenge1, updatePass, clearPass } from '../../actions';
+import { login1 } from '../../actions';
 import { Title } from '../../StyleSheet';
+import Panel from './Panel';
 import Victory from './Victory';
 
 function Challenge1() {
@@ -10,11 +11,46 @@ function Challenge1() {
 	const dispatch = useDispatch();
 
 	// authentication script
-	function authenticate(e) {
+	const authenticate = useCallback(e => {
 		e.preventDefault();
-		login_challenge1({pass: pass})(dispatch);
-		clearPass()(dispatch);
-	};
+		login1({pass: pass})
+		.then(res => {
+			if(res === true) {
+				dispatch({type: 'SET_TAB', payload: 'VICTORY'});
+			} else if(res === false) {
+				document.getElementById('invalid').innerHTML='Invalid Password';
+			}
+		})
+		.catch(err => {
+			document.getElementById('invalid').innerHTML='Internal Server Error';
+		});
+
+		dispatch({type: 'UPDATE_PASS', payload: ''});
+	}, [pass, dispatch]);
+
+	const InnerPanel = useCallback( props => {
+		return (
+			<form className="form-group" onSubmit={authenticate}>
+				<label className="form-text text-warning" id="invalid" />
+				<label className="form-control" htmlFor="password">
+					admin
+				</label>
+				<input 
+					className="form-control" 
+					type="password" 
+					placeholder='password' 
+					value={pass} 
+					onChange={e => dispatch({type: 'UPDATE_PASS', payload: e.target.value})}	
+				/>
+				<button 
+					className="btn btn-primary"
+					type="submit" 
+					style={{padding: "0 1rem", marginTop: "0.7rem"}}
+					>
+					Submit</button>
+			</form>
+		);
+	}, [dispatch, pass, authenticate]);
 
 	switch(tab) {
 		case 'VICTORY':
@@ -25,31 +61,11 @@ function Challenge1() {
 					<Title title='Welcome to Challenge 1' />
 					<br />
 					<Container>
-						<div className="card" style={{width: '40%', margin: 'auto', maxHeight: '90%'}}>
-							<div className="card-body secondary-bg text-light">
-								<div className="card-title">
-									Gotta Love the Classics
-								</div>
-								<hr color="lightgray"/>
-								<div className="card-text">
-									It looks like someone goofed and left a console.log somewhere while developing this site. Also, did you know you that MongoDB can be injected just like a SQL database?
-								</div>
-								<br />
-								<form className="form-group" onSubmit={authenticate}>
-									<label className="form-text text-warning" id="invalid"></label>
-									<label className="form-control" htmlFor="password">
-										admin
-									</label>
-									<input className="form-control" name='pass' type="password" placeholder='password' value={pass} onChange={e => updatePass(e)(dispatch)}/>
-									<button 
-										className="btn btn-primary"
-										type="submit" 
-										style={{padding: "0 1rem", marginTop: "0.7rem"}}
-										>
-										Submit</button>
-								</form>
-							</div>
-						</div>
+						<Panel 
+							title={'Gotta Love the Classics'} 
+							content={'Did you know you that Mongo databases can be injected too?'}
+							innerComponent={InnerPanel} 
+						/>
 					</Container>
 				</Container>
 			);
