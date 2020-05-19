@@ -379,21 +379,6 @@ export const changePass3 = async request => {
 	.catch( err => false );
 }
 
-// Challenge 4
-
-export async function postPoem(JSONpoem) {
-	let poem = {};
-
-	try { 
-		const sanitized = (await axios.post('/Challenge4/Post', JSON.parse(JSONpoem))).data;
-		Object.assign(poem, sanitized);
-		return poem;
-	}
-	catch(e) {
-		console.error(e);
-		return {title: "", message: ""};
-	}
-}
 
 // @todo get rid of these
 /** these are generic onChange handlers **/

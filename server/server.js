@@ -9,7 +9,6 @@ const Users = require('./routes/Users');
 const Challenge1 = require('./routes/challenge1_users');
 const Challenge3 = require('./routes/challenge3_users');
 const Post = require('./routes/Post');
-const Challenge4 = require('./routes/challenge4_poems');
 
 require('dotenv').config();
 
@@ -22,7 +21,6 @@ app.use(bodyParser.json());
 app.use('/Login', Users);
 app.use('/Challenge1', Challenge1);
 app.use('/Challenge3', Challenge3);
-app.use('/Challenge4', Challenge4);
 app.use('/Forums', Post);
 
 

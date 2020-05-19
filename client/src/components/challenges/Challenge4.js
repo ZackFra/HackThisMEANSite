@@ -2,15 +2,33 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Container, Button, Row, Col } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { postPoem } from '../../actions';
 import { Title } from '../../StyleSheet';
 import Victory from './Victory';
 import basePoems from './Challenge4/poems';
 import uuid4 from 'uuid4';
+import sanitizeHTML from 'sanitize-html';
+
+sanitizeHTML.defaults.allowedTags = [];
+sanitizeHTML.defaults.allowedAttributes = {};
 
 function Challenge4() {
 	const {message, title, tab, poems, poemId} = useSelector(state => state.challenge4);
 	const dispatch = useDispatch();
+
+	function sanitizePoem(JSONpoem) {
+
+		// possible to eliminate if you mess with it enough
+		if(Object.keys(JSONpoem).includes('title')) {
+			JSONpoem.title = sanitizeHTML(JSONpoem.title);
+		}
+
+		// will not have this key if __proto__ overwritten properly
+		if(Object.keys(JSONpoem).includes('message')) {
+			JSONpoem.message = sanitizeHTML(JSONpoem.message);
+		}
+
+		return JSONpoem;
+	}
 
 	// component to link to a rendered poem
 	function PoemButton(props) {
@@ -67,7 +85,7 @@ function Challenge4() {
 					</Row>
 					<div className='overflow-auto' style={{color: 'white', height: '60vh', marginLeft: '2vw'}}>
 						<br />
-						<h2><div dangerouslySetInnerHTML = {{__html: poems[poemId].title }}/></h2>
+						<h2> {(poems[poemId].title !== undefined) ? <div dangerouslySetInnerHTML = {{__html: poems[poemId].title }}/> : <div className='text-danger'>Error Reading Title</div>}</h2>
 						<br />
 						<div id='poem'>
 							{ (poems[poemId].message !== undefined) ? poems[poemId].message.split('\n').map(line => <div key={uuid4()} dangerouslySetInnerHTML = {{__html: line}} />) : <div className='text-warning'>Error Reading Poem</div>}
@@ -88,7 +106,7 @@ function Challenge4() {
 								</div>
 								<hr color="lightgray" />
 								<div className='overflow-auto' style={{height: '40vh'}}>
-								{poems.map( (poem, i) => <div key={uuid4()}><PoemButton key={uuid4()} id={i} title={poem.title} /><br /></div> )}
+								{poems.map( (poem, i) => <div key={uuid4()}><PoemButton key={uuid4()} id={i} title={poem.title || 'undefined'} /><br /></div> )} 
 								</div>
 								<Row>
 									<Col xs='2'/>
@@ -128,19 +146,17 @@ function Challenge4() {
 								<hr color="lightgray"/>
 								<div className="card-text">
 									<form className='form-group' onSubmit= {
-										async e => {
+										 e => {
 											e.preventDefault();
+
 											try {
 												// escape all the new lines before the eval	
 												// eslint-disable-next-line	
-												let JSONpoem = eval(`(function () { return '{"title": "${title.replace(/\r?\n/g, "\\n")}", "message": "${message.replace(/\r?\n/g, "\\n")}"}'})()`);
+												let JSONpoem = eval(`({"title": "${title.replace(/\r?\n/g, '\\n')}", "message": "${message.replace(/\r?\n/g, '\\n')}"})`);
 
-												// escape new lines created by the eval
-												JSONpoem = JSONpoem.replace(/\r?\n/g, "\\n");
-												
-												const poem = await postPoem(JSONpoem);
+												const sanitized = sanitizePoem(JSONpoem);
 
-												dispatch({type: 'UPDATE_POEMS', payload: poem});
+												dispatch({type: 'UPDATE_POEMS', payload: sanitized});
 												dispatch({type: 'SET_TAB', payload: 'POEMS'});
 											}
 											catch(e) {
