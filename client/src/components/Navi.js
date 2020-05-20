@@ -13,7 +13,6 @@ import {
   NavbarText
 } from 'reactstrap';
 import { verify } from 'jsonwebtoken';
-import { connect } from 'react-redux';
 import env from '../.env';
 
 function Navi(props) {
