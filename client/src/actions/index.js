@@ -284,6 +284,17 @@ export const changePass3 = async request => {
 	.catch( err => false );
 }
 
+// Challenge 6
+
+export async function login6(URL, username, password) {
+	return await axios.post(URL, {username, password})
+	.then( res => {
+		return res;
+	})
+	.catch(err => {
+		return false;
+	})
+}
 
 // @todo get rid of these
 /** these are generic onChange handlers **/
