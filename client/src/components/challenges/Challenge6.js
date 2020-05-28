@@ -39,7 +39,7 @@ function Challenge6() {
 	const InfoPanel = useCallback( props => {
 		let { user, debt, lastFour, DOB, firstName, lastName } = data;
 		return (
-		  <div style={{marginLeft: '20px', width: '95%'}} >
+		  <div style={{marginLeft: '20px', width: '90%'}} >
 			<Row>
 			  <Col>Name: </Col>
 			  <Col>{firstName + ' ' + lastName}</Col>
@@ -70,9 +70,6 @@ function Challenge6() {
 		return (
 			<form className="form-group" onSubmit={authenticate} style={{width: '95%'}}>
 				<Row>
-					<Col><label className="form-text text-warning" id="invalid" /></Col>
-				</Row>
-				<Row style={{marginTop: '1vh'}}>
 					<Col xs='4'>
 						<label className='form-text' htmlFor='username'>Username</label>
 					</Col>
@@ -102,7 +99,7 @@ function Challenge6() {
 					</Col>
 				</Row>
 				<Row style={{marginTop: '1vh'}}>
-					<Col>
+					<Col xs='4'>
 						<button 
 							className="btn btn-primary"
 							type="submit" 
@@ -110,6 +107,9 @@ function Challenge6() {
 						>
 							Submit
 						</button>
+					</Col>
+					<Col>
+						<div className="form-text text-warning" id="invalid" />
 					</Col>
 				</Row>
 				<LinkPanel style={{marginTop: '1vh'}}/>
@@ -125,8 +125,8 @@ function Challenge6() {
 			dispatch({type: 'SET_TAB', payload: 'BANK'});
 		}
 		return (
-			<Row style={{width: '80%'}}>
-				<Col><Button color='link' onClick={setHome}>Home</Button></Col>
+			<Row style={{width: '95%', marginTop: '2vh'}}>
+				<Col><Button color='link' onClick={setHome} style={{marginLeft: '1vw'}}>Home</Button></Col>
 				<Col><Button color='link' onClick={setBank}>Bank</Button></Col>
 			</Row>
 		);
