@@ -286,8 +286,8 @@ export const changePass3 = async request => {
 
 // Challenge 6
 
-export async function login6(URL, username, password) {
-	return await axios.post(URL, {username, password})
+export async function login6(URL, user, pass) {
+	return await axios.post(URL, {user, pass})
 	.then( res => {
 		return res;
 	})

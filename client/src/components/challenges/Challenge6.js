@@ -9,14 +9,14 @@ import { login6 } from '../../actions';
 function Challenge6() {
 	const {user, pass, tab, data} = useSelector(state => state.challenge6);
 	const dispatch = useDispatch();
-	const URL = 'http://167.172.138.178:5000/ClientLogin';
+	const URL = 'http://167.172.138.178:5000/Login/ClientLogin';
 
 	const authenticate = useCallback( e => {
 		e.preventDefault();
 		login6(URL, user, pass)
 		.then( res => {
-			if(res !== false) {
-				dispatch({type: 'SET_DATA', payload: res});
+			if(res.data) {
+				dispatch({type: 'SET_DATA', payload: res.data});
 				dispatch({type: 'SET_TAB', payload: 'INFO_PANEL'});
 			} else {
 				document.getElementById('invalid').innerText = 'Invalid username or password';
@@ -25,7 +25,7 @@ function Challenge6() {
 		.catch( err => {
 			document.getElementById('invalid').innerText = 'Internal Server Error';
 		})
-	}, [dispatch])
+	}, [dispatch, user, pass])
 
 	function toMoney(num) {
 		// Create our number formatter.
@@ -39,7 +39,7 @@ function Challenge6() {
 	const InfoPanel = useCallback( props => {
 		let { user, debt, lastFour, DOB, firstName, lastName } = data;
 		return (
-		  <div style={{marginLeft: '20px'}} >
+		  <div style={{marginLeft: '20px', width: '95%'}} >
 			<Row>
 			  <Col>Name: </Col>
 			  <Col>{firstName + ' ' + lastName}</Col>
@@ -61,18 +61,19 @@ function Challenge6() {
 			  <Col>***-**-{lastFour}</Col>
 			</Row>
 			<hr style={{borderTop: 'dotted 1px'}} />
+			<LinkPanel />
 		  </div>
 		);
 	  }, [data]);
 
 	const BankPanel = useCallback( props => {
 		return (
-			<form className="form-group" onSubmit={authenticate} style={{overflow: 'hidden'}}>
-				<Row style={{marginTop: '1vh'}}>
-					<label className="form-text text-warning" id="invalid" />
+			<form className="form-group" onSubmit={authenticate} style={{width: '95%'}}>
+				<Row>
+					<Col><label className="form-text text-warning" id="invalid" /></Col>
 				</Row>
 				<Row style={{marginTop: '1vh'}}>
-					<Col>
+					<Col xs='4'>
 						<label className='form-text' htmlFor='username'>Username</label>
 					</Col>
 					<Col>
@@ -86,7 +87,7 @@ function Challenge6() {
 					</Col>
 				</Row>
 				<Row style={{marginTop: '1vh'}}>
-					<Col>
+					<Col xs='4'>
 						<label className='form-text' htmlFor='password'>Password</label>
 					</Col>
 					<Col>
@@ -155,7 +156,7 @@ function Challenge6() {
 					<Container>
 						<Panel
 							title='EvilBank.com'
-							content=''
+							content='Welcome to EvilBank.com, please log in to see your account details. Also fuck you.'
 							innerComponent={BankPanel}
 						/>
 					</Container>
