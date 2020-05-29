@@ -3,8 +3,8 @@ let initialState = {
 	tab: 'STANDARD',
     user: '',
     pass: '',
-    data: undefined
-    
+    data: undefined,
+    throttle: false
 }
 
 const challenge5Reducer = (state = initialState, action) => {
@@ -23,7 +23,10 @@ const challenge5Reducer = (state = initialState, action) => {
             break;
         case 'SET_DATA':
             ns.data = action.payload;
-            break;
+			break;
+		case 'TOGGLE_THROTTLE':
+			ns.throttle = !ns.throttle;
+			break;
 		default:
 			break;
 	}

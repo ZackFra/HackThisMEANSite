@@ -7,12 +7,24 @@ import Victory from './Victory';
 import { login6 } from '../../actions';
 
 function Challenge6() {
-	const {user, pass, tab, data} = useSelector(state => state.challenge6);
+	const {user, pass, tab, data, throttle} = useSelector(state => state.challenge6);
 	const dispatch = useDispatch();
 	const URL = 'http://167.172.138.178:5000/Login/ClientLogin';
 
 	const authenticate = useCallback( e => {
 		e.preventDefault();
+
+		// stop the user from making too many request in succession
+		if(throttle) {
+			document.getElementById('invalid').innerText = 'Too many requests at once';
+			return;
+		}
+		
+		dispatch({type: 'TOGGLE_THROTTLE'});
+		setTimeout(() => {
+			dispatch({type: 'TOGGLE_THROTTLE'})
+		}, 1000);
+
 		login6(URL, user, pass)
 		.then( res => {
 			if(res.data) {
@@ -24,8 +36,8 @@ function Challenge6() {
 		})
 		.catch( err => {
 			document.getElementById('invalid').innerText = 'Internal Server Error';
-		})
-	}, [dispatch, user, pass])
+		});
+	}, [dispatch, user, pass, throttle])
 
 	function toMoney(num) {
 		// Create our number formatter.
